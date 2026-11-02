@@ -1,11 +1,11 @@
 # Veyntro — current progress
 
 DATE/TIME (UTC): 2026-11-02T20:17:19.855858+00:00
-PHASE / MILESTONE: Phase 1 — DAO-only receiver built and tested locally; deployment pending
+PHASE / MILESTONE: Phase 1 — receiver deployment verified; DAO-approved funding pending
 STATUS: IN_PROGRESS
 LAST VERIFIED COMMIT: bcb518ea38a1a4786f1b4d243e578f23335eb771 (GitHub source baseline before receiver work).
 REPOSITORY: https://github.com/0xaje/Veyntro
-NETWORK / CONTRACT IDS: NEAR testnet; council aje-veyntro.testnet; DAO veyntro.sputnikv2.testnet. Receiver account receiver.aje-veyntro.testnet is CREATED; code is NOT DEPLOYED.
+NETWORK / CONTRACT IDS: NEAR testnet; council aje-veyntro.testnet; DAO veyntro.sputnikv2.testnet. Receiver account receiver.aje-veyntro.testnet is CREATED; code and initialization are VERIFIED.
 
 ## Completed and verified
 
@@ -54,3 +54,9 @@ User reproduced all 9 local tests and the WASM release build. User-reported loca
 Creation transaction bW9JVbuFEFRpc5oz3Q4honvwkeZ7AUoNAtCosDqcDUV independently verified FINAL with SuccessValue and no failing returned receipts. receiver.aje-veyntro.testnet has 1.5 test NEAR, public key ed25519:2gTwxY1r3ZtLPtcALErwZjYV9sSsAw72S9UXx7psxx8j, and no deployed contract at block 275949108. The preliminary CLI validation error did not prevent the creation transaction succeeding. Do not repeat account creation.
 
 Next action: user runs `bash scripts/receiver-integration.sh deploy` from the same built checkout. Then verify final deploy/init receipts, onchain code against user's actual WASM hash, configured DAO, funding_count=0 and total_received=0 before proposing funding. Evidence: evidence/RECEIVER_ACCOUNT_CREATION.json. No deployment or governance-funded call is claimed yet.
+
+## Receiver deployment verified — 2026-11-02
+
+Transaction 3CvGqXFDC7EabLBEga4symki7BYYFvajYgNSeZx6ibd4 independently returned FINAL and SuccessValue; all returned receipts succeeded. At block 275949494, receiver.aje-veyntro.testnet code hash BAeg5fB4ECXTgjeZHnqJzzGPgt9Ayq6N9Ah4WdA63V63 matches the user's WASM SHA256 970db1c72542dbd325c37228188f013b0b1e2eb6bb2714b9de8ae1fd1206c1d4. Live get_funding_state returned dao_account_id=veyntro.sputnikv2.testnet, total_received=0 and funding_count=0. Evidence: evidence/RECEIVER_DEPLOYMENT.json.
+
+Next: user runs `bash scripts/receiver-integration.sh propose` from the same checkout/artifact. It fetches the current policy bond and verifies local/deployed code and initial state before submitting. Capture actual proposal transaction hash and returned proposal ID; do not guess the ID or approve before verification. DAO-approved funding remains NOT VERIFIED.
