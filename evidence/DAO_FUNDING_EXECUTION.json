@@ -1,0 +1,1495 @@
+{
+  "checked_at_utc": "2026-11-02T20:38:47.676862+00:00",
+  "network": "testnet",
+  "transaction_id": "4nwqawJPDf5jnurzTPsVRjMSigjL1LajjcadyKrQ4arU",
+  "proposal_id": 0,
+  "execution": {
+    "ok": true,
+    "result": {
+      "final_execution_status": "FINAL",
+      "receipts": [
+        {
+          "predecessor_id": "aje-veyntro.testnet",
+          "priority": 0,
+          "receipt": {
+            "Action": {
+              "actions": [
+                {
+                  "FunctionCall": {
+                    "args": "eyJhY3Rpb24iOiJWb3RlQXBwcm92ZSIsImlkIjowLCJtZW1vIjpudWxsfQ==",
+                    "deposit": "0",
+                    "gas": 150000000000000,
+                    "method_name": "act_proposal"
+                  }
+                }
+              ],
+              "gas_price": "1000000000",
+              "input_data_ids": [],
+              "is_promise_yield": false,
+              "output_data_receivers": [],
+              "signer_id": "aje-veyntro.testnet",
+              "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+            }
+          },
+          "receipt_id": "8iDmKw31zfGxMLCUAu631G4Vyn8Hesu6n5rZmFdViWSn",
+          "receiver_id": "veyntro.sputnikv2.testnet"
+        },
+        {
+          "predecessor_id": "veyntro.sputnikv2.testnet",
+          "priority": 0,
+          "receipt": {
+            "Action": {
+              "actions": [
+                {
+                  "FunctionCall": {
+                    "args": "e30=",
+                    "deposit": "10000000000000000000000",
+                    "gas": 30000000000000,
+                    "method_name": "fund_treasury"
+                  }
+                }
+              ],
+              "gas_price": "1000000000",
+              "input_data_ids": [],
+              "is_promise_yield": false,
+              "output_data_receivers": [
+                {
+                  "data_id": "6nQNvQG9gkrCTDb8vTWwzoBU2QsBQxcsP4pTjpH5ypAp",
+                  "receiver_id": "veyntro.sputnikv2.testnet"
+                }
+              ],
+              "signer_id": "aje-veyntro.testnet",
+              "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+            }
+          },
+          "receipt_id": "5STyZJGZSMHrMr1FftjW2YyP7L1ARNiJQfZ1bYfFqcS4",
+          "receiver_id": "receiver.aje-veyntro.testnet"
+        },
+        {
+          "predecessor_id": "system",
+          "priority": 0,
+          "receipt": {
+            "Action": {
+              "actions": [
+                {
+                  "Transfer": {
+                    "deposit": "30749064934968600000000"
+                  }
+                }
+              ],
+              "gas_price": "0",
+              "input_data_ids": [],
+              "is_promise_yield": false,
+              "output_data_receivers": [],
+              "signer_id": "aje-veyntro.testnet",
+              "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+            }
+          },
+          "receipt_id": "6KuebAJWka5y6vM7VunCyt6YU6GVFuYKAxwaftMZSQrk",
+          "receiver_id": "aje-veyntro.testnet"
+        },
+        {
+          "predecessor_id": "veyntro.sputnikv2.testnet",
+          "priority": 0,
+          "receipt": {
+            "Action": {
+              "actions": [
+                {
+                  "FunctionCall": {
+                    "args": "eyJwcm9wb3NhbF9pZCI6MH0=",
+                    "deposit": "0",
+                    "gas": 10000000000000,
+                    "method_name": "on_proposal_callback"
+                  }
+                }
+              ],
+              "gas_price": "1000000000",
+              "input_data_ids": [
+                "6nQNvQG9gkrCTDb8vTWwzoBU2QsBQxcsP4pTjpH5ypAp"
+              ],
+              "is_promise_yield": false,
+              "output_data_receivers": [],
+              "signer_id": "aje-veyntro.testnet",
+              "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+            }
+          },
+          "receipt_id": "FKZKr4amDFWNs4YW5i1iNNMtegeqUK75r6AQGT26UXKP",
+          "receiver_id": "veyntro.sputnikv2.testnet"
+        },
+        {
+          "predecessor_id": "veyntro.sputnikv2.testnet",
+          "priority": 0,
+          "receipt": {
+            "Action": {
+              "actions": [
+                {
+                  "Transfer": {
+                    "deposit": "1000000000000000000000000"
+                  }
+                }
+              ],
+              "gas_price": "1000000000",
+              "input_data_ids": [],
+              "is_promise_yield": false,
+              "output_data_receivers": [],
+              "signer_id": "aje-veyntro.testnet",
+              "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+            }
+          },
+          "receipt_id": "ALznJZp12M8qcGizf5MbfWcLMfVKYqFg3JrDKcre9NSo",
+          "receiver_id": "aje-veyntro.testnet"
+        },
+        {
+          "predecessor_id": "system",
+          "priority": 0,
+          "receipt": {
+            "Action": {
+              "actions": [
+                {
+                  "Transfer": {
+                    "deposit": "200864306250000000000"
+                  }
+                }
+              ],
+              "gas_price": "0",
+              "input_data_ids": [],
+              "is_promise_yield": false,
+              "output_data_receivers": [],
+              "signer_id": "aje-veyntro.testnet",
+              "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+            }
+          },
+          "receipt_id": "Cw7ZoMaUQnpSMkDAP1WC1HTkspjNTzPMtQjJMq4aH8HA",
+          "receiver_id": "aje-veyntro.testnet"
+        },
+        {
+          "predecessor_id": "system",
+          "priority": 0,
+          "receipt": {
+            "Action": {
+              "actions": [
+                {
+                  "Transfer": {
+                    "deposit": "10425896586422400000000"
+                  }
+                }
+              ],
+              "gas_price": "0",
+              "input_data_ids": [],
+              "is_promise_yield": false,
+              "output_data_receivers": [],
+              "signer_id": "aje-veyntro.testnet",
+              "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+            }
+          },
+          "receipt_id": "97ytg81qmyHagzQR2amHgRRgZU2jTte4bkHB8qQnhpfh",
+          "receiver_id": "aje-veyntro.testnet"
+        },
+        {
+          "predecessor_id": "system",
+          "priority": 0,
+          "receipt": {
+            "Action": {
+              "actions": [
+                {
+                  "Transfer": {
+                    "deposit": "108808211359482900000000"
+                  }
+                }
+              ],
+              "gas_price": "0",
+              "input_data_ids": [],
+              "is_promise_yield": false,
+              "output_data_receivers": [],
+              "signer_id": "aje-veyntro.testnet",
+              "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+            }
+          },
+          "receipt_id": "EcVUNDq9bWgQrVw9JnmdW4LPKAZLBZPoeKncoYD15Rcv",
+          "receiver_id": "aje-veyntro.testnet"
+        }
+      ],
+      "receipts_outcome": [
+        {
+          "block_hash": "mRVVNsnNNQmP3ZZXhfANHjM7BRmtpzcSwgokMFQvc5u",
+          "id": "8iDmKw31zfGxMLCUAu631G4Vyn8Hesu6n5rZmFdViWSn",
+          "outcome": {
+            "executor_id": "veyntro.sputnikv2.testnet",
+            "gas_burnt": 3037358483191,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                {
+                  "local": "AA4nA45vauiac3jdVwJTzSdUP3oj2r1fDaPAb2mHdgcH"
+                }
+              ],
+              "gas_profile": [
+                {
+                  "cost": "FUNCTION_CALL_BASE",
+                  "cost_category": "ACTION_COST",
+                  "gas_used": "400000000000"
+                },
+                {
+                  "cost": "FUNCTION_CALL_BYTE",
+                  "cost_category": "ACTION_COST",
+                  "gas_used": "797985283"
+                },
+                {
+                  "cost": "NEW_ACTION_RECEIPT",
+                  "cost_category": "ACTION_COST",
+                  "gas_used": "289092464624"
+                },
+                {
+                  "cost": "BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "8737347663"
+                },
+                {
+                  "cost": "CONTRACT_LOADING_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "35445963"
+                },
+                {
+                  "cost": "CONTRACT_LOADING_BYTES",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "587834778865"
+                },
+                {
+                  "cost": "READ_CACHED_TRIE_NODE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "27360000000"
+                },
+                {
+                  "cost": "READ_MEMORY_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "44367674400"
+                },
+                {
+                  "cost": "READ_MEMORY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "2212375806"
+                },
+                {
+                  "cost": "READ_REGISTER_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "20137321488"
+                },
+                {
+                  "cost": "READ_REGISTER_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "82200708"
+                },
+                {
+                  "cost": "STORAGE_READ_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "281784228745"
+                },
+                {
+                  "cost": "STORAGE_READ_KEY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "1950009579"
+                },
+                {
+                  "cost": "STORAGE_READ_VALUE_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "2985054128"
+                },
+                {
+                  "cost": "STORAGE_WRITE_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "128393472000"
+                },
+                {
+                  "cost": "STORAGE_WRITE_EVICTED_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "9153432495"
+                },
+                {
+                  "cost": "STORAGE_WRITE_KEY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "986760138"
+                },
+                {
+                  "cost": "STORAGE_WRITE_VALUE_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "11414822352"
+                },
+                {
+                  "cost": "TOUCHING_TRIE_NODE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "29640000000"
+                },
+                {
+                  "cost": "UTF8_DECODING_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "6223558122"
+                },
+                {
+                  "cost": "UTF8_DECODING_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "15453765387"
+                },
+                {
+                  "cost": "WASM_INSTRUCTION",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "223848870432"
+                },
+                {
+                  "cost": "WRITE_MEMORY_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "25234153749"
+                },
+                {
+                  "cost": "WRITE_MEMORY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "2315206200"
+                },
+                {
+                  "cost": "WRITE_REGISTER_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "25789702374"
+                },
+                {
+                  "cost": "WRITE_REGISTER_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "3345376320"
+                }
+              ],
+              "version": 4
+            },
+            "receipt_ids": [
+              "5STyZJGZSMHrMr1FftjW2YyP7L1ARNiJQfZ1bYfFqcS4",
+              "FKZKr4amDFWNs4YW5i1iNNMtegeqUK75r6AQGT26UXKP",
+              "EcVUNDq9bWgQrVw9JnmdW4LPKAZLBZPoeKncoYD15Rcv"
+            ],
+            "status": {
+              "SuccessValue": ""
+            },
+            "tokens_burnt": "303735848319100000000"
+          },
+          "proof": [
+            {
+              "direction": "Right",
+              "hash": "5FAyZraiRT2CFEk5SjuwnkNTKBbxCo6EofmLK1zDVSBa"
+            }
+          ]
+        },
+        {
+          "block_hash": "EDjhVvNejFWgkEKHs1toMjNx5uJWjJnycoRHjddurCtq",
+          "id": "5STyZJGZSMHrMr1FftjW2YyP7L1ARNiJQfZ1bYfFqcS4",
+          "outcome": {
+            "executor_id": "receiver.aje-veyntro.testnet",
+            "gas_burnt": 1390281040414,
+            "logs": [
+              "EVENT_JSON:{\"standard\":\"veyntro_receiver\",\"version\":\"1.0.0\",\"event\":\"funded\",\"data\":[{\"dao_account_id\":\"veyntro.sputnikv2.testnet\",\"amount\":\"10000000000000000000000\",\"total_received\":\"10000000000000000000000\",\"funding_count\":\"1\"}]}"
+            ],
+            "metadata": {
+              "contracts": [
+                {
+                  "local": "BAeg5fB4ECXTgjeZHnqJzzGPgt9Ayq6N9Ah4WdA63V63"
+                }
+              ],
+              "gas_profile": [
+                {
+                  "cost": "BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "2382912999"
+                },
+                {
+                  "cost": "CONTRACT_LOADING_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "35445963"
+                },
+                {
+                  "cost": "CONTRACT_LOADING_BYTES",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "141104006415"
+                },
+                {
+                  "cost": "LOG_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "3543313050"
+                },
+                {
+                  "cost": "LOG_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "3048920721"
+                },
+                {
+                  "cost": "READ_CACHED_TRIE_NODE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "2280000000"
+                },
+                {
+                  "cost": "READ_MEMORY_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "10439452800"
+                },
+                {
+                  "cost": "READ_MEMORY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "1117591902"
+                },
+                {
+                  "cost": "READ_REGISTER_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "5034330372"
+                },
+                {
+                  "cost": "READ_REGISTER_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "7687836"
+                },
+                {
+                  "cost": "STORAGE_READ_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "56356845749"
+                },
+                {
+                  "cost": "STORAGE_READ_KEY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "154762665"
+                },
+                {
+                  "cost": "STORAGE_READ_VALUE_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "297383212"
+                },
+                {
+                  "cost": "STORAGE_WRITE_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "64196736000"
+                },
+                {
+                  "cost": "STORAGE_WRITE_EVICTED_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "1702217271"
+                },
+                {
+                  "cost": "STORAGE_WRITE_KEY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "352414335"
+                },
+                {
+                  "cost": "STORAGE_WRITE_VALUE_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "1643982567"
+                },
+                {
+                  "cost": "TOUCHING_TRIE_NODE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "47880000000"
+                },
+                {
+                  "cost": "UTF8_DECODING_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "3111779061"
+                },
+                {
+                  "cost": "UTF8_DECODING_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "67355090649"
+                },
+                {
+                  "cost": "WASM_INSTRUCTION",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "72381136344"
+                },
+                {
+                  "cost": "WRITE_MEMORY_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "8411384583"
+                },
+                {
+                  "cost": "WRITE_MEMORY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "256034568"
+                },
+                {
+                  "cost": "WRITE_REGISTER_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "8596567458"
+                },
+                {
+                  "cost": "WRITE_REGISTER_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "498004884"
+                }
+              ],
+              "version": 4
+            },
+            "receipt_ids": [
+              "6KuebAJWka5y6vM7VunCyt6YU6GVFuYKAxwaftMZSQrk"
+            ],
+            "status": {
+              "SuccessValue": ""
+            },
+            "tokens_burnt": "139028104041400000000"
+          },
+          "proof": [
+            {
+              "direction": "Left",
+              "hash": "74UGYqk3oiqLCnyKrHaS11RahfBvbRS9B7KgdfvEwr6e"
+            },
+            {
+              "direction": "Left",
+              "hash": "FpWDZiJWUKN4SAeasQPge9vtCHoYqswqmW43cijRaAJG"
+            },
+            {
+              "direction": "Right",
+              "hash": "GHoV7FaDmY2SqGa45fQBrFv3p1PLRStrHA61kku71ULK"
+            }
+          ]
+        },
+        {
+          "block_hash": "A4eNZqPM7xXT3HJ9yG3nxXsqcE5cbbhZJR1C7G6tpBuN",
+          "id": "6KuebAJWka5y6vM7VunCyt6YU6GVFuYKAxwaftMZSQrk",
+          "outcome": {
+            "executor_id": "aje-veyntro.testnet",
+            "gas_burnt": 223182562500,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                null
+              ],
+              "gas_profile": [],
+              "version": 4
+            },
+            "receipt_ids": [],
+            "status": {
+              "SuccessValue": ""
+            },
+            "tokens_burnt": "0"
+          },
+          "proof": []
+        },
+        {
+          "block_hash": "A4eNZqPM7xXT3HJ9yG3nxXsqcE5cbbhZJR1C7G6tpBuN",
+          "id": "FKZKr4amDFWNs4YW5i1iNNMtegeqUK75r6AQGT26UXKP",
+          "outcome": {
+            "executor_id": "veyntro.sputnikv2.testnet",
+            "gas_burnt": 2390630806356,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                {
+                  "local": "AA4nA45vauiac3jdVwJTzSdUP3oj2r1fDaPAb2mHdgcH"
+                }
+              ],
+              "gas_profile": [
+                {
+                  "cost": "NEW_ACTION_RECEIPT",
+                  "cost_category": "ACTION_COST",
+                  "gas_used": "108059500000"
+                },
+                {
+                  "cost": "TRANSFER",
+                  "cost_category": "ACTION_COST",
+                  "gas_used": "115123062500"
+                },
+                {
+                  "cost": "BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "8207811441"
+                },
+                {
+                  "cost": "CONTRACT_LOADING_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "35445963"
+                },
+                {
+                  "cost": "CONTRACT_LOADING_BYTES",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "587834778865"
+                },
+                {
+                  "cost": "PROMISE_RETURN",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "560152386"
+                },
+                {
+                  "cost": "READ_CACHED_TRIE_NODE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "27360000000"
+                },
+                {
+                  "cost": "READ_MEMORY_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "26098632000"
+                },
+                {
+                  "cost": "READ_MEMORY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "1657381188"
+                },
+                {
+                  "cost": "READ_REGISTER_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "20137321488"
+                },
+                {
+                  "cost": "READ_REGISTER_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "94718082"
+                },
+                {
+                  "cost": "STORAGE_READ_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "169070537247"
+                },
+                {
+                  "cost": "STORAGE_READ_KEY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "464287995"
+                },
+                {
+                  "cost": "STORAGE_READ_VALUE_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "3450767460"
+                },
+                {
+                  "cost": "STORAGE_WRITE_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "128393472000"
+                },
+                {
+                  "cost": "STORAGE_WRITE_EVICTED_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "11819168976"
+                },
+                {
+                  "cost": "STORAGE_WRITE_KEY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "986760138"
+                },
+                {
+                  "cost": "STORAGE_WRITE_VALUE_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "11414822352"
+                },
+                {
+                  "cost": "TOUCHING_TRIE_NODE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "29640000000"
+                },
+                {
+                  "cost": "UTF8_DECODING_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "3111779061"
+                },
+                {
+                  "cost": "UTF8_DECODING_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "5540029101"
+                },
+                {
+                  "cost": "WASM_INSTRUCTION",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "185816151576"
+                },
+                {
+                  "cost": "WRITE_MEMORY_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "25234153749"
+                },
+                {
+                  "cost": "WRITE_MEMORY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "2661125244"
+                },
+                {
+                  "cost": "WRITE_REGISTER_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "25789702374"
+                },
+                {
+                  "cost": "WRITE_REGISTER_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "3927015612"
+                }
+              ],
+              "version": 4
+            },
+            "receipt_ids": [
+              "ALznJZp12M8qcGizf5MbfWcLMfVKYqFg3JrDKcre9NSo",
+              "97ytg81qmyHagzQR2amHgRRgZU2jTte4bkHB8qQnhpfh"
+            ],
+            "status": {
+              "SuccessReceiptId": "ALznJZp12M8qcGizf5MbfWcLMfVKYqFg3JrDKcre9NSo"
+            },
+            "tokens_burnt": "239063080635600000000"
+          },
+          "proof": []
+        },
+        {
+          "block_hash": "4heiHzexseb5YYrRL87AcF3KkU9rnuyzboVAUkfnoBZ9",
+          "id": "ALznJZp12M8qcGizf5MbfWcLMfVKYqFg3JrDKcre9NSo",
+          "outcome": {
+            "executor_id": "aje-veyntro.testnet",
+            "gas_burnt": 223182562500,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                null
+              ],
+              "gas_profile": [],
+              "version": 4
+            },
+            "receipt_ids": [
+              "Cw7ZoMaUQnpSMkDAP1WC1HTkspjNTzPMtQjJMq4aH8HA"
+            ],
+            "status": {
+              "SuccessValue": ""
+            },
+            "tokens_burnt": "22318256250000000000"
+          },
+          "proof": [
+            {
+              "direction": "Right",
+              "hash": "HZRo2UWTCk94xuLCMLLmKxTVFq68J45zoWrw4LaieZUK"
+            }
+          ]
+        },
+        {
+          "block_hash": "8vLDaZHVchtLb5h1RyWvux5bo9G2HcYfCzyzNJnWzTY9",
+          "id": "Cw7ZoMaUQnpSMkDAP1WC1HTkspjNTzPMtQjJMq4aH8HA",
+          "outcome": {
+            "executor_id": "aje-veyntro.testnet",
+            "gas_burnt": 223182562500,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                null
+              ],
+              "gas_profile": [],
+              "version": 4
+            },
+            "receipt_ids": [],
+            "status": {
+              "SuccessValue": ""
+            },
+            "tokens_burnt": "0"
+          },
+          "proof": []
+        },
+        {
+          "block_hash": "4heiHzexseb5YYrRL87AcF3KkU9rnuyzboVAUkfnoBZ9",
+          "id": "97ytg81qmyHagzQR2amHgRRgZU2jTte4bkHB8qQnhpfh",
+          "outcome": {
+            "executor_id": "aje-veyntro.testnet",
+            "gas_burnt": 223182562500,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                null
+              ],
+              "gas_profile": [],
+              "version": 4
+            },
+            "receipt_ids": [],
+            "status": {
+              "SuccessValue": ""
+            },
+            "tokens_burnt": "0"
+          },
+          "proof": [
+            {
+              "direction": "Left",
+              "hash": "G4Bdgm1xdeguv4jybp769g6AVVD2i2qS4ppWN9CCUCAU"
+            }
+          ]
+        },
+        {
+          "block_hash": "EDjhVvNejFWgkEKHs1toMjNx5uJWjJnycoRHjddurCtq",
+          "id": "EcVUNDq9bWgQrVw9JnmdW4LPKAZLBZPoeKncoYD15Rcv",
+          "outcome": {
+            "executor_id": "aje-veyntro.testnet",
+            "gas_burnt": 223182562500,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                null
+              ],
+              "gas_profile": [],
+              "version": 4
+            },
+            "receipt_ids": [],
+            "status": {
+              "SuccessValue": ""
+            },
+            "tokens_burnt": "0"
+          },
+          "proof": []
+        }
+      ],
+      "status": {
+        "SuccessValue": ""
+      },
+      "transaction": {
+        "actions": [
+          {
+            "FunctionCall": {
+              "args": "eyJhY3Rpb24iOiJWb3RlQXBwcm92ZSIsImlkIjowLCJtZW1vIjpudWxsfQ==",
+              "deposit": "0",
+              "gas": 150000000000000,
+              "method_name": "act_proposal"
+            }
+          }
+        ],
+        "hash": "4nwqawJPDf5jnurzTPsVRjMSigjL1LajjcadyKrQ4arU",
+        "nonce": 275945842000004,
+        "priority_fee": 0,
+        "public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz",
+        "receiver_id": "veyntro.sputnikv2.testnet",
+        "signature": "ed25519:4PMUKw9pTc2UQpyPoxzc2ZBhsMt8QRNWxJcGiPxRwkaxkjYKktE6icxtzBdZNRBL4pHkZAs9dUN39bjVFiWaAyKy",
+        "signer_id": "aje-veyntro.testnet"
+      },
+      "transaction_outcome": {
+        "block_hash": "59cK12WeCkCg5iuwmPUwgpZbxVJ4SBHVfDMv4qAgq3td",
+        "id": "4nwqawJPDf5jnurzTPsVRjMSigjL1LajjcadyKrQ4arU",
+        "outcome": {
+          "executor_id": "aje-veyntro.testnet",
+          "gas_burnt": 310682104325,
+          "logs": [],
+          "metadata": {
+            "gas_profile": null,
+            "version": 1
+          },
+          "receipt_ids": [
+            "8iDmKw31zfGxMLCUAu631G4Vyn8Hesu6n5rZmFdViWSn"
+          ],
+          "status": {
+            "SuccessReceiptId": "8iDmKw31zfGxMLCUAu631G4Vyn8Hesu6n5rZmFdViWSn"
+          },
+          "tokens_burnt": "31068210432500000000"
+        },
+        "proof": []
+      }
+    }
+  },
+  "funding_state": {
+    "ok": true,
+    "result": {
+      "block_hash": "41PRt1aupt3EhfZx1Ggud6KHcAKbdM5RBQLFquJXHsBi",
+      "block_height": 275949947,
+      "logs": [],
+      "result": [
+        123,
+        34,
+        100,
+        97,
+        111,
+        95,
+        97,
+        99,
+        99,
+        111,
+        117,
+        110,
+        116,
+        95,
+        105,
+        100,
+        34,
+        58,
+        34,
+        118,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        46,
+        115,
+        112,
+        117,
+        116,
+        110,
+        105,
+        107,
+        118,
+        50,
+        46,
+        116,
+        101,
+        115,
+        116,
+        110,
+        101,
+        116,
+        34,
+        44,
+        34,
+        116,
+        111,
+        116,
+        97,
+        108,
+        95,
+        114,
+        101,
+        99,
+        101,
+        105,
+        118,
+        101,
+        100,
+        34,
+        58,
+        34,
+        49,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        34,
+        44,
+        34,
+        102,
+        117,
+        110,
+        100,
+        105,
+        110,
+        103,
+        95,
+        99,
+        111,
+        117,
+        110,
+        116,
+        34,
+        58,
+        34,
+        49,
+        34,
+        125
+      ]
+    },
+    "decoded": {
+      "dao_account_id": "veyntro.sputnikv2.testnet",
+      "total_received": "10000000000000000000000",
+      "funding_count": "1"
+    }
+  },
+  "proposal": {
+    "ok": true,
+    "result": {
+      "block_hash": "41PRt1aupt3EhfZx1Ggud6KHcAKbdM5RBQLFquJXHsBi",
+      "block_height": 275949947,
+      "logs": [],
+      "result": [
+        123,
+        34,
+        105,
+        100,
+        34,
+        58,
+        48,
+        44,
+        34,
+        112,
+        114,
+        111,
+        112,
+        111,
+        115,
+        101,
+        114,
+        34,
+        58,
+        34,
+        97,
+        106,
+        101,
+        45,
+        118,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        46,
+        116,
+        101,
+        115,
+        116,
+        110,
+        101,
+        116,
+        34,
+        44,
+        34,
+        100,
+        101,
+        115,
+        99,
+        114,
+        105,
+        112,
+        116,
+        105,
+        111,
+        110,
+        34,
+        58,
+        34,
+        86,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        32,
+        105,
+        110,
+        116,
+        101,
+        103,
+        114,
+        97,
+        116,
+        105,
+        111,
+        110,
+        58,
+        32,
+        102,
+        117,
+        110,
+        100,
+        32,
+        116,
+        104,
+        101,
+        32,
+        68,
+        65,
+        79,
+        45,
+        111,
+        110,
+        108,
+        121,
+        32,
+        114,
+        101,
+        99,
+        101,
+        105,
+        118,
+        101,
+        114,
+        32,
+        119,
+        105,
+        116,
+        104,
+        32,
+        48,
+        46,
+        48,
+        49,
+        32,
+        116,
+        101,
+        115,
+        116,
+        32,
+        78,
+        69,
+        65,
+        82,
+        34,
+        44,
+        34,
+        107,
+        105,
+        110,
+        100,
+        34,
+        58,
+        123,
+        34,
+        70,
+        117,
+        110,
+        99,
+        116,
+        105,
+        111,
+        110,
+        67,
+        97,
+        108,
+        108,
+        34,
+        58,
+        123,
+        34,
+        114,
+        101,
+        99,
+        101,
+        105,
+        118,
+        101,
+        114,
+        95,
+        105,
+        100,
+        34,
+        58,
+        34,
+        114,
+        101,
+        99,
+        101,
+        105,
+        118,
+        101,
+        114,
+        46,
+        97,
+        106,
+        101,
+        45,
+        118,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        46,
+        116,
+        101,
+        115,
+        116,
+        110,
+        101,
+        116,
+        34,
+        44,
+        34,
+        97,
+        99,
+        116,
+        105,
+        111,
+        110,
+        115,
+        34,
+        58,
+        91,
+        123,
+        34,
+        109,
+        101,
+        116,
+        104,
+        111,
+        100,
+        95,
+        110,
+        97,
+        109,
+        101,
+        34,
+        58,
+        34,
+        102,
+        117,
+        110,
+        100,
+        95,
+        116,
+        114,
+        101,
+        97,
+        115,
+        117,
+        114,
+        121,
+        34,
+        44,
+        34,
+        97,
+        114,
+        103,
+        115,
+        34,
+        58,
+        34,
+        101,
+        51,
+        48,
+        61,
+        34,
+        44,
+        34,
+        100,
+        101,
+        112,
+        111,
+        115,
+        105,
+        116,
+        34,
+        58,
+        34,
+        49,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        34,
+        44,
+        34,
+        103,
+        97,
+        115,
+        34,
+        58,
+        34,
+        51,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        34,
+        125,
+        93,
+        125,
+        125,
+        44,
+        34,
+        115,
+        116,
+        97,
+        116,
+        117,
+        115,
+        34,
+        58,
+        34,
+        65,
+        112,
+        112,
+        114,
+        111,
+        118,
+        101,
+        100,
+        34,
+        44,
+        34,
+        118,
+        111,
+        116,
+        101,
+        95,
+        99,
+        111,
+        117,
+        110,
+        116,
+        115,
+        34,
+        58,
+        123,
+        34,
+        99,
+        111,
+        117,
+        110,
+        99,
+        105,
+        108,
+        34,
+        58,
+        91,
+        49,
+        44,
+        48,
+        44,
+        48,
+        93,
+        125,
+        44,
+        34,
+        118,
+        111,
+        116,
+        101,
+        115,
+        34,
+        58,
+        123,
+        34,
+        97,
+        106,
+        101,
+        45,
+        118,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        46,
+        116,
+        101,
+        115,
+        116,
+        110,
+        101,
+        116,
+        34,
+        58,
+        34,
+        65,
+        112,
+        112,
+        114,
+        111,
+        118,
+        101,
+        34,
+        125,
+        44,
+        34,
+        115,
+        117,
+        98,
+        109,
+        105,
+        115,
+        115,
+        105,
+        111,
+        110,
+        95,
+        116,
+        105,
+        109,
+        101,
+        34,
+        58,
+        34,
+        49,
+        55,
+        57,
+        51,
+        54,
+        53,
+        49,
+        55,
+        55,
+        50,
+        53,
+        50,
+        57,
+        52,
+        53,
+        49,
+        55,
+        56,
+        51,
+        34,
+        125
+      ]
+    },
+    "decoded": {
+      "id": 0,
+      "proposer": "aje-veyntro.testnet",
+      "description": "Veyntro integration: fund the DAO-only receiver with 0.01 test NEAR",
+      "kind": {
+        "FunctionCall": {
+          "receiver_id": "receiver.aje-veyntro.testnet",
+          "actions": [
+            {
+              "method_name": "fund_treasury",
+              "args": "e30=",
+              "deposit": "10000000000000000000000",
+              "gas": "30000000000000"
+            }
+          ]
+        }
+      },
+      "status": "Approved",
+      "vote_counts": {
+        "council": [
+          1,
+          0,
+          0
+        ]
+      },
+      "votes": {
+        "aje-veyntro.testnet": "Approve"
+      },
+      "submission_time": "1793651772529451783"
+    }
+  },
+  "receiver_account": {
+    "ok": true,
+    "result": {
+      "amount": "1508882723020688000000000",
+      "block_hash": "NsYEFHgiYS4iQUPu1MoXTEpnFRj6EDyroHPGEshEzxC",
+      "block_height": 275949946,
+      "code_hash": "BAeg5fB4ECXTgjeZHnqJzzGPgt9Ayq6N9Ah4WdA63V63",
+      "locked": "0",
+      "storage_paid_at": 0,
+      "storage_usage": 129817
+    }
+  }
+}
