@@ -1,0 +1,1943 @@
+{
+  "checked_at_utc": "2026-11-02T21:26:47.488081+00:00",
+  "network": "testnet",
+  "transaction": {
+    "final_execution_status": "FINAL",
+    "receipts": [
+      {
+        "predecessor_id": "aje-veyntro.testnet",
+        "priority": 0,
+        "receipt": {
+          "Action": {
+            "actions": [
+              {
+                "FunctionCall": {
+                  "args": "eyJhY3Rpb24iOiJWb3RlQXBwcm92ZSIsImlkIjoxLCJtZW1vIjpudWxsfQ==",
+                  "deposit": "0",
+                  "gas": 150000000000000,
+                  "method_name": "act_proposal"
+                }
+              }
+            ],
+            "gas_price": "1000000000",
+            "input_data_ids": [],
+            "is_promise_yield": false,
+            "output_data_receivers": [],
+            "signer_id": "aje-veyntro.testnet",
+            "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+          }
+        },
+        "receipt_id": "CbTXpwk4cLJ8Z1ngRmpvAjqCEYRFfgPf7QPbLbSe7K4p",
+        "receiver_id": "veyntro.sputnikv2.testnet"
+      },
+      {
+        "predecessor_id": "veyntro.sputnikv2.testnet",
+        "priority": 0,
+        "receipt": {
+          "Action": {
+            "actions": [
+              {
+                "FunctionCall": {
+                  "args": "e30=",
+                  "deposit": "4000000000000000000000000",
+                  "gas": 30000000000000,
+                  "method_name": "fund_treasury"
+                }
+              }
+            ],
+            "gas_price": "1000000000",
+            "input_data_ids": [],
+            "is_promise_yield": false,
+            "output_data_receivers": [
+              {
+                "data_id": "BJKz6ndRtpvg8ZLUCMXmaYUQoKV82JUetvVrUQdTfmw8",
+                "receiver_id": "veyntro.sputnikv2.testnet"
+              }
+            ],
+            "signer_id": "aje-veyntro.testnet",
+            "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+          }
+        },
+        "receipt_id": "AusLpvPqLZZQiYuWfe4o2nxmGtFokKfW9H19JrKg3aCN",
+        "receiver_id": "firewall-aje-veyntro.testnet"
+      },
+      {
+        "predecessor_id": "system",
+        "priority": 0,
+        "receipt": {
+          "Action": {
+            "actions": [
+              {
+                "Transfer": {
+                  "deposit": "30740569666140200000000"
+                }
+              }
+            ],
+            "gas_price": "0",
+            "input_data_ids": [],
+            "is_promise_yield": false,
+            "output_data_receivers": [],
+            "signer_id": "aje-veyntro.testnet",
+            "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+          }
+        },
+        "receipt_id": "6zdTfvmomvJYXGa8xnSDdeQN9vbkBrhs4mcsr9L8foEy",
+        "receiver_id": "aje-veyntro.testnet"
+      },
+      {
+        "predecessor_id": "veyntro.sputnikv2.testnet",
+        "priority": 0,
+        "receipt": {
+          "Action": {
+            "actions": [
+              {
+                "FunctionCall": {
+                  "args": "eyJwcm9wb3NhbF9pZCI6MX0=",
+                  "deposit": "0",
+                  "gas": 10000000000000,
+                  "method_name": "on_proposal_callback"
+                }
+              }
+            ],
+            "gas_price": "1000000000",
+            "input_data_ids": [
+              "BJKz6ndRtpvg8ZLUCMXmaYUQoKV82JUetvVrUQdTfmw8"
+            ],
+            "is_promise_yield": false,
+            "output_data_receivers": [],
+            "signer_id": "aje-veyntro.testnet",
+            "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+          }
+        },
+        "receipt_id": "7idprdghm6bZTGwyB4eerPZ4FdK4nAwbWrfNyLnsEVaN",
+        "receiver_id": "veyntro.sputnikv2.testnet"
+      },
+      {
+        "predecessor_id": "veyntro.sputnikv2.testnet",
+        "priority": 0,
+        "receipt": {
+          "Action": {
+            "actions": [
+              {
+                "Transfer": {
+                  "deposit": "1000000000000000000000000"
+                }
+              }
+            ],
+            "gas_price": "1000000000",
+            "input_data_ids": [],
+            "is_promise_yield": false,
+            "output_data_receivers": [],
+            "signer_id": "aje-veyntro.testnet",
+            "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+          }
+        },
+        "receipt_id": "BwDhfqx2bGoHPE3VF7Mc33KCQu2XdXeVYWpeuSKi1hYV",
+        "receiver_id": "aje-veyntro.testnet"
+      },
+      {
+        "predecessor_id": "system",
+        "priority": 0,
+        "receipt": {
+          "Action": {
+            "actions": [
+              {
+                "Transfer": {
+                  "deposit": "200864306250000000000"
+                }
+              }
+            ],
+            "gas_price": "0",
+            "input_data_ids": [],
+            "is_promise_yield": false,
+            "output_data_receivers": [],
+            "signer_id": "aje-veyntro.testnet",
+            "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+          }
+        },
+        "receipt_id": "6osVTj9V6i5TMUmWogpwWsbaDDENXxVXA4L5py3kt3Ep",
+        "receiver_id": "aje-veyntro.testnet"
+      },
+      {
+        "predecessor_id": "system",
+        "priority": 0,
+        "receipt": {
+          "Action": {
+            "actions": [
+              {
+                "Transfer": {
+                  "deposit": "10425622242941800000000"
+                }
+              }
+            ],
+            "gas_price": "0",
+            "input_data_ids": [],
+            "is_promise_yield": false,
+            "output_data_receivers": [],
+            "signer_id": "aje-veyntro.testnet",
+            "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+          }
+        },
+        "receipt_id": "Diyx8YqvgBVomiSESYmKzpwHanfXMa4EoAPysAWqzwvY",
+        "receiver_id": "aje-veyntro.testnet"
+      },
+      {
+        "predecessor_id": "system",
+        "priority": 0,
+        "receipt": {
+          "Action": {
+            "actions": [
+              {
+                "Transfer": {
+                  "deposit": "108807927965686300000000"
+                }
+              }
+            ],
+            "gas_price": "0",
+            "input_data_ids": [],
+            "is_promise_yield": false,
+            "output_data_receivers": [],
+            "signer_id": "aje-veyntro.testnet",
+            "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+          }
+        },
+        "receipt_id": "BdDmkFUUb35Dv8ZinyDexu6voTejejFzZLN7s1Fqbtia",
+        "receiver_id": "aje-veyntro.testnet"
+      }
+    ],
+    "receipts_outcome": [
+      {
+        "block_hash": "D52zqUnLYQcKsaLxeNFyJUSw9yiUphuyLYMAS7eSBqHA",
+        "id": "CbTXpwk4cLJ8Z1ngRmpvAjqCEYRFfgPf7QPbLbSe7K4p",
+        "outcome": {
+          "executor_id": "veyntro.sputnikv2.testnet",
+          "gas_burnt": 3040192421157,
+          "logs": [],
+          "metadata": {
+            "contracts": [
+              {
+                "local": "AA4nA45vauiac3jdVwJTzSdUP3oj2r1fDaPAb2mHdgcH"
+              }
+            ],
+            "gas_profile": [
+              {
+                "cost": "FUNCTION_CALL_BASE",
+                "cost_category": "ACTION_COST",
+                "gas_used": "400000000000"
+              },
+              {
+                "cost": "FUNCTION_CALL_BYTE",
+                "cost_category": "ACTION_COST",
+                "gas_used": "797985283"
+              },
+              {
+                "cost": "NEW_ACTION_RECEIPT",
+                "cost_category": "ACTION_COST",
+                "gas_used": "289092464624"
+              },
+              {
+                "cost": "BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "8737347663"
+              },
+              {
+                "cost": "CONTRACT_LOADING_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "35445963"
+              },
+              {
+                "cost": "CONTRACT_LOADING_BYTES",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "587834778865"
+              },
+              {
+                "cost": "READ_CACHED_TRIE_NODE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "27360000000"
+              },
+              {
+                "cost": "READ_MEMORY_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "44367674400"
+              },
+              {
+                "cost": "READ_MEMORY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "2159157144"
+              },
+              {
+                "cost": "READ_REGISTER_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "20137321488"
+              },
+              {
+                "cost": "READ_REGISTER_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "79440972"
+              },
+              {
+                "cost": "STORAGE_READ_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "281784228745"
+              },
+              {
+                "cost": "STORAGE_READ_KEY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "1950009579"
+              },
+              {
+                "cost": "STORAGE_READ_VALUE_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "2906500072"
+              },
+              {
+                "cost": "STORAGE_WRITE_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "128393472000"
+              },
+              {
+                "cost": "STORAGE_WRITE_EVICTED_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "8703790197"
+              },
+              {
+                "cost": "STORAGE_WRITE_KEY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "986760138"
+              },
+              {
+                "cost": "STORAGE_WRITE_VALUE_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "10980562806"
+              },
+              {
+                "cost": "TOUCHING_TRIE_NODE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "34200000000"
+              },
+              {
+                "cost": "UTF8_DECODING_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "6223558122"
+              },
+              {
+                "cost": "UTF8_DECODING_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "15453765387"
+              },
+              {
+                "cost": "WASM_INSTRUCTION",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "223323952104"
+              },
+              {
+                "cost": "WRITE_MEMORY_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "25234153749"
+              },
+              {
+                "cost": "WRITE_MEMORY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "2238940584"
+              },
+              {
+                "cost": "WRITE_REGISTER_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "25789702374"
+              },
+              {
+                "cost": "WRITE_REGISTER_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "3238932528"
+              }
+            ],
+            "version": 4
+          },
+          "receipt_ids": [
+            "AusLpvPqLZZQiYuWfe4o2nxmGtFokKfW9H19JrKg3aCN",
+            "7idprdghm6bZTGwyB4eerPZ4FdK4nAwbWrfNyLnsEVaN",
+            "BdDmkFUUb35Dv8ZinyDexu6voTejejFzZLN7s1Fqbtia"
+          ],
+          "status": {
+            "SuccessValue": ""
+          },
+          "tokens_burnt": "304019242115700000000"
+        },
+        "proof": [
+          {
+            "direction": "Right",
+            "hash": "FQeRGniWVY2Ks1BNh59fDxr2hQwkHAixKoBXwHcNYTrz"
+          },
+          {
+            "direction": "Right",
+            "hash": "C9guShRzYou8M3QLttYCJvEw6HoGjxJmHEFdHP2Wwnr1"
+          }
+        ]
+      },
+      {
+        "block_hash": "7dDBMe3sKRypoBKS6nKg6bfdjMUoEMEKEe1v3Wy26kHu",
+        "id": "AusLpvPqLZZQiYuWfe4o2nxmGtFokKfW9H19JrKg3aCN",
+        "outcome": {
+          "executor_id": "firewall-aje-veyntro.testnet",
+          "gas_burnt": 1475233728698,
+          "logs": [
+            "EVENT_JSON:{\"standard\":\"veyntro\",\"version\":\"1.0.0\",\"event\":\"funded\",\"data\":[{\"amount\":\"4000000000000000000000000\",\"confirmed_funds\":\"4000000000000000000000000\"}]}"
+          ],
+          "metadata": {
+            "contracts": [
+              {
+                "local": "FX1GAZo5W3HHSP3ZChPHRAE59zzujnW9SYJ4nAi75uMw"
+              }
+            ],
+            "gas_profile": [
+              {
+                "cost": "BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "2382912999"
+              },
+              {
+                "cost": "CONTRACT_LOADING_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "35445963"
+              },
+              {
+                "cost": "CONTRACT_LOADING_BYTES",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "239616578330"
+              },
+              {
+                "cost": "LOG_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "3543313050"
+              },
+              {
+                "cost": "LOG_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "2138204142"
+              },
+              {
+                "cost": "READ_CACHED_TRIE_NODE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "2280000000"
+              },
+              {
+                "cost": "READ_MEMORY_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "10439452800"
+              },
+              {
+                "cost": "READ_MEMORY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "1600361193"
+              },
+              {
+                "cost": "READ_REGISTER_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "5034330372"
+              },
+              {
+                "cost": "READ_REGISTER_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "27005988"
+              },
+              {
+                "cost": "STORAGE_READ_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "56356845749"
+              },
+              {
+                "cost": "STORAGE_READ_KEY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "154762665"
+              },
+              {
+                "cost": "STORAGE_READ_VALUE_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "1397139996"
+              },
+              {
+                "cost": "STORAGE_WRITE_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "64196736000"
+              },
+              {
+                "cost": "STORAGE_WRITE_EVICTED_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "7997209443"
+              },
+              {
+                "cost": "STORAGE_WRITE_KEY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "352414335"
+              },
+              {
+                "cost": "STORAGE_WRITE_VALUE_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "7723616211"
+              },
+              {
+                "cost": "TOUCHING_TRIE_NODE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "29640000000"
+              },
+              {
+                "cost": "UTF8_DECODING_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "3111779061"
+              },
+              {
+                "cost": "UTF8_DECODING_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "47236037598"
+              },
+              {
+                "cost": "WASM_INSTRUCTION",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "82090479900"
+              },
+              {
+                "cost": "WRITE_MEMORY_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "8411384583"
+              },
+              {
+                "cost": "WRITE_MEMORY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "789893880"
+              },
+              {
+                "cost": "WRITE_REGISTER_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "8596567458"
+              },
+              {
+                "cost": "WRITE_REGISTER_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "1988217972"
+              }
+            ],
+            "version": 4
+          },
+          "receipt_ids": [
+            "6zdTfvmomvJYXGa8xnSDdeQN9vbkBrhs4mcsr9L8foEy"
+          ],
+          "status": {
+            "SuccessValue": ""
+          },
+          "tokens_burnt": "147523372869800000000"
+        },
+        "proof": [
+          {
+            "direction": "Right",
+            "hash": "3WTCgj3Es2GZdYBZLG7HboQL37THFQu64gBmxYQMiBsR"
+          }
+        ]
+      },
+      {
+        "block_hash": "AiyNwjqUvmcG4RHD4ACUWb1x8vSyqJRmGpQsRYAu8ocB",
+        "id": "6zdTfvmomvJYXGa8xnSDdeQN9vbkBrhs4mcsr9L8foEy",
+        "outcome": {
+          "executor_id": "aje-veyntro.testnet",
+          "gas_burnt": 223182562500,
+          "logs": [],
+          "metadata": {
+            "contracts": [
+              null
+            ],
+            "gas_profile": [],
+            "version": 4
+          },
+          "receipt_ids": [],
+          "status": {
+            "SuccessValue": ""
+          },
+          "tokens_burnt": "0"
+        },
+        "proof": []
+      },
+      {
+        "block_hash": "AiyNwjqUvmcG4RHD4ACUWb1x8vSyqJRmGpQsRYAu8ocB",
+        "id": "7idprdghm6bZTGwyB4eerPZ4FdK4nAwbWrfNyLnsEVaN",
+        "outcome": {
+          "executor_id": "veyntro.sputnikv2.testnet",
+          "gas_burnt": 2393374241162,
+          "logs": [],
+          "metadata": {
+            "contracts": [
+              {
+                "local": "AA4nA45vauiac3jdVwJTzSdUP3oj2r1fDaPAb2mHdgcH"
+              }
+            ],
+            "gas_profile": [
+              {
+                "cost": "NEW_ACTION_RECEIPT",
+                "cost_category": "ACTION_COST",
+                "gas_used": "108059500000"
+              },
+              {
+                "cost": "TRANSFER",
+                "cost_category": "ACTION_COST",
+                "gas_used": "115123062500"
+              },
+              {
+                "cost": "BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "8207811441"
+              },
+              {
+                "cost": "CONTRACT_LOADING_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "35445963"
+              },
+              {
+                "cost": "CONTRACT_LOADING_BYTES",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "587834778865"
+              },
+              {
+                "cost": "PROMISE_RETURN",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "560152386"
+              },
+              {
+                "cost": "READ_CACHED_TRIE_NODE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "27360000000"
+              },
+              {
+                "cost": "READ_MEMORY_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "26098632000"
+              },
+              {
+                "cost": "READ_MEMORY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "1604162526"
+              },
+              {
+                "cost": "READ_REGISTER_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "20137321488"
+              },
+              {
+                "cost": "READ_REGISTER_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "91958346"
+              },
+              {
+                "cost": "STORAGE_READ_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "169070537247"
+              },
+              {
+                "cost": "STORAGE_READ_KEY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "464287995"
+              },
+              {
+                "cost": "STORAGE_READ_VALUE_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "3372213404"
+              },
+              {
+                "cost": "STORAGE_WRITE_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "128393472000"
+              },
+              {
+                "cost": "STORAGE_WRITE_EVICTED_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "11369526678"
+              },
+              {
+                "cost": "STORAGE_WRITE_KEY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "986760138"
+              },
+              {
+                "cost": "STORAGE_WRITE_VALUE_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "10980562806"
+              },
+              {
+                "cost": "TOUCHING_TRIE_NODE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "34200000000"
+              },
+              {
+                "cost": "UTF8_DECODING_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "3111779061"
+              },
+              {
+                "cost": "UTF8_DECODING_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "5540029101"
+              },
+              {
+                "cost": "WASM_INSTRUCTION",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "185200730088"
+              },
+              {
+                "cost": "WRITE_MEMORY_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "25234153749"
+              },
+              {
+                "cost": "WRITE_MEMORY_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "2584859628"
+              },
+              {
+                "cost": "WRITE_REGISTER_BASE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "25789702374"
+              },
+              {
+                "cost": "WRITE_REGISTER_BYTE",
+                "cost_category": "WASM_HOST_COST",
+                "gas_used": "3820571820"
+              }
+            ],
+            "version": 4
+          },
+          "receipt_ids": [
+            "BwDhfqx2bGoHPE3VF7Mc33KCQu2XdXeVYWpeuSKi1hYV",
+            "Diyx8YqvgBVomiSESYmKzpwHanfXMa4EoAPysAWqzwvY"
+          ],
+          "status": {
+            "SuccessReceiptId": "BwDhfqx2bGoHPE3VF7Mc33KCQu2XdXeVYWpeuSKi1hYV"
+          },
+          "tokens_burnt": "239337424116200000000"
+        },
+        "proof": [
+          {
+            "direction": "Right",
+            "hash": "CZtjGzYaL3ZDJ3PfQayQRTdB3sNtkb5dZFDAg3HFZpdj"
+          }
+        ]
+      },
+      {
+        "block_hash": "85EpBUH5k7BpQrCiQXWabA8LfW3Jc9MvshhVkwswxbqC",
+        "id": "BwDhfqx2bGoHPE3VF7Mc33KCQu2XdXeVYWpeuSKi1hYV",
+        "outcome": {
+          "executor_id": "aje-veyntro.testnet",
+          "gas_burnt": 223182562500,
+          "logs": [],
+          "metadata": {
+            "contracts": [
+              null
+            ],
+            "gas_profile": [],
+            "version": 4
+          },
+          "receipt_ids": [
+            "6osVTj9V6i5TMUmWogpwWsbaDDENXxVXA4L5py3kt3Ep"
+          ],
+          "status": {
+            "SuccessValue": ""
+          },
+          "tokens_burnt": "22318256250000000000"
+        },
+        "proof": [
+          {
+            "direction": "Right",
+            "hash": "9ERV976Hq7ycLZbJph72v8PfCZUFq3y8Cp2e9eHqCXCi"
+          }
+        ]
+      },
+      {
+        "block_hash": "6JffiWtNrZpCy1jWtPfYFRrF8Xi56iPu5A63JgVmEj9j",
+        "id": "6osVTj9V6i5TMUmWogpwWsbaDDENXxVXA4L5py3kt3Ep",
+        "outcome": {
+          "executor_id": "aje-veyntro.testnet",
+          "gas_burnt": 223182562500,
+          "logs": [],
+          "metadata": {
+            "contracts": [
+              null
+            ],
+            "gas_profile": [],
+            "version": 4
+          },
+          "receipt_ids": [],
+          "status": {
+            "SuccessValue": ""
+          },
+          "tokens_burnt": "0"
+        },
+        "proof": []
+      },
+      {
+        "block_hash": "85EpBUH5k7BpQrCiQXWabA8LfW3Jc9MvshhVkwswxbqC",
+        "id": "Diyx8YqvgBVomiSESYmKzpwHanfXMa4EoAPysAWqzwvY",
+        "outcome": {
+          "executor_id": "aje-veyntro.testnet",
+          "gas_burnt": 223182562500,
+          "logs": [],
+          "metadata": {
+            "contracts": [
+              null
+            ],
+            "gas_profile": [],
+            "version": 4
+          },
+          "receipt_ids": [],
+          "status": {
+            "SuccessValue": ""
+          },
+          "tokens_burnt": "0"
+        },
+        "proof": [
+          {
+            "direction": "Left",
+            "hash": "4V5z5PJkzXckBp78ZJonssCerxT9NuVxbNPtxrBqijx2"
+          }
+        ]
+      },
+      {
+        "block_hash": "7dDBMe3sKRypoBKS6nKg6bfdjMUoEMEKEe1v3Wy26kHu",
+        "id": "BdDmkFUUb35Dv8ZinyDexu6voTejejFzZLN7s1Fqbtia",
+        "outcome": {
+          "executor_id": "aje-veyntro.testnet",
+          "gas_burnt": 223182562500,
+          "logs": [],
+          "metadata": {
+            "contracts": [
+              null
+            ],
+            "gas_profile": [],
+            "version": 4
+          },
+          "receipt_ids": [],
+          "status": {
+            "SuccessValue": ""
+          },
+          "tokens_burnt": "0"
+        },
+        "proof": []
+      }
+    ],
+    "status": {
+      "SuccessValue": ""
+    },
+    "transaction": {
+      "actions": [
+        {
+          "FunctionCall": {
+            "args": "eyJhY3Rpb24iOiJWb3RlQXBwcm92ZSIsImlkIjoxLCJtZW1vIjpudWxsfQ==",
+            "deposit": "0",
+            "gas": 150000000000000,
+            "method_name": "act_proposal"
+          }
+        }
+      ],
+      "hash": "BwjKrwuyGq1k5kYjZHQTBaof8DbGeT3UyczuWRAWPE5y",
+      "nonce": 275945842000007,
+      "priority_fee": 0,
+      "public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz",
+      "receiver_id": "veyntro.sputnikv2.testnet",
+      "signature": "ed25519:22Ud9EgiosjKAYk7FuzcJUd8BBh6CP1dBEjDrzrUUbhZUhR5iYxtf9MrCiBQZU6iXX8D7KymE4ShJEe7sy8ALjF9",
+      "signer_id": "aje-veyntro.testnet"
+    },
+    "transaction_outcome": {
+      "block_hash": "FRNMDfFyjfSAxWTMdvHQikeTc9vCsFu3aBxGaYf37P9U",
+      "id": "BwjKrwuyGq1k5kYjZHQTBaof8DbGeT3UyczuWRAWPE5y",
+      "outcome": {
+        "executor_id": "aje-veyntro.testnet",
+        "gas_burnt": 310682104325,
+        "logs": [],
+        "metadata": {
+          "gas_profile": null,
+          "version": 1
+        },
+        "receipt_ids": [
+          "CbTXpwk4cLJ8Z1ngRmpvAjqCEYRFfgPf7QPbLbSe7K4p"
+        ],
+        "status": {
+          "SuccessReceiptId": "CbTXpwk4cLJ8Z1ngRmpvAjqCEYRFfgPf7QPbLbSe7K4p"
+        },
+        "tokens_burnt": "31068210432500000000"
+      },
+      "proof": []
+    }
+  },
+  "proposal": {
+    "rpc": {
+      "block_hash": "GYz7j9vCUn8xJyz4BPSB6ehGgt59AxvFBUjytBacxBkf",
+      "block_height": 275954992,
+      "logs": [],
+      "result": [
+        123,
+        34,
+        105,
+        100,
+        34,
+        58,
+        49,
+        44,
+        34,
+        112,
+        114,
+        111,
+        112,
+        111,
+        115,
+        101,
+        114,
+        34,
+        58,
+        34,
+        97,
+        106,
+        101,
+        45,
+        118,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        46,
+        116,
+        101,
+        115,
+        116,
+        110,
+        101,
+        116,
+        34,
+        44,
+        34,
+        100,
+        101,
+        115,
+        99,
+        114,
+        105,
+        112,
+        116,
+        105,
+        111,
+        110,
+        34,
+        58,
+        34,
+        70,
+        117,
+        110,
+        100,
+        32,
+        116,
+        104,
+        101,
+        32,
+        86,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        32,
+        67,
+        111,
+        109,
+        109,
+        105,
+        116,
+        109,
+        101,
+        110,
+        116,
+        32,
+        70,
+        105,
+        114,
+        101,
+        119,
+        97,
+        108,
+        108,
+        32,
+        119,
+        105,
+        116,
+        104,
+        32,
+        52,
+        32,
+        116,
+        101,
+        115,
+        116,
+        32,
+        78,
+        69,
+        65,
+        82,
+        34,
+        44,
+        34,
+        107,
+        105,
+        110,
+        100,
+        34,
+        58,
+        123,
+        34,
+        70,
+        117,
+        110,
+        99,
+        116,
+        105,
+        111,
+        110,
+        67,
+        97,
+        108,
+        108,
+        34,
+        58,
+        123,
+        34,
+        114,
+        101,
+        99,
+        101,
+        105,
+        118,
+        101,
+        114,
+        95,
+        105,
+        100,
+        34,
+        58,
+        34,
+        102,
+        105,
+        114,
+        101,
+        119,
+        97,
+        108,
+        108,
+        45,
+        97,
+        106,
+        101,
+        45,
+        118,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        46,
+        116,
+        101,
+        115,
+        116,
+        110,
+        101,
+        116,
+        34,
+        44,
+        34,
+        97,
+        99,
+        116,
+        105,
+        111,
+        110,
+        115,
+        34,
+        58,
+        91,
+        123,
+        34,
+        109,
+        101,
+        116,
+        104,
+        111,
+        100,
+        95,
+        110,
+        97,
+        109,
+        101,
+        34,
+        58,
+        34,
+        102,
+        117,
+        110,
+        100,
+        95,
+        116,
+        114,
+        101,
+        97,
+        115,
+        117,
+        114,
+        121,
+        34,
+        44,
+        34,
+        97,
+        114,
+        103,
+        115,
+        34,
+        58,
+        34,
+        101,
+        51,
+        48,
+        61,
+        34,
+        44,
+        34,
+        100,
+        101,
+        112,
+        111,
+        115,
+        105,
+        116,
+        34,
+        58,
+        34,
+        52,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        34,
+        44,
+        34,
+        103,
+        97,
+        115,
+        34,
+        58,
+        34,
+        51,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        34,
+        125,
+        93,
+        125,
+        125,
+        44,
+        34,
+        115,
+        116,
+        97,
+        116,
+        117,
+        115,
+        34,
+        58,
+        34,
+        65,
+        112,
+        112,
+        114,
+        111,
+        118,
+        101,
+        100,
+        34,
+        44,
+        34,
+        118,
+        111,
+        116,
+        101,
+        95,
+        99,
+        111,
+        117,
+        110,
+        116,
+        115,
+        34,
+        58,
+        123,
+        34,
+        99,
+        111,
+        117,
+        110,
+        99,
+        105,
+        108,
+        34,
+        58,
+        91,
+        49,
+        44,
+        48,
+        44,
+        48,
+        93,
+        125,
+        44,
+        34,
+        118,
+        111,
+        116,
+        101,
+        115,
+        34,
+        58,
+        123,
+        34,
+        97,
+        106,
+        101,
+        45,
+        118,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        46,
+        116,
+        101,
+        115,
+        116,
+        110,
+        101,
+        116,
+        34,
+        58,
+        34,
+        65,
+        112,
+        112,
+        114,
+        111,
+        118,
+        101,
+        34,
+        125,
+        44,
+        34,
+        115,
+        117,
+        98,
+        109,
+        105,
+        115,
+        115,
+        105,
+        111,
+        110,
+        95,
+        116,
+        105,
+        109,
+        101,
+        34,
+        58,
+        34,
+        49,
+        55,
+        57,
+        51,
+        54,
+        53,
+        52,
+        53,
+        50,
+        54,
+        50,
+        50,
+        57,
+        57,
+        54,
+        50,
+        50,
+        54,
+        48,
+        34,
+        125
+      ]
+    },
+    "decoded": {
+      "id": 1,
+      "proposer": "aje-veyntro.testnet",
+      "description": "Fund the Veyntro Commitment Firewall with 4 test NEAR",
+      "kind": {
+        "FunctionCall": {
+          "receiver_id": "firewall-aje-veyntro.testnet",
+          "actions": [
+            {
+              "method_name": "fund_treasury",
+              "args": "e30=",
+              "deposit": "4000000000000000000000000",
+              "gas": "30000000000000"
+            }
+          ]
+        }
+      },
+      "status": "Approved",
+      "vote_counts": {
+        "council": [
+          1,
+          0,
+          0
+        ]
+      },
+      "votes": {
+        "aje-veyntro.testnet": "Approve"
+      },
+      "submission_time": "1793654526229962260"
+    }
+  },
+  "treasury": {
+    "rpc": {
+      "block_hash": "GYz7j9vCUn8xJyz4BPSB6ehGgt59AxvFBUjytBacxBkf",
+      "block_height": 275954992,
+      "logs": [],
+      "result": [
+        123,
+        34,
+        100,
+        97,
+        111,
+        95,
+        97,
+        99,
+        99,
+        111,
+        117,
+        110,
+        116,
+        95,
+        105,
+        100,
+        34,
+        58,
+        34,
+        118,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        46,
+        115,
+        112,
+        117,
+        116,
+        110,
+        105,
+        107,
+        118,
+        50,
+        46,
+        116,
+        101,
+        115,
+        116,
+        110,
+        101,
+        116,
+        34,
+        44,
+        34,
+        118,
+        101,
+        114,
+        105,
+        102,
+        105,
+        101,
+        114,
+        95,
+        97,
+        99,
+        99,
+        111,
+        117,
+        110,
+        116,
+        95,
+        105,
+        100,
+        34,
+        58,
+        34,
+        118,
+        101,
+        114,
+        105,
+        102,
+        105,
+        101,
+        114,
+        45,
+        97,
+        106,
+        101,
+        45,
+        118,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        46,
+        116,
+        101,
+        115,
+        116,
+        110,
+        101,
+        116,
+        34,
+        44,
+        34,
+        118,
+        101,
+        114,
+        105,
+        102,
+        105,
+        101,
+        114,
+        95,
+        101,
+        112,
+        111,
+        99,
+        104,
+        34,
+        58,
+        34,
+        48,
+        34,
+        44,
+        34,
+        99,
+        111,
+        110,
+        102,
+        105,
+        114,
+        109,
+        101,
+        100,
+        95,
+        97,
+        99,
+        99,
+        111,
+        117,
+        110,
+        116,
+        97,
+        98,
+        108,
+        101,
+        95,
+        102,
+        117,
+        110,
+        100,
+        115,
+        34,
+        58,
+        34,
+        52,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        34,
+        44,
+        34,
+        111,
+        112,
+        101,
+        114,
+        97,
+        116,
+        105,
+        110,
+        103,
+        95,
+        114,
+        101,
+        115,
+        101,
+        114,
+        118,
+        101,
+        34,
+        58,
+        34,
+        50,
+        50,
+        54,
+        52,
+        55,
+        52,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        34,
+        44,
+        34,
+        99,
+        111,
+        110,
+        102,
+        105,
+        103,
+        117,
+        114,
+        101,
+        100,
+        95,
+        114,
+        101,
+        115,
+        101,
+        114,
+        118,
+        101,
+        34,
+        58,
+        34,
+        49,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        34,
+        44,
+        34,
+        114,
+        101,
+        115,
+        101,
+        114,
+        118,
+        97,
+        116,
+        105,
+        111,
+        110,
+        95,
+        108,
+        105,
+        97,
+        98,
+        105,
+        108,
+        105,
+        116,
+        105,
+        101,
+        115,
+        34,
+        58,
+        34,
+        48,
+        34,
+        44,
+        34,
+        112,
+        101,
+        110,
+        100,
+        105,
+        110,
+        103,
+        95,
+        112,
+        97,
+        121,
+        111,
+        117,
+        116,
+        115,
+        34,
+        58,
+        34,
+        48,
+        34,
+        44,
+        34,
+        112,
+        101,
+        110,
+        100,
+        105,
+        110,
+        103,
+        95,
+        119,
+        105,
+        116,
+        104,
+        100,
+        114,
+        97,
+        119,
+        97,
+        108,
+        115,
+        34,
+        58,
+        34,
+        48,
+        34,
+        44,
+        34,
+        109,
+        111,
+        110,
+        101,
+        121,
+        95,
+        97,
+        118,
+        97,
+        105,
+        108,
+        97,
+        98,
+        108,
+        101,
+        34,
+        58,
+        34,
+        49,
+        55,
+        51,
+        53,
+        50,
+        54,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        34,
+        44,
+        34,
+        97,
+        99,
+        116,
+        117,
+        97,
+        108,
+        95,
+        98,
+        97,
+        108,
+        97,
+        110,
+        99,
+        101,
+        34,
+        58,
+        34,
+        49,
+        51,
+        57,
+        57,
+        56,
+        50,
+        50,
+        54,
+        48,
+        52,
+        55,
+        54,
+        57,
+        54,
+        50,
+        53,
+        54,
+        50,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        34,
+        44,
+        34,
+        108,
+        101,
+        100,
+        103,
+        101,
+        114,
+        95,
+        115,
+        111,
+        108,
+        118,
+        101,
+        110,
+        116,
+        34,
+        58,
+        116,
+        114,
+        117,
+        101,
+        44,
+        34,
+        112,
+        104,
+        121,
+        115,
+        105,
+        99,
+        97,
+        108,
+        95,
+        98,
+        97,
+        99,
+        107,
+        105,
+        110,
+        103,
+        95,
+        99,
+        104,
+        101,
+        99,
+        107,
+        34,
+        58,
+        116,
+        114,
+        117,
+        101,
+        44,
+        34,
+        110,
+        101,
+        120,
+        116,
+        95,
+        114,
+        101,
+        115,
+        101,
+        114,
+        118,
+        97,
+        116,
+        105,
+        111,
+        110,
+        95,
+        105,
+        100,
+        34,
+        58,
+        34,
+        48,
+        34,
+        44,
+        34,
+        110,
+        101,
+        120,
+        116,
+        95,
+        111,
+        112,
+        101,
+        114,
+        97,
+        116,
+        105,
+        111,
+        110,
+        95,
+        105,
+        100,
+        34,
+        58,
+        34,
+        48,
+        34,
+        44,
+        34,
+        108,
+        97,
+        115,
+        116,
+        95,
+        119,
+        105,
+        116,
+        104,
+        100,
+        114,
+        97,
+        119,
+        97,
+        108,
+        95,
+        110,
+        111,
+        110,
+        99,
+        101,
+        34,
+        58,
+        34,
+        48,
+        34,
+        125
+      ]
+    },
+    "decoded": {
+      "dao_account_id": "veyntro.sputnikv2.testnet",
+      "verifier_account_id": "verifier-aje-veyntro.testnet",
+      "verifier_epoch": "0",
+      "confirmed_accountable_funds": "4000000000000000000000000",
+      "operating_reserve": "2264740000000000000000000",
+      "configured_reserve": "100000000000000000000000",
+      "reservation_liabilities": "0",
+      "pending_payouts": "0",
+      "pending_withdrawals": "0",
+      "money_available": "1735260000000000000000000",
+      "actual_balance": "13998226047696256200000000",
+      "ledger_solvent": true,
+      "physical_backing_check": true,
+      "next_reservation_id": "0",
+      "next_operation_id": "0",
+      "last_withdrawal_nonce": "0"
+    }
+  }
+}
