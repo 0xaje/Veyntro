@@ -19,3 +19,14 @@ Factory information: sputnikv2.testnet, auto_update=true. Factory upgrade author
 ## DAO-to-product integration — NOT VERIFIED
 
 No receiver deployed, governance proposal, council vote or DAO-approved payable contract call has been captured. Phase 1 is incomplete. Next: build and test a minimal DAO-only receiver, deploy it to a separate account, then propose and approve a small payable call and verify its final receipts, predecessor and deposit.
+
+## Phase 1 completion update — VERIFIED
+
+The earlier NOT VERIFIED section above describes the historical stop point. It is superseded by these actual results:
+
+- Receiver deployment: 3CvGqXFDC7EabLBEga4symki7BYYFvajYgNSeZx6ibd4; code matches user's local WASM.
+- Proposal 0 submission: MpedkLXCwRKQqZ6JneUhnYbwC6MAcbnbzDGsc9C75cv.
+- Approval and executed 0.01 NEAR call: 4nwqawJPDf5jnurzTPsVRjMSigjL1LajjcadyKrQ4arU; final receipts succeeded, actual predecessor is DAO, funded event and state agree (count 1).
+- Direct council bypass: 454bNnvsLQwwowW3bNLvXminfoVHR3BSxnED1D1gueEt; FINAL failure with 'Only the DAO can add money'. No event; state and receiver balance unchanged.
+
+Full RPC evidence: RECEIVER_DEPLOYMENT.json, RECEIVER_FUNDING_PROPOSAL.json, DAO_FUNDING_EXECUTION.json and DAO_PERMISSION_REJECTION.json. This verifies governance integration, not the unimplemented full financial platform.
