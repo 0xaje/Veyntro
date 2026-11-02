@@ -1,64 +1,48 @@
-# Veyntro — progress
+# Veyntro — current progress
 
-DATE/TIME (UTC): 2026-10-30T23:53:42.973341+00:00
-PHASE / MILESTONE: DAO creation verified; Phase 1 DAO-to-contract call remains unfinished
+DATE/TIME (UTC): 2026-11-02T20:17:19.855858+00:00
+PHASE / MILESTONE: Phase 1 — DAO-only receiver built and tested locally; deployment pending
 STATUS: IN_PROGRESS
-LAST VERIFIED COMMIT: None recorded. November 1 hold has passed; GitHub repository 0xaje/Veyntro exists and was verified empty.
-NETWORK / CONTRACT IDS: testnet; council wallet aje-veyntro.testnet verified. DAO veyntro.sputnikv2.testnet creation VERIFIED. Product contract/verifier/beneficiary/operator NOT CONFIGURED.
+LAST VERIFIED COMMIT: bcb518ea38a1a4786f1b4d243e578f23335eb771 (GitHub source baseline before receiver work).
+REPOSITORY: https://github.com/0xaje/Veyntro
+NETWORK / CONTRACT IDS: NEAR testnet; council aje-veyntro.testnet; DAO veyntro.sputnikv2.testnet. Target receiver receiver.aje-veyntro.testnet is NOT DEPLOYED.
 
-## Verified changes
+## Completed and verified
 
-- Read AGENTS.md, full docs/MASTER_PLAN.md, prior progress, blockers and decisions before proceeding.
-- Installed Rust 1.99.1 and Cargo 1.99.1; installed wasm32-unknown-unknown build target.
-- Installed and checked NEAR CLI 0.30.1 and cargo-near 0.22.0.
-- Added scripts/preflight.py using Python standard library only. It makes actual read-only RPC requests, rejects wrong network/syncing/RPC errors, captures a final block and can read a selected DAO's account/policy at that same block.
-- Tools and testnet reads passed in evidence/preflight.json. DAO absence remains explicit; phase_0_complete remains false.
-- Inspected upstream SputnikDAO FunctionCall schema and exact proposal bond requirement; documented in docs/SETUP.md. No selected deployment/source match is claimed.
-- Confirmed candidate factory sputnikv2.testnet exists with deployed code via actual final-block account query; recorded in evidence/factory-discovery.json. It is not a Veyntro DAO and has not been selected or modified.
+- DAO creation and actual council/policy verified previously. Creation tx: 6oV4Y8DX7hxXK2FB2hietaongMPtKzZzbaWazMAyP8JX. Live proposal bond was 1 NEAR; voting period 7 days.
+- Implemented contracts/dao-receiver. Account-only initialization; DAO-predecessor authorization; positive deposits; checked totals/counter; JSON funded events; public get_funding_state. Total recorded funding capped at 0.01 test NEAR. No withdrawals.
+- Pin Rust 1.95.0, near-sdk 5.30.0 and Cargo.lock. Verified SDK upstream requires Rust 1.95 and protocol 88. Earlier Rust 1.93 attempt failed with MSRV errors; final toolchain resolves them.
+- scripts/build-receiver.sh passes formatting, 9 SDK unit tests, Clippy warnings-as-errors and locked WASM release build with --cfg near.
+- WASM: 129393 bytes; SHA256 738b22839e7ec0a17ae6dcfea48ab0af9e9525ec7f154dbea9e5d38e0194b723.
+- Added user-signed deployment/governance scripts. Python helper checks deployed WASM hash, receiver state and actual policy. Approval preparation validates the selected real proposal before signing. Shell/Python syntax and hash-conversion checks passed. Invalid proposal ID rejected locally.
 
-## Commands and results
+## Exact commands / evidence
 
-- Official rustup installer with minimal stable profile: exit 0. rustc/cargo --version verified 1.99.1.
-- rustup target add wasm32-unknown-unknown: exit 0; target list confirms installation.
-- Official NEAR release installers: binaries verified by near --version and cargo-near --version.
-- python -m py_compile scripts/preflight.py: exit 0.
-- PATH="$HOME/.cargo/bin:$PATH" python scripts/preflight.py --output evidence/preflight.json: exit 0, read_checks_passed=true, dao_configured=false, phase_0_complete=false.
-- Invalid-network DAO check: see evidence/preflight-invalid-network.json and continuation note below. No transaction was signed.
+PATH="$HOME/.cargo/bin:$PATH" bash scripts/build-receiver.sh — exit 0.
+python -m py_compile scripts/receiver-governance.py scripts/preflight.py — passed.
+bash -n scripts/receiver-integration.sh scripts/build-receiver.sh — passed.
+Local SDK harness tests are development tests, NOT transactions or live payment proof. See evidence/RECEIVER_BUILD.json, evidence/receiver-build.log, evidence/DAO_INTEGRATION.md and docs/DAO_RECEIVER.md.
 
-## Implementation status
+## Current boundaries
 
-Environment tooling and live preflight utility are available. Product contracts, wallet UI, verifier and operator are NOT implemented. No governance proposal, deployed Veyntro contract, payment or end-to-end product test exists. Installed tools do not prove SDK build compatibility. No Git repository, commits or remote have been created.
+The receiver is a separate integration contract, not the Commitment Firewall. It does not create commitments or pay beneficiaries. No receiver account, deployment, proposal or vote has been executed by the assistant. The user controls signing keys. Receiver code replacement remains possible through its user-controlled full-access key; no trustless custody claim. DAO factory auto_update is true.
 
-## Remaining gates and next action
+Product wallet UI, verifier, operator and full financial accounting remain NOT IMPLEMENTED. No redesign or fake activity. Installed third-party skills were not found in this refreshed environment, so no skill-based review is claimed. Manual review covered authorization, checked arithmetic, bounded test funding and signing boundaries.
 
-1. Establish a public NEAR testnet council wallet ID and whether to reuse an existing SputnikDAO or create a new one. Never request seed phrases or private keys in chat.
-2. Confirm signer access, funding and actual DAO code/policy/bond. Factory account discovery alone is insufficient.
-3. Finish Phase 0 source/version compatibility and competitor verification. Nigeria-specific eligibility/KYC confirmation remains outstanding.
-4. When repository creation opens, initialize the agreed source location and preserve all current files/evidence.
-5. After Phase 0 is verified, implement the Phase 1 minimal Rust receiver, build it, and execute the real DAO-approved payable call. Capture final receipts, predecessor and attached deposit before advancing.
+## Next exact action
 
-## Tests and limits
+1. User obtains current repository source and runs bash scripts/build-receiver.sh. Toolchain components install through rustup; install rustup first if missing.
+2. User runs bash scripts/receiver-integration.sh create-account. It creates receiver.aje-veyntro.testnet using 1.5 test NEAR from council wallet, plus fees. Return actual tx hash; verify final account creation.
+3. Run deploy stage only after account creation is verified, then verify final receipts, deployed code hash and initial zero funding state.
+4. Run propose stage; obtain actual proposal ID. Run approve ACTUAL_ID only after matching proposal checks; capture final vote execution and funded event.
+5. Verify receiver recorded exactly 0.01 NEAR once, check all receipts, and demonstrate rejected direct council funding. Only then mark Phase 1 VERIFIED and continue to the Commitment Firewall.
 
-No fake data, application redesign, paid infrastructure or signed transactions. Product security/accounting tests NOT RUN because the product contract is not implemented. The read-only script is operational tooling, not the product. Its get_policy schema check does not authenticate code provenance or account control. Four installed quality/design skills remain subordinate to the master plan; no UI exists to redesign and Python setup tooling is outside Code Slop's stated TS/PHP stack scope.
+## Open issues
+
+Receiver/CLI stages require user computer keys and remain unexecuted. SDK/WASM runtime compatibility remains unverified until actual deployment/call. Phase 0 competitor coverage and Nigeria-specific prize eligibility/KYC are not fully verified and remain tracked, without blocking this bounded testnet integration preparation. Public hosted product not available yet.
 
 ## Files changed
 
-scripts/preflight.py; docs/SETUP.md; docs/PROGRESS.md; docs/PROGRESS_INITIAL_INSPECTION.md; docs/BLOCKERS.md; docs/DECISIONS.md; evidence/preflight*.json; evidence/factory-discovery.json; evidence/ENVIRONMENT.md.
+Cargo.toml; Cargo.lock; rust-toolchain.toml; contracts/dao-receiver/*; scripts/build-receiver.sh; scripts/receiver-integration.sh; scripts/receiver-governance.py; docs/DAO_RECEIVER.md; docs/PROGRESS.md; docs/PROGRESS_HISTORY.md; docs/BLOCKERS.md; docs/DECISIONS.md; evidence/RECEIVER_BUILD.json; evidence/receiver-build.log; README.md.
 
-Invalid-network check verified: `--dao invalid.near` exited 1 and recorded the explicit testnet-account validation error. This is a local input-validation result, not an onchain rejection.
-
-## Account setup verified — 2026-11-02T20:03:00.888461+00:00
-
-aje-veyntro.testnet exists on testnet with 10 test NEAR at block 275946140. The supplied public key matches its FullAccess key at block 275946154. Creation transaction 9RxhXs7RGefrFNutB9qLrydhom8YAV4dkZZesNmh1z3n is FINAL with SuccessValue and successful receipt outcomes. No contract is deployed to this account. This is the user-controlled development/council wallet, not yet a DAO. Evidence: evidence/ACCOUNT_SETUP.json. Next: configure a separate SputnikDAO and verify its deployed code, governance policy and proposal bond. Repository 0xaje/Veyntro was verified public and empty in the preceding GitHub inspection; old repository-hold notes above are historical. Private keys remain on the user computer.
-
-## DAO creation preparation — 2026-11-02T20:06:03.013420+00:00
-
-Verified live council wallet balance: 10 test NEAR; target veyntro.sputnikv2.testnet returned UNKNOWN_ACCOUNT. Factory sputnikv2.testnet code hash: 77dkUJRCHKRxJxo6UtYgBtRP6hsEX2v4vXjmFuY7dktb. Factory default DAO code hash: AA4nA45vauiac3jdVwJTzSdUP3oj2r1fDaPAb2mHdgcH. Retrieved default DAO WASM: 539647 bytes, SHA256 880bae9a58c99ec1efe8b10cf834b3f0c0ebc7a05d71206f3c1202c4280952da. Factory metadata reports version [3,31] and source commit 7764926cfd3c47f62b5fcde231c251f3c3892887; metadata is not independent proof of reproducible build provenance. Inspected this revision's factory manager and policy schema instead of assuming upstream main matches deployment.
-
-Prepared scripts/create-testnet-dao.sh with default policy council array [aje-veyntro.testnet], 150 Tgas and 7 test NEAR attached. Chosen deposit is funding, not a claimed measured minimum. bash -n passed. Signing must run on user computer where the key resides. No transaction has been sent, no DAO created, no proposal submitted. Next: obtain creation tx, verify final receipt outcomes and DAO get_config/get_policy/code hash.
-
-Environment refresh: /root/.cargo/bin/near is no longer present in this execution environment. Earlier installed-tool evidence remains historical; do not claim those binaries are currently available without reinstalling and checking. Attempted npx near-cli-rs@0.30.1 --version exited 1 without version output; local runtime CLI validation is unresolved. User's previously successful unpinned npx command is used for their machine.
-
-## DAO creation independently verified — 2026-11-02T20:09:18.306668+00:00
-
-Transaction 6oV4Y8DX7hxXK2FB2hietaongMPtKzZzbaWazMAyP8JX is FINAL and successful, with no failing returned receipts. DAO code hash matches factory default. Council [aje-veyntro.testnet], bond 1 NEAR, voting period 7 days, total DAO balance 7 test NEAR at block 275946755. See evidence/DAO_INTEGRATION.md and raw JSON. Phase 1 is NOT complete: receiver deployment and authentic governance-approved payable call are next. Do not repeat DAO creation. Earlier setup notes are historical.
+Earlier inspection details are preserved in docs/PROGRESS_HISTORY.md. Old missing-tool, missing-repository and uncreated-DAO notes there are historical.

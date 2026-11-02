@@ -1,0 +1,31 @@
+{
+  "checked_at_utc": "2026-11-02T20:17:19.855858+00:00",
+  "network_target": "NEAR testnet",
+  "rust": "1.95.0",
+  "near_sdk": "5.30.0",
+  "test_count_passed": 9,
+  "test_count_failed": 0,
+  "fmt": "passed",
+  "clippy": "passed with -D warnings",
+  "wasm_bytes": 129393,
+  "wasm_sha256": "738b22839e7ec0a17ae6dcfea48ab0af9e9525ec7f154dbea9e5d38e0194b723",
+  "build_command": "RUSTFLAGS='--cfg near' cargo build --locked -p veyntro-dao-receiver --target wasm32-unknown-unknown --release",
+  "build_profile": "local locked release; no container reproducibility claim",
+  "source_sha256": {
+    "Cargo.toml": "1de884d5b9a2b01bf387d87e8029e80777edf3e5e805267a0e4deccb7a5011b8",
+    "Cargo.lock": "4a4498b1392265d04e390d5aff8f5d0e3e61de4049b13e735db5e2308b636dde",
+    "rust-toolchain.toml": "e69b917f97a114b87388e17a0fe30540d213288af076d192fe4ab3dbfbd3a6c7",
+    "contracts/dao-receiver/Cargo.toml": "690d0a966fee6e74e86b3105244b556a49bf855f3de493f0c67a5accce35cb83",
+    "contracts/dao-receiver/src/lib.rs": "7fec96e1ece60ad120b66a5b157890c730037092a519bda4d2918f198d4bc3ec"
+  },
+  "receiver_account": "receiver.aje-veyntro.testnet",
+  "receiver_deployed": false,
+  "governance_funding_verified": false,
+  "initial_failed_toolchain": "Rust 1.93.0 was rejected by near-sdk 5.30.0 dependencies; resolved by verified upstream MSRV 1.95",
+  "script_checks": [
+    "bash -n passed",
+    "Python py_compile passed",
+    "base58 conversion matches previously verified live DAO code hash",
+    "invalid approval ID exits 1 before signing"
+  ]
+}

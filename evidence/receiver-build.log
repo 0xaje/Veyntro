@@ -1,0 +1,28 @@
+   Compiling veyntro-dao-receiver v0.1.0 (/workspace/scratch/7efd416468c4/contracts/dao-receiver)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.54s
+     Running unittests src/lib.rs (target/debug/deps/veyntro_dao_receiver-f36fbb5f865cc8ee)
+
+running 9 tests
+test tests::rejects_setup_by_another_account - should panic ... ok
+test tests::rejects_council_bypassing_governance - should panic ... ok
+test tests::rejects_zero_deposit - should panic ... ok
+test tests::rejects_counter_overflow - should panic ... ok
+test tests::rejects_signer_spoofing_through_another_contract - should panic ... ok
+test tests::rejects_amount_overflow - should panic ... ok
+test tests::accepts_dao_receipt_even_when_council_signed_the_original_transaction ... ok
+test tests::rejects_funding_above_the_integration_limit - should panic ... ok
+test tests::starts_with_no_recorded_funding ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+   Doc-tests veyntro_dao_receiver
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Checking veyntro-dao-receiver v0.1.0 (/workspace/scratch/7efd416468c4/contracts/dao-receiver)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.22s
+   Compiling veyntro-dao-receiver v0.1.0 (/workspace/scratch/7efd416468c4/contracts/dao-receiver)
+    Finished `release` profile [optimized] target(s) in 0.42s
+738b22839e7ec0a17ae6dcfea48ab0af9e9525ec7f154dbea9e5d38e0194b723  target/wasm32-unknown-unknown/release/veyntro_dao_receiver.wasm

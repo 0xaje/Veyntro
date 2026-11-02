@@ -20,3 +20,9 @@ Reason: avoid unnecessary redesign and meaningless quality scores. Third-party a
 ## 2026-10-31 — Continue environment preparation without a repository
 
 User clarified that repository creation waits until November 1 and requested continued professional development. Prepare real tooling and reproducible live checks now; retain the repository-creation hold. No need to ask again for an existing repository that the user has not created. Current work is Phase 0; no financial or UI scope changes.
+
+## 2026-11-02 — Isolate the governance receiver
+
+Implement a separate capped receiver for the Phase 1 DAO call gate. It is not deployed as the final treasury contract. It has no withdrawal method and accepts at most 0.01 NEAR through its funding method. Use user-signed CLI stages; never move keys to this workspace.
+
+Pin near-sdk 5.30.0 to Rust 1.95 after confirming official MSRV; compile with --cfg near for the onchain path and lock transitive dependencies. Initial Rust 1.93 attempt failed; final local build passes. This is a local release build, not container reproducibility or live compatibility proof.

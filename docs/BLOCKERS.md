@@ -26,3 +26,7 @@ B-001 clarified: user has no repository ready and asked to wait until November 1
 B-002 partially resolved: Rust/Cargo 1.99.1, wasm target, NEAR CLI 0.30.1 and cargo-near 0.22.0 installed and version-checked. SDK compilation compatibility remains unverified.
 B-003 remains: no selected council wallet/DAO or authorized signer. Candidate factory account existence is verified, but it is not the team's DAO.
 B-004 remains partially unresolved; current official rules/tracks have been reviewed in conversation. Nigeria/KYC and exact competitor coverage are still unverified.
+
+## Receiver milestone update — 2026-11-02
+
+Repository and DAO blockers are resolved: source is on GitHub and DAO creation is verified. Rust 1.95 and WASM target are installed for this run. Local receiver tests/build passed. Active next blocker: receiver account creation and deployment need the user's locally stored signing key. Do not request/export that key. Use docs/DAO_RECEIVER.md stage commands. No live receiver outcome is claimed.
