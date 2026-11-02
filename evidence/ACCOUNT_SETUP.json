@@ -1,0 +1,20 @@
+{
+  "verified_at_utc": "2026-11-02T20:03:00.888461+00:00",
+  "network": "testnet",
+  "account_id": "aje-veyntro.testnet",
+  "public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz",
+  "permission": "FullAccess",
+  "balance_yoctonear": "10000000000000000000000000",
+  "balance_near": "10",
+  "creation_tx": "9RxhXs7RGefrFNutB9qLrydhom8YAV4dkZZesNmh1z3n",
+  "creation_signer": "testnet",
+  "final_execution_status": "FINAL",
+  "status": {
+    "SuccessValue": ""
+  },
+  "account_block_height": 275946140,
+  "access_keys_block_height": 275946154,
+  "contract_deployed": false,
+  "source": "https://rpc.testnet.near.org",
+  "signing_key_location": "User computer; not requested or accessed"
+}

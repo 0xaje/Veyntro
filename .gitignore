@@ -1,0 +1,12 @@
+node_modules/
+target/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+.near-credentials/
+*.pem
+*.key
+*.log
+.DS_Store
