@@ -1,0 +1,30 @@
+name: Verifier checks
+
+on:
+  push:
+    branches: [main]
+    paths: ['services/verifier/**', 'evidence/GITHUB_RUN_API.json', 'evidence/VERIFIER_CONTEXT.json', 'evidence/FIRST_COMMITMENT_POLICY.json', '.github/workflows/verifier.yml']
+  pull_request:
+    paths: ['services/verifier/**', 'evidence/GITHUB_RUN_API.json', 'evidence/VERIFIER_CONTEXT.json', 'evidence/FIRST_COMMITMENT_POLICY.json', '.github/workflows/verifier.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verifier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6, verified commit
+        with:
+          node-version: '24.22.1'
+      - name: Install locked development tools without lifecycle scripts
+        run: npm --prefix services/verifier ci --ignore-scripts --no-audit --no-fund
+      - name: Check types and adversarial evidence tests
+        run: |
+          npm --prefix services/verifier run check
+          npm --prefix services/verifier test

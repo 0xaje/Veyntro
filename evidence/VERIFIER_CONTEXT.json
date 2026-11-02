@@ -1,0 +1,38 @@
+{
+  "block_hash": "CG3zgs5Cya1eo91ZDmSckRi7REvNYv6zG5Bvtzr94yu5",
+  "block_timestamp_ns": "1793655961449009544",
+  "contract_account_id": "firewall-aje-veyntro.testnet",
+  "treasury": {
+    "dao_account_id": "veyntro.sputnikv2.testnet",
+    "verifier_account_id": "verifier-aje-veyntro.testnet",
+    "verifier_epoch": "0",
+    "confirmed_accountable_funds": "4000000000000000000000000",
+    "operating_reserve": "2928120000000000000000000",
+    "configured_reserve": "100000000000000000000000",
+    "reservation_liabilities": "800000000000000000000000",
+    "pending_payouts": "0",
+    "pending_withdrawals": "0",
+    "money_available": "271880000000000000000000",
+    "actual_balance": "13998226047696256200000000",
+    "ledger_solvent": true,
+    "physical_backing_check": true,
+    "next_reservation_id": "2",
+    "next_operation_id": "0",
+    "last_withdrawal_nonce": "0"
+  },
+  "reservation": {
+    "payment_attempts_left": 32,
+    "id": "0",
+    "beneficiary": "worker-aje-veyntro.testnet",
+    "payout_recipient": "worker-aje-veyntro.testnet",
+    "approved_amount": "400000000000000000000000",
+    "remaining_liability": "400000000000000000000000",
+    "pending_amount": "0",
+    "expires_at_ns": "1794182400000000000",
+    "evidence_policy_hash": "22941ad52c55ba33751c7e27e8738948dc0bf08fae6e708d21b6b661ccc09048",
+    "evidence": null,
+    "last_drawdown_nonce": "0",
+    "status": "Active",
+    "is_expired": false
+  }
+}

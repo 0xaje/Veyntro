@@ -1,0 +1,67 @@
+{
+  "status": "prepared_unsigned",
+  "signed_or_sent": false,
+  "checked_at_utc": "2026-11-02T21:46:14.861Z",
+  "source_block_hash": "2QXunGV2wGumTv4r2MCAYQLucUMfrvkTAK754MKjb3Ay",
+  "policy": {
+    "allow_forks": false,
+    "branch": "main",
+    "commit_sha": "3c18cad4f81b949f3e264961da61c97d5613964e",
+    "conclusion": "success",
+    "contract_account_id": "firewall-aje-veyntro.testnet",
+    "event": "push",
+    "max_run_age_seconds": 604800,
+    "network": "testnet",
+    "repository": "0xaje/Veyntro",
+    "schema": "veyntro.github-ci.v1",
+    "workflow_id": 404996405,
+    "workflow_path": ".github/workflows/contracts.yml"
+  },
+  "binding": {
+    "schema": "veyntro.attestation.v1",
+    "verifier_version": "0.1.0",
+    "network": "testnet",
+    "contract_account_id": "firewall-aje-veyntro.testnet",
+    "reservation_id": "0",
+    "beneficiary": "worker-aje-veyntro.testnet",
+    "payout_recipient": "worker-aje-veyntro.testnet",
+    "approved_amount": "400000000000000000000000",
+    "commitment_expires_at_ns": "1794182400000000000",
+    "policy_hash": "22941ad52c55ba33751c7e27e8738948dc0bf08fae6e708d21b6b661ccc09048",
+    "verifier_account_id": "verifier-aje-veyntro.testnet",
+    "verifier_epoch": "0",
+    "nonce": "1",
+    "valid_until_ns": "1793657774861000000",
+    "github": {
+      "run_id": 41525421351,
+      "run_attempt": 1,
+      "repository_id": 1443415535,
+      "repository": "0xaje/Veyntro",
+      "commit_sha": "3c18cad4f81b949f3e264961da61c97d5613964e",
+      "workflow_id": 404996405,
+      "workflow_path": ".github/workflows/contracts.yml",
+      "event": "push",
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-02T21:07:20Z",
+      "updated_at": "2026-11-02T21:09:11Z",
+      "html_url": "https://github.com/0xaje/Veyntro/actions/runs/41525421351",
+      "evidence_expires_at_ns": "1794258440000000000"
+    }
+  },
+  "transaction": {
+    "signer_id": "verifier-aje-veyntro.testnet",
+    "receiver_id": "firewall-aje-veyntro.testnet",
+    "method_name": "submit_attestation",
+    "gas": "30000000000000",
+    "deposit": "0",
+    "args": {
+      "id": "0",
+      "evidence_digest": "29c99d3c01a895cabc6c95172da8aa8596c8f21ded0e98cd2fb99a58d3ae3ded",
+      "policy_hash": "22941ad52c55ba33751c7e27e8738948dc0bf08fae6e708d21b6b661ccc09048",
+      "commit_sha": "3c18cad4f81b949f3e264961da61c97d5613964e",
+      "nonce": "1",
+      "valid_until_ns": "1793657774861000000"
+    }
+  }
+}

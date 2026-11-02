@@ -6,7 +6,7 @@ Veyntro is being built to help DAOs and communities set money aside for approved
 
 ## Current status
 
-Development is in progress. The public application is not implemented yet. The Commitment Firewall is implemented and tested locally; its testnet deployment and financial lifecycle remain pending.
+Development is in progress. The public application is not implemented yet. The Commitment Firewall is deployed on NEAR testnet. DAO funding, two commitments, overcommitment rejection and missing-evidence payment rejection are independently verified. Payments and expiry release remain pending.
 
 Verified on NEAR testnet:
 
@@ -14,7 +14,7 @@ Verified on NEAR testnet:
 - SputnikDAO: veyntro.sputnikv2.testnet.
 - [DAO creation transaction](https://explorer.testnet.near.org/transactions/6oV4Y8DX7hxXK2FB2hietaongMPtKzZzbaWazMAyP8JX) — final and successful.
 
-The separate DAO-only receiver passes 9 local SDK unit tests, Clippy and WASM compilation. Phase 1 is now verified on NEAR testnet: receiver deployment, DAO proposal 0 and approval, an actual 0.01 NEAR DAO-to-receiver call, and rejection of direct council funding with unchanged records. [Execution evidence](evidence/DAO_FUNDING_EXECUTION.json) and [permission rejection](evidence/DAO_PERMISSION_REJECTION.json) are independently inspectable. The Commitment Firewall now passes 56 local tests, Clippy and WASM compilation; it is not deployed or live-verified yet. The public application remains unimplemented.
+The separate DAO-only receiver passes 9 local SDK unit tests, Clippy and WASM compilation. Phase 1 is now verified on NEAR testnet: receiver deployment, DAO proposal 0 and approval, an actual 0.01 NEAR DAO-to-receiver call, and rejection of direct council funding with unchanged records. [Execution evidence](evidence/DAO_FUNDING_EXECUTION.json) and [permission rejection](evidence/DAO_PERMISSION_REJECTION.json) are independently inspectable. The Commitment Firewall passes 56 local tests, Clippy and WASM compilation and is deployed at firewall-aje-veyntro.testnet. [DAO funding](evidence/FIREWALL_DAO_FUNDING.json), [two commitments](evidence/SECOND_COMMITMENT_EXECUTION.json), [overcommitment rejection](evidence/OVERCOMMITMENT_REJECTION.json) and [missing-evidence rejection](evidence/MISSING_EVIDENCE_REJECTION.json) are verified. The public application remains unimplemented.
 
 ## Build the Commitment Firewall
 
@@ -24,7 +24,7 @@ Requires the same pinned Rust toolchain. Run:
 bash scripts/build-firewall.sh
 ```
 
-This checks all 56 firewall tests and 9 receiver tests, formatting, Clippy and the locked WASM build. Read the [accounting design](docs/FIREWALL_ACCOUNTING.md) and [contract API](docs/FIREWALL_API.md). Storage/gas reserves and up to 32 prepaid payment attempts per commitment are enforced. Test inputs are local checks, not GitHub attestations or blockchain activity. The real GitHub verifier and wallet application remain pending. [Current build evidence](evidence/FIREWALL_BUILD.json) records exact local results.
+This checks all 56 firewall tests and 9 receiver tests, formatting, Clippy and the locked WASM build. Read the [accounting design](docs/FIREWALL_ACCOUNTING.md) and [contract API](docs/FIREWALL_API.md). Storage/gas reserves and up to 32 prepaid payment attempts per commitment are enforced. Test inputs are local checks, not GitHub attestations or blockchain activity. The GitHub verifier core and key-free preparation CLI now check real GitHub API and final testnet state; 28 adversarial tests and a live check pass. [Verifier setup and trust model](services/verifier/README.md). Onchain attestation, hosted authenticated verification and wallet application remain pending. [Current build evidence](evidence/FIREWALL_BUILD.json) records exact local results.
 
 ## Build the receiver
 
@@ -41,3 +41,4 @@ bash scripts/build-receiver.sh
 Read [AGENTS.md](AGENTS.md), [master plan](docs/MASTER_PLAN.md) and [current progress](docs/PROGRESS.md) before changes. [Build evidence](evidence/RECEIVER_BUILD.json) and [DAO evidence](evidence/DAO_INTEGRATION.md) distinguish local checks from real transactions. Never commit private keys or recovery phrases.
 
 Primary hackathon track: Social Money.
+

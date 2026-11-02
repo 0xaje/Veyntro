@@ -34,3 +34,9 @@ Repository and DAO blockers are resolved: source is on GitHub and DAO creation i
 ## Phase 2 update — 2026-11-02
 
 Phase 1 is verified and supersedes earlier receiver blockers. Firewall local build/56 tests passed. Active next gate: create a separate full-contract account via free testnet faucet, then verifier/beneficiary accounts, actual funding and live lifecycle verification. Callback gas/ABI/rollback/runtime outcomes are not certified by SDK unit tests. Product frontend/verifier service are still absent.
+
+
+## Live firewall / verifier update — 2026-11-02
+
+Account creation, deployment, DAO funding, two commitments, onchain overcommitment rejection and missing-evidence rejection are now independently verified; earlier account gates are superseded. GitHub verifier core/CLI checks real API/state and passes 28 tests, but onchain attestation, actual payout, failed/retried transfer callback and expiry release remain pending. Hosted authenticated beneficiary requests and verifier scoped key/signing custody are not implemented. Keep Phase2 IN_PROGRESS. CLI prepares unsigned output only, with user-local signing as the next gate. See current docs/PROGRESS.md and services/verifier/README.md.
+

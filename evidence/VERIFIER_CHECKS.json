@@ -1,0 +1,27 @@
+{
+  "checked_at_utc": "2026-11-02T21:47:59.823823+00:00",
+  "node": "24.22.1",
+  "typescript": "7.0.2",
+  "node_types": "24.19.2",
+  "commands": [
+    {
+      "command": "npm run check",
+      "exit_code": 0,
+      "output": "\n> @veyntro/verifier@0.1.0 check\n> tsc --noEmit\n\n"
+    },
+    {
+      "command": "npm test",
+      "exit_code": 0,
+      "output": "\n> @veyntro/verifier@0.1.0 test\n> node --test test/*.test.ts\n\n\u2714 policy digest matches the exact DAO-approved onchain hash (2.155567ms)\n\u2714 saved genuine run prepares an unsigned commitment-bound attestation (1.461144ms)\n\u2714 rejects wrong repository (0.684788ms)\n\u2714 rejects fork source (0.163746ms)\n\u2714 rejects different head repository (0.31967ms)\n\u2714 rejects wrong SHA (0.244296ms)\n\u2714 rejects mismatched commit (0.14676ms)\n\u2714 rejects wrong workflow (0.124858ms)\n\u2714 rejects wrong workflow path (0.342474ms)\n\u2714 rejects wrong branch (0.396926ms)\n\u2714 rejects pull request event (0.341342ms)\n\u2714 rejects failed CI (0.513641ms)\n\u2714 rejects pending run (0.244748ms)\n\u2714 rejects forged passed flag (0.176645ms)\n\u2714 rejects wrong run ID (0.244627ms)\n\u2714 rejects source URL mismatch (0.321393ms)\n\u2714 rejects future run (0.204266ms)\n\u2714 rejects stale run (0.208413ms)\n\u2714 rejects policy mismatch (0.671548ms)\n\u2714 rejects other contract (0.157707ms)\n\u2714 rejects wrong verifier (0.133961ms)\n\u2714 rejects expired commitment (0.344096ms)\n\u2714 rejects cancelled commitment (0.31951ms)\n\u2714 rejects duplicate attestation (0.171888ms)\n\u2714 rejects pending payment (0.179299ms)\n\u2714 rejects stale chain snapshot (0.217567ms)\n\u2714 digest changes across reservation IDs and verifier epochs (0.564357ms)\n\u2714 rejects unknown policy fields and client-supplied pass flags (0.534793ms)\n\u2139 tests 28\n\u2139 suites 0\n\u2139 pass 28\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 167.929184\n"
+    }
+  ],
+  "initial_failure": "Initial tsc check failed because TypeScript 7 needs explicit types: [node]; fixed tsconfig and reran successfully.",
+  "live_positive": "CLI fetched real GitHub run 41525421351 and final testnet commitment 0, wrote FIRST_ATTESTATION_PREPARED.json; signed_or_sent=false.",
+  "live_negative": {
+    "run_id": 1,
+    "http_status": 404,
+    "cli_exit_code": 1,
+    "unsigned_file_not_created": true
+  },
+  "limitations": "No attestation signed/sent. No payout. No hosted authentication or signing service. Unit tests mutate saved public API/RPC responses; these are not live adversarial transactions."
+}

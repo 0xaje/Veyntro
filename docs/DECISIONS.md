@@ -34,3 +34,9 @@ Follow master-plan sections 3–5 in a separate contract; preserve receiver evid
 Add a DAO withdrawal nonce argument to the conceptual master-plan method: callback-failure/governance retries must not create a second transfer for one authorization. This is required replay protection, not a new product feature. Actual balance is a conservative cap; pending transfers/refunds may pause new actions. No admin method can fabricate callback outcomes. Keep emergency verifier rotation possible even during impaired backing.
 
 This implements onchain evidence authorization only; actual GitHub checks remain Phase 3. Full testnet lifecycle remains a Phase 2 exit gate.
+
+
+## 2026-11-02 — Key-free GitHub verification before live payout
+
+Phase 2's payout gate depends on Phase 3 authentic GitHub evidence. Implement the narrow verifier core and CLI now, while keeping both phases incomplete. The CLI reads live GitHub and pinned-final-block NEAR state, prepares unsigned commitment-bound evidence, and never loads NEAR credentials. User signs locally; no hosted signing endpoint or invented attestation. This preserves the master plan's genuine evidence gate rather than bypassing it to finish accounting tests. Use Node24 native TS with pinned dev-only compiler/types. Onchain nonce prevents duplicate attestations; CLI refuses existing evidence rather than renewing silently. Successful CI is only the DAO-selected evidence condition, not proof of real-world business quality. Remaining hosted request authentication and scoped key custody are explicit blockers.
+
