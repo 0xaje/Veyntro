@@ -14,7 +14,7 @@ Verified on NEAR testnet:
 - SputnikDAO: veyntro.sputnikv2.testnet.
 - [DAO creation transaction](https://explorer.testnet.near.org/transactions/6oV4Y8DX7hxXK2FB2hietaongMPtKzZzbaWazMAyP8JX) — final and successful.
 
-The separate DAO-only receiver passes 9 local SDK unit tests, Clippy and WASM compilation. Receiver deployment and a real DAO-approved payable call are still pending. Local tests do not establish live functionality.
+The separate DAO-only receiver passes 9 local SDK unit tests, Clippy and WASM compilation. Phase 1 is now verified on NEAR testnet: receiver deployment, DAO proposal 0 and approval, an actual 0.01 NEAR DAO-to-receiver call, and rejection of direct council funding with unchanged records. [Execution evidence](evidence/DAO_FUNDING_EXECUTION.json) and [permission rejection](evidence/DAO_PERMISSION_REJECTION.json) are independently inspectable. The Commitment Firewall and public application remain unimplemented.
 
 ## Build the receiver
 
