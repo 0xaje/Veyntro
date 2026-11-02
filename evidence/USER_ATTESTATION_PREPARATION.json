@@ -1,0 +1,166 @@
+{
+  "checked_at_utc": "2026-11-02T21:51:37.640477+00:00",
+  "network": "testnet",
+  "final_block_header": {
+    "approvals": [
+      null,
+      "ed25519:2mXF9MfJznEAG2vGXaNVtrbbYURDiT7fJGCfUYBkbroGKSfZBnDY6yoghXnrmK5dprji4Zu8RqXMZWFmdQsnqyNM",
+      "ed25519:2THD5VT54YfW2wLRtyRZu6BpWjyFYXFYmTNcWmbtzytE6hdSMbhKTJdrxyr3idv6SHqRE6LBUMcZkCY45nZ3TkaE",
+      "ed25519:2XE8onCASoPSi9zyKzr9Jss79oG3pMdcfuyyvabiZRFFnfGo6qKig6Egx97cAz27Ar4yNu7HyfCpzAY6UXNypZ3c",
+      "ed25519:5y8At3GyDGX7vPvJHzpAiUKRzVcy7yj6YXdhCsRGjwZ1SSzNzHJ21nrQn6CKyFEWELUfGCmnKpZ4xSWvyswpU9x3",
+      "ed25519:5X1keYkrmj9PjaiR3DcVCPSrP2Ur1x6Gi6HadM7X3eRJNdkAwQ36ttfW81pJ8vW6sFTVrNp2eXCuA8zELWazeNQb",
+      "ed25519:41suVwFGgHPbMdx8U2mQSUg344ijbK2UU2dDVhKx6z3i1rDoePpgVWhNdp9VMuPtdY1hBi69B1ZVjoZaNtyoeXz6",
+      "ed25519:4xH4ZqUWwfsoBo5dAxCDnFcrJ4SitNagk6bhznYAeoib2qyEDcXUgePikPXR3iboa8i4oG2UZ2fHnFYFSkQiMVkE",
+      "ed25519:VWisELV2hHTQvEwvrVc1pgGHnv5LBAAVaRRu8NLAygru1BTqxEDsoRHoBn1CZxBpysKx2GozcLL5kycMcpF97gV",
+      "ed25519:3JVG8J7v9VbzxGgrzQp7qm3jN6rni2AcRSSzgmUGF2FdMqKuZWRTbAmPufF9JS9J9t99sHs7W3CBd5fwVHY4Cz8g",
+      "ed25519:5F194AEhZo1UTFx5D1DXpDgnD8fhdQmsxoZvkspmQTQoApM3frgnoXKCUDdmEKS8vy9CjYYuKngxktiTkGR6Kf6g",
+      "ed25519:8khBEcx2fPFDWGERq64KnZRqnPoq6ZDGDAhNL7LuJxA5JXqZtiCbnsNRcuwBpoBNSRJDBRdvNCnLBxcySxn1EDA",
+      "ed25519:4eWBsNaJW3o9EkTyhsDT6WPakoTve9oLx3pvCC3157znLB9SXQdov7F8ux5uEf5KZk86v5nsbnfPTmkgrKyj2yFy",
+      null,
+      "ed25519:3F5ZRGcdYWs4Ms9U5bndrCprt9SvjwWE2DWHdYK56Uf9rQ1C56hKcs7txp4pQZYY26DPuhk55V4kvSWe55THNeQN",
+      "ed25519:2LGEnYfMzfrj1DG15vCjBBxgp6A2ddDfiRb2B5Xz5Zo5APCZfcfoaTZHFnzH4yRS9KNm4uaduFizaV5S4U2xwdha",
+      "ed25519:4ETN3vScShFJnACz7XGVSDA5W7gS4XPQ4TjXiBGYUniBwRWsh9cRbtdqreD3yinFMHFugKBNnr8zYHcxexUtmskJ",
+      null,
+      "ed25519:5grxSrbrtu2bfy61MY6xLJDBuaURQEdhkxPCdpPGZCyijY5FSVDM9reqTJsgijgRPmY9VpoXKK7FFNiiCYaq3uRR",
+      "ed25519:3HfEk1Zq1tLDLEgJ9kXjoghzkLrhBAn5pmSfyN3ex9nY8Y2Kci1NJpCH32h4PxNrooA7jxswRgFotRWzWw9g723E"
+    ],
+    "block_body_hash": "D5fZfMZzPGa4CgUmzHRA9i8UX4gxUZG1nxnqUYqKsDm9",
+    "block_merkle_root": "FiffiWTrHuEg6wuJeZubHrez7WYodPQeBDKFtccAQBgi",
+    "block_ordinal": 227952905,
+    "challenges_result": [],
+    "challenges_root": "11111111111111111111111111111111",
+    "chunk_endorsements": [
+      [
+        255,
+        255,
+        0
+      ],
+      [
+        255,
+        255,
+        15
+      ],
+      [
+        255,
+        255,
+        3
+      ],
+      [
+        255,
+        255
+      ],
+      [
+        255,
+        255
+      ],
+      [
+        255,
+        255,
+        15
+      ],
+      [
+        239,
+        255
+      ],
+      [
+        255,
+        255,
+        1
+      ],
+      [
+        255,
+        127
+      ],
+      [
+        255,
+        255,
+        3
+      ]
+    ],
+    "chunk_headers_root": "E4RddKtRwGN2ojA84GAK1xnw6TgKogmCaFE3rNqs8Su1",
+    "chunk_mask": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "chunk_receipts_root": "68frYancLanopqKvfU72S8GixVHEZmLuVkzjpKUCtEjE",
+    "chunk_tx_root": "GqkgLbvmkkTGmhxoZqUugTNAzHJyKrkue7mCG2o6JPEA",
+    "chunks_included": 10,
+    "epoch_id": "CDMo1Hj86KVFgBTA7ZYMkRXHqReXvUXhQALQeT9EPCDd",
+    "epoch_sync_data_hash": null,
+    "gas_price": "100000000",
+    "hash": "Cyjvpza79zvLMTn3MRP6u35DBJV8eYaPotrKprmky2w1",
+    "height": 275957570,
+    "last_ds_final_block": "96cSy9hcnV2ezX2ctKFxrtWUz6YpCxke7YCsZ5sLsnmz",
+    "last_final_block": "3db7hYvKRWVLYbePXS37YgyNHKYJtk5aUmv9TLZjA51D",
+    "latest_protocol_version": 88,
+    "next_bp_hash": "HFxQduREzigVGnwPVZfrT6f5iwxutfctxSmjdpdiJZSq",
+    "next_epoch_id": "7PcaksxBUN51wmmFZhvjekLnwqgVBaVHGWPxuufR8eiR",
+    "outcome_root": "CpyEu4xPVnbf7Sn4k96nsPptnphE2c3abBrAiyFkuURT",
+    "prev_hash": "96cSy9hcnV2ezX2ctKFxrtWUz6YpCxke7YCsZ5sLsnmz",
+    "prev_height": 275957569,
+    "prev_state_root": "BSPDBPbCiS1J5RUAon9d2yZ5FbgvSPEeqR8oPNVgoVUb",
+    "random_value": "7UcWYsTwhAaPYSN8iAkQat9PobhanznzBssS2Mc6TdT7",
+    "rent_paid": "0",
+    "shard_split": null,
+    "signature": "ed25519:5WPbbVL6qMgZLhTXkkkLpEJe1TQhzNbsJRwXz9FT61vKtd7wcxGafpNQ5EMR4MPUP4vJ6EanUhNCLB3AmjcwmBTX",
+    "timestamp": 1793656280010324693,
+    "timestamp_nanosec": "1793656280010324693",
+    "total_supply": "2678203462371749124209537850244264",
+    "validator_proposals": [],
+    "validator_reward": "0"
+  },
+  "treasury": {
+    "dao_account_id": "veyntro.sputnikv2.testnet",
+    "verifier_account_id": "verifier-aje-veyntro.testnet",
+    "verifier_epoch": "0",
+    "confirmed_accountable_funds": "4000000000000000000000000",
+    "operating_reserve": "2928120000000000000000000",
+    "configured_reserve": "100000000000000000000000",
+    "reservation_liabilities": "800000000000000000000000",
+    "pending_payouts": "0",
+    "pending_withdrawals": "0",
+    "money_available": "271880000000000000000000",
+    "actual_balance": "13998226047696256200000000",
+    "ledger_solvent": true,
+    "physical_backing_check": true,
+    "next_reservation_id": "2",
+    "next_operation_id": "0",
+    "last_withdrawal_nonce": "0"
+  },
+  "reservation": {
+    "payment_attempts_left": 32,
+    "id": "0",
+    "beneficiary": "worker-aje-veyntro.testnet",
+    "payout_recipient": "worker-aje-veyntro.testnet",
+    "approved_amount": "400000000000000000000000",
+    "remaining_liability": "400000000000000000000000",
+    "pending_amount": "0",
+    "expires_at_ns": "1794182400000000000",
+    "evidence_policy_hash": "22941ad52c55ba33751c7e27e8738948dc0bf08fae6e708d21b6b661ccc09048",
+    "evidence": null,
+    "last_drawdown_nonce": "0",
+    "status": "Active",
+    "is_expired": false
+  },
+  "user_reported_preparation": {
+    "source_checkout": "7f81f53168b2da2f307c30218f0358daebc496d7",
+    "node": "24.22.1",
+    "type_check_passed": true,
+    "tests_passed": 28,
+    "status": "prepared_unsigned",
+    "signed_or_sent": false,
+    "output_file": "/tmp/veyntro-attestation-1793656233.json",
+    "evidence_digest": "b797a45a04d32bc9d14f37f03bf8e6c01af6a9743e4609db37f9d860dcf516d3",
+    "valid_until_ns": "1793658041436000000"
+  },
+  "seconds_until_prepared_deadline": 1761.425675307,
+  "local_prepared_file_read_by_assistant": false
+}
