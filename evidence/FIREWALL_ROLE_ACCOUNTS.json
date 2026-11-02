@@ -1,0 +1,292 @@
+{
+  "checked_at_utc": "2026-11-02T21:16:55.622625+00:00",
+  "network": "testnet",
+  "roles": [
+    {
+      "account_id": "verifier-aje-veyntro.testnet",
+      "creation_tx_hash": "44qThHMJUfVgDZ88KSuHAQDA4HVxGg6GN5fTxoDi4cW4",
+      "transaction": {
+        "final_execution_status": "FINAL",
+        "receipts_outcome": [
+          {
+            "block_hash": "76egUdPeFcREwRVamRLBasykvb9rPFgjZMe4fFup4BqA",
+            "id": "Csb9qEjGi2FbpYWV7Muf5XcgVg6YDtDG7LLBvRNXjtco",
+            "outcome": {
+              "executor_id": "verifier-aje-veyntro.testnet",
+              "gas_burnt": 7524947687500,
+              "logs": [],
+              "metadata": {
+                "contracts": [
+                  null,
+                  null,
+                  null
+                ],
+                "gas_profile": [],
+                "version": 4
+              },
+              "receipt_ids": [
+                "AjiNduR1zDHCHWgGYGvrXCvgkm9u1Wp6SDaNYF933oAn"
+              ],
+              "status": {
+                "SuccessValue": ""
+              },
+              "tokens_burnt": "7032494768750000000000"
+            },
+            "proof": []
+          },
+          {
+            "block_hash": "6mvVSzs7icuoJpa3haaeDrj4dBAHaZXbiYNHZ3vCQh3x",
+            "id": "AjiNduR1zDHCHWgGYGvrXCvgkm9u1Wp6SDaNYF933oAn",
+            "outcome": {
+              "executor_id": "testnet",
+              "gas_burnt": 223182562500,
+              "logs": [],
+              "metadata": {
+                "contracts": [
+                  {
+                    "local": "AjT2jpkGZaWeopfaP4wj7aFDNUBLFvFmSNUaVdKZJBPf"
+                  }
+                ],
+                "gas_profile": [],
+                "version": 4
+              },
+              "receipt_ids": [],
+              "status": {
+                "SuccessValue": ""
+              },
+              "tokens_burnt": "0"
+            },
+            "proof": [
+              {
+                "direction": "Left",
+                "hash": "2uwC1s8zJ4jTbpWD3Pyvrkztke63KHZtWJV1GRKDv8yz"
+              }
+            ]
+          }
+        ],
+        "status": {
+          "SuccessValue": ""
+        },
+        "transaction": {
+          "actions": [
+            "CreateAccount",
+            {
+              "Transfer": {
+                "deposit": "10000000000000000000000000"
+              }
+            },
+            {
+              "AddKey": {
+                "access_key": {
+                  "nonce": 0,
+                  "permission": "FullAccess"
+                },
+                "public_key": "ed25519:5ZVYRESN7v58XtjLnFupZqXEKG21MTvibvh1cRn99xh8"
+              }
+            }
+          ],
+          "hash": "44qThHMJUfVgDZ88KSuHAQDA4HVxGg6GN5fTxoDi4cW4",
+          "nonce": 51910537664466,
+          "priority_fee": 0,
+          "public_key": "ed25519:ChUjymYE9brJ4KM8xN2mwNxsTMnC6XzZFj3PLFBz18Mu",
+          "receiver_id": "verifier-aje-veyntro.testnet",
+          "signature": "ed25519:2jbSgi1dU8tYaVG8yowA7mi3AJ7YUza5ooqZPe1NeqW3qk7KNgDWQnFDzgAzNNNC6kgg5Lun4cw7ddjFY8gT8Ae7",
+          "signer_id": "testnet"
+        },
+        "transaction_outcome": {
+          "block_hash": "EYjrC4B4TNeEcmPUfFX7eyc4byuifc2rEGSJi4PQuWNE",
+          "id": "44qThHMJUfVgDZ88KSuHAQDA4HVxGg6GN5fTxoDi4cW4",
+          "outcome": {
+            "executor_id": "testnet",
+            "gas_burnt": 824947687500,
+            "logs": [],
+            "metadata": {
+              "gas_profile": null,
+              "version": 1
+            },
+            "receipt_ids": [
+              "Csb9qEjGi2FbpYWV7Muf5XcgVg6YDtDG7LLBvRNXjtco"
+            ],
+            "status": {
+              "SuccessReceiptId": "Csb9qEjGi2FbpYWV7Muf5XcgVg6YDtDG7LLBvRNXjtco"
+            },
+            "tokens_burnt": "82494768750000000000"
+          },
+          "proof": [
+            {
+              "direction": "Right",
+              "hash": "FjZPxPLMedWPSD7yQrowXydERhqSMhRPRA7N7BqehrdV"
+            }
+          ]
+        }
+      },
+      "account": {
+        "amount": "10000000000000000000000000",
+        "block_hash": "DNZSriWZT5v2MpLS8AGrKp83w83u7FRvaQ2dGFGZft32",
+        "block_height": 275953940,
+        "code_hash": "11111111111111111111111111111111",
+        "locked": "0",
+        "storage_paid_at": 0,
+        "storage_usage": 182
+      },
+      "access_keys": {
+        "block_hash": "3vNuA3WSfjwfA7T1RkF9LJRxdfmj5AeYfvd1yCyyHrWT",
+        "block_height": 275953953,
+        "keys": [
+          {
+            "access_key": {
+              "nonce": 275953540000000,
+              "permission": "FullAccess"
+            },
+            "public_key": "ed25519:5ZVYRESN7v58XtjLnFupZqXEKG21MTvibvh1cRn99xh8"
+          }
+        ]
+      }
+    },
+    {
+      "account_id": "worker-aje-veyntro.testnet",
+      "creation_tx_hash": "2xzu5dURGr3sZGBFPJVjQnKNSGzkrT4XfWod8QuBk22c",
+      "transaction": {
+        "final_execution_status": "FINAL",
+        "receipts_outcome": [
+          {
+            "block_hash": "569C8ikBBcX71GPcwuwGgkfAJPfmJvBXWg41mBnNm85d",
+            "id": "5hrr4AEcZNsEu7DFe654wPonzgozdZWTYW6RrE52P7eN",
+            "outcome": {
+              "executor_id": "worker-aje-veyntro.testnet",
+              "gas_burnt": 7524947687500,
+              "logs": [],
+              "metadata": {
+                "contracts": [
+                  null,
+                  null,
+                  null
+                ],
+                "gas_profile": [],
+                "version": 4
+              },
+              "receipt_ids": [
+                "3pAizciLFnHFCaWc19jS2TyN9wzHgXvCRMoEmHZ7L1tk"
+              ],
+              "status": {
+                "SuccessValue": ""
+              },
+              "tokens_burnt": "7032494768750000000000"
+            },
+            "proof": [
+              {
+                "direction": "Left",
+                "hash": "8QuknpK3fMUZ18FPMyzHb7SvjTQLZehQfzfkjcVcu3HW"
+              }
+            ]
+          },
+          {
+            "block_hash": "CEKfCf9yPtbmoR2XD2a59swwQy3hkoCr43pmm4ZADoAw",
+            "id": "3pAizciLFnHFCaWc19jS2TyN9wzHgXvCRMoEmHZ7L1tk",
+            "outcome": {
+              "executor_id": "testnet",
+              "gas_burnt": 223182562500,
+              "logs": [],
+              "metadata": {
+                "contracts": [
+                  {
+                    "local": "AjT2jpkGZaWeopfaP4wj7aFDNUBLFvFmSNUaVdKZJBPf"
+                  }
+                ],
+                "gas_profile": [],
+                "version": 4
+              },
+              "receipt_ids": [],
+              "status": {
+                "SuccessValue": ""
+              },
+              "tokens_burnt": "0"
+            },
+            "proof": []
+          }
+        ],
+        "status": {
+          "SuccessValue": ""
+        },
+        "transaction": {
+          "actions": [
+            "CreateAccount",
+            {
+              "Transfer": {
+                "deposit": "10000000000000000000000000"
+              }
+            },
+            {
+              "AddKey": {
+                "access_key": {
+                  "nonce": 0,
+                  "permission": "FullAccess"
+                },
+                "public_key": "ed25519:C7LrgzYBnmy714xGC8C4r5jjLG5NbN6tn35gBhiouar1"
+              }
+            }
+          ],
+          "hash": "2xzu5dURGr3sZGBFPJVjQnKNSGzkrT4XfWod8QuBk22c",
+          "nonce": 51910588664392,
+          "priority_fee": 0,
+          "public_key": "ed25519:4XhhXfW316DeAYBTxQe7Z15WostJptFpnXdv57KtXVNC",
+          "receiver_id": "worker-aje-veyntro.testnet",
+          "signature": "ed25519:37vPotRfmF6ksj1W95zwAKSzWq5NHp6hiQRPNK25pizYh7MDf7SNLGa3pLNaUbuZzhhLy85Qv54n7AUpTWdwLosV",
+          "signer_id": "testnet"
+        },
+        "transaction_outcome": {
+          "block_hash": "8T3XEHS4bEsbDp2QQh1PQEQuW8CBTm46r7VMwJhjPUWn",
+          "id": "2xzu5dURGr3sZGBFPJVjQnKNSGzkrT4XfWod8QuBk22c",
+          "outcome": {
+            "executor_id": "testnet",
+            "gas_burnt": 824947687500,
+            "logs": [],
+            "metadata": {
+              "gas_profile": null,
+              "version": 1
+            },
+            "receipt_ids": [
+              "5hrr4AEcZNsEu7DFe654wPonzgozdZWTYW6RrE52P7eN"
+            ],
+            "status": {
+              "SuccessReceiptId": "5hrr4AEcZNsEu7DFe654wPonzgozdZWTYW6RrE52P7eN"
+            },
+            "tokens_burnt": "82494768750000000000"
+          },
+          "proof": []
+        }
+      },
+      "account": {
+        "amount": "10000000000000000000000000",
+        "block_hash": "DNZSriWZT5v2MpLS8AGrKp83w83u7FRvaQ2dGFGZft32",
+        "block_height": 275953940,
+        "code_hash": "11111111111111111111111111111111",
+        "locked": "0",
+        "storage_paid_at": 0,
+        "storage_usage": 182
+      },
+      "access_keys": {
+        "block_hash": "3vNuA3WSfjwfA7T1RkF9LJRxdfmj5AeYfvd1yCyyHrWT",
+        "block_height": 275953953,
+        "keys": [
+          {
+            "access_key": {
+              "nonce": 275953587000000,
+              "permission": "FullAccess"
+            },
+            "public_key": "ed25519:C7LrgzYBnmy714xGC8C4r5jjLG5NbN6tn35gBhiouar1"
+          }
+        ]
+      }
+    }
+  ],
+  "firewall_before_deployment": {
+    "amount": "10000000000000000000000000",
+    "block_hash": "ASc7PKvW7A9huQNZRJHWbsf61mUcRQC43hr8VX5beeF4",
+    "block_height": 275953965,
+    "code_hash": "11111111111111111111111111111111",
+    "locked": "0",
+    "storage_paid_at": 0,
+    "storage_usage": 182
+  }
+}
