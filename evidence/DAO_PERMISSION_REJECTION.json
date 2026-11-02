@@ -1,0 +1,452 @@
+{
+  "checked_at_utc": "2026-11-02T20:43:09.965427+00:00",
+  "network": "testnet",
+  "transaction_id": "454bNnvsLQwwowW3bNLvXminfoVHR3BSxnED1D1gueEt",
+  "expected_outcome": "unauthorized direct council funding rejected",
+  "execution": {
+    "ok": true,
+    "result": {
+      "final_execution_status": "FINAL",
+      "receipts": [
+        {
+          "predecessor_id": "aje-veyntro.testnet",
+          "priority": 0,
+          "receipt": {
+            "Action": {
+              "actions": [
+                {
+                  "FunctionCall": {
+                    "args": "e30=",
+                    "deposit": "1",
+                    "gas": 30000000000000,
+                    "method_name": "fund_treasury"
+                  }
+                }
+              ],
+              "gas_price": "1000000000",
+              "input_data_ids": [],
+              "is_promise_yield": false,
+              "output_data_receivers": [],
+              "signer_id": "aje-veyntro.testnet",
+              "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+            }
+          },
+          "receipt_id": "7Aw6AAeZKM5ZAdF7oEV1ffuFYdj9BZiiNwKsNrbzX4jL",
+          "receiver_id": "receiver.aje-veyntro.testnet"
+        },
+        {
+          "predecessor_id": "system",
+          "priority": 0,
+          "receipt": {
+            "Action": {
+              "actions": [
+                {
+                  "Transfer": {
+                    "deposit": "1"
+                  }
+                }
+              ],
+              "gas_price": "0",
+              "input_data_ids": [],
+              "is_promise_yield": false,
+              "output_data_receivers": [],
+              "signer_id": "system",
+              "signer_public_key": "ed25519:11111111111111111111111111111111"
+            }
+          },
+          "receipt_id": "2x785Jb49ecYrKBuhtkTRZp3L4xYCexZDKYpKceUgC4L",
+          "receiver_id": "aje-veyntro.testnet"
+        },
+        {
+          "predecessor_id": "system",
+          "priority": 0,
+          "receipt": {
+            "Action": {
+              "actions": [
+                {
+                  "Transfer": {
+                    "deposit": "30775367435633700000000"
+                  }
+                }
+              ],
+              "gas_price": "0",
+              "input_data_ids": [],
+              "is_promise_yield": false,
+              "output_data_receivers": [],
+              "signer_id": "aje-veyntro.testnet",
+              "signer_public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz"
+            }
+          },
+          "receipt_id": "73ghBi74vvPFVrdUzXUjZyXKLMzvky2VJwpriMq5tLCe",
+          "receiver_id": "aje-veyntro.testnet"
+        }
+      ],
+      "receipts_outcome": [
+        {
+          "block_hash": "FtABfThW9Lq7ET6JdZJp5vmzYJvr9BqMYiat2iYwGrRG",
+          "id": "7Aw6AAeZKM5ZAdF7oEV1ffuFYdj9BZiiNwKsNrbzX4jL",
+          "outcome": {
+            "executor_id": "receiver.aje-veyntro.testnet",
+            "gas_burnt": 1127256033763,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                {
+                  "local": "BAeg5fB4ECXTgjeZHnqJzzGPgt9Ayq6N9Ah4WdA63V63"
+                }
+              ],
+              "gas_profile": [
+                {
+                  "cost": "BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "1853376777"
+                },
+                {
+                  "cost": "CONTRACT_LOADING_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "35445963"
+                },
+                {
+                  "cost": "CONTRACT_LOADING_BYTES",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "141104006415"
+                },
+                {
+                  "cost": "READ_MEMORY_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "5219726400"
+                },
+                {
+                  "cost": "READ_MEMORY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "117841323"
+                },
+                {
+                  "cost": "READ_REGISTER_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "5034330372"
+                },
+                {
+                  "cost": "READ_REGISTER_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "7096464"
+                },
+                {
+                  "cost": "STORAGE_READ_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "56356845749"
+                },
+                {
+                  "cost": "STORAGE_READ_KEY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "154762665"
+                },
+                {
+                  "cost": "STORAGE_READ_VALUE_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "297383212"
+                },
+                {
+                  "cost": "UTF8_DECODING_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "3111779061"
+                },
+                {
+                  "cost": "UTF8_DECODING_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "7581092454"
+                },
+                {
+                  "cost": "WASM_INSTRUCTION",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "6480849012"
+                },
+                {
+                  "cost": "WRITE_MEMORY_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "5607589722"
+                },
+                {
+                  "cost": "WRITE_MEMORY_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "196111584"
+                },
+                {
+                  "cost": "WRITE_REGISTER_BASE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "5731044972"
+                },
+                {
+                  "cost": "WRITE_REGISTER_BYTE",
+                  "cost_category": "WASM_HOST_COST",
+                  "gas_used": "273712608"
+                }
+              ],
+              "version": 4
+            },
+            "receipt_ids": [
+              "2x785Jb49ecYrKBuhtkTRZp3L4xYCexZDKYpKceUgC4L",
+              "73ghBi74vvPFVrdUzXUjZyXKLMzvky2VJwpriMq5tLCe"
+            ],
+            "status": {
+              "Failure": {
+                "ActionError": {
+                  "index": 0,
+                  "kind": {
+                    "FunctionCallError": {
+                      "ExecutionError": "Smart contract panicked: Only the DAO can add money"
+                    }
+                  }
+                }
+              }
+            },
+            "tokens_burnt": "112725603376300000000"
+          },
+          "proof": []
+        },
+        {
+          "block_hash": "28Lfaimpt7ZSaRGJhzWtYmJ9r92wHxUshSSg4rADYH59",
+          "id": "2x785Jb49ecYrKBuhtkTRZp3L4xYCexZDKYpKceUgC4L",
+          "outcome": {
+            "executor_id": "aje-veyntro.testnet",
+            "gas_burnt": 223182562500,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                null
+              ],
+              "gas_profile": [],
+              "version": 4
+            },
+            "receipt_ids": [],
+            "status": {
+              "SuccessValue": ""
+            },
+            "tokens_burnt": "0"
+          },
+          "proof": [
+            {
+              "direction": "Right",
+              "hash": "8FzYt4MMbF3CBhf5oX5peaCPjZsVAtHo9Q2RAoj6jeYe"
+            }
+          ]
+        },
+        {
+          "block_hash": "28Lfaimpt7ZSaRGJhzWtYmJ9r92wHxUshSSg4rADYH59",
+          "id": "73ghBi74vvPFVrdUzXUjZyXKLMzvky2VJwpriMq5tLCe",
+          "outcome": {
+            "executor_id": "aje-veyntro.testnet",
+            "gas_burnt": 223182562500,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                null
+              ],
+              "gas_profile": [],
+              "version": 4
+            },
+            "receipt_ids": [],
+            "status": {
+              "SuccessValue": ""
+            },
+            "tokens_burnt": "0"
+          },
+          "proof": [
+            {
+              "direction": "Left",
+              "hash": "Hpg8XtbEx5R7Yuby6cF8TqNVYacRAMafYZ8K1gJzuX2m"
+            }
+          ]
+        }
+      ],
+      "status": {
+        "Failure": {
+          "ActionError": {
+            "index": 0,
+            "kind": {
+              "FunctionCallError": {
+                "ExecutionError": "Smart contract panicked: Only the DAO can add money"
+              }
+            }
+          }
+        }
+      },
+      "transaction": {
+        "actions": [
+          {
+            "FunctionCall": {
+              "args": "e30=",
+              "deposit": "1",
+              "gas": 30000000000000,
+              "method_name": "fund_treasury"
+            }
+          }
+        ],
+        "hash": "454bNnvsLQwwowW3bNLvXminfoVHR3BSxnED1D1gueEt",
+        "nonce": 275945842000005,
+        "priority_fee": 0,
+        "public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz",
+        "receiver_id": "receiver.aje-veyntro.testnet",
+        "signature": "ed25519:2627PWEV4BRDca4mwXo8QqrrSbB4qReSdER5jHVsMLggX2aHMQBzyLvgomad1PxhifcstRG5f5UyfnP9PxevUgmo",
+        "signer_id": "aje-veyntro.testnet"
+      },
+      "transaction_outcome": {
+        "block_hash": "2yTKkxiDZwLfs1wEt1ZcGCEorGTu5McXMrbfUy4xNvaZ",
+        "id": "454bNnvsLQwwowW3bNLvXminfoVHR3BSxnED1D1gueEt",
+        "outcome": {
+          "executor_id": "aje-veyntro.testnet",
+          "gas_burnt": 308774755725,
+          "logs": [],
+          "metadata": {
+            "gas_profile": null,
+            "version": 1
+          },
+          "receipt_ids": [
+            "7Aw6AAeZKM5ZAdF7oEV1ffuFYdj9BZiiNwKsNrbzX4jL"
+          ],
+          "status": {
+            "SuccessReceiptId": "7Aw6AAeZKM5ZAdF7oEV1ffuFYdj9BZiiNwKsNrbzX4jL"
+          },
+          "tokens_burnt": "30877475572500000000"
+        },
+        "proof": []
+      }
+    }
+  },
+  "funding_state": {
+    "ok": true,
+    "result": {
+      "block_hash": "3SddSKZLp6m7qTHUAFSxxMADWoRAEPo87qLoUFtEeXrD",
+      "block_height": 275950399,
+      "logs": [],
+      "result": [
+        123,
+        34,
+        100,
+        97,
+        111,
+        95,
+        97,
+        99,
+        99,
+        111,
+        117,
+        110,
+        116,
+        95,
+        105,
+        100,
+        34,
+        58,
+        34,
+        118,
+        101,
+        121,
+        110,
+        116,
+        114,
+        111,
+        46,
+        115,
+        112,
+        117,
+        116,
+        110,
+        105,
+        107,
+        118,
+        50,
+        46,
+        116,
+        101,
+        115,
+        116,
+        110,
+        101,
+        116,
+        34,
+        44,
+        34,
+        116,
+        111,
+        116,
+        97,
+        108,
+        95,
+        114,
+        101,
+        99,
+        101,
+        105,
+        118,
+        101,
+        100,
+        34,
+        58,
+        34,
+        49,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        34,
+        44,
+        34,
+        102,
+        117,
+        110,
+        100,
+        105,
+        110,
+        103,
+        95,
+        99,
+        111,
+        117,
+        110,
+        116,
+        34,
+        58,
+        34,
+        49,
+        34,
+        125
+      ]
+    },
+    "decoded": {
+      "dao_account_id": "veyntro.sputnikv2.testnet",
+      "total_received": "10000000000000000000000",
+      "funding_count": "1"
+    }
+  },
+  "account": {
+    "ok": true,
+    "result": {
+      "amount": "1508882723020688000000000",
+      "block_hash": "3SddSKZLp6m7qTHUAFSxxMADWoRAEPo87qLoUFtEeXrD",
+      "block_height": 275950399,
+      "code_hash": "BAeg5fB4ECXTgjeZHnqJzzGPgt9Ayq6N9Ah4WdA63V63",
+      "locked": "0",
+      "storage_paid_at": 0,
+      "storage_usage": 129817
+    }
+  }
+}
