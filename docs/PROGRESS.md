@@ -1,8 +1,8 @@
 # Veyntro — current progress
 
 DATE/TIME (UTC): 2026-11-02T20:17:19.855858+00:00
-PHASE / MILESTONE: Phase 1 — receiver deployment verified; DAO-approved funding pending
-STATUS: IN_PROGRESS
+PHASE / MILESTONE: Phase 1 DAO integration VERIFIED; Phase 2 Commitment Firewall next
+STATUS: VERIFIED (Phase 1 only)
 LAST VERIFIED COMMIT: bcb518ea38a1a4786f1b4d243e578f23335eb771 (GitHub source baseline before receiver work).
 REPOSITORY: https://github.com/0xaje/Veyntro
 NETWORK / CONTRACT IDS: NEAR testnet; council aje-veyntro.testnet; DAO veyntro.sputnikv2.testnet. Receiver account receiver.aje-veyntro.testnet is CREATED; code and initialization are VERIFIED.
@@ -72,3 +72,11 @@ Next user action: `bash scripts/receiver-integration.sh approve 0`. This revalid
 Vote/execution tx 4nwqawJPDf5jnurzTPsVRjMSigjL1LajjcadyKrQ4arU is FINAL with successful final status and no failing returned receipts. EXPERIMENTAL_tx_status exposes the actual receiver receipt: predecessor_id=veyntro.sputnikv2.testnet, original signer=aje-veyntro.testnet, method fund_treasury, deposit=10000000000000000000000 yoctoNEAR. Receiver funded event recorded exactly 0.01 NEAR once. Live funding state confirms total_received=10000000000000000000000 and funding_count=1. Proposal 0 is Approved with council [1,0,0] and the council member's Approve vote. Receiver code hash remains BAeg5fB4ECXTgjeZHnqJzzGPgt9Ayq6N9Ah4WdA63V63. Evidence: evidence/DAO_FUNDING_EXECUTION.json.
 
 Core DAO-to-receiver payable integration is VERIFIED. Phase 1 still requires the planned live negative permission check: direct council call to receiver.fund_treasury with 1 yoctoNEAR must fail with 'Only the DAO can add money'. Verify final failure and unchanged total/count. Do not repeat proposal submission/approval. Receiver already reached its 0.01 NEAR integration cap. Full Commitment Firewall remains NOT IMPLEMENTED.
+
+## Phase 1 exit gate VERIFIED — 2026-11-02
+
+Direct council funding attempt 454bNnvsLQwwowW3bNLvXminfoVHR3BSxnED1D1gueEt is FINAL with the expected Failure: Smart contract panicked: Only the DAO can add money. No funded event was emitted. Live get_funding_state remains total_received=10000000000000000000000 (0.01 NEAR), funding_count=1 and correct DAO. Receiver balance remains 1508882723020688000000000 yoctoNEAR, matching the pre-rejection snapshot. The attached 1 yoctoNEAR did not remain with the receiver. User paid testnet gas. Evidence: evidence/DAO_PERMISSION_REJECTION.json.
+
+Phase 1 is VERIFIED: actual SputnikDAO creation, real proposal 0 and council vote, payable DAO-to-receiver execution with actual predecessor/deposit proof, deployed code verification, and live rejection of council bypass with unchanged state. This certifies the integration gate only. It does not certify full treasury accounting, payout callbacks, GitHub evidence, frontend or operator functionality.
+
+NEXT MILESTONE: Phase 2 — implement the separate Commitment Firewall with checked backing/reservations, pending-safe payouts and withdrawals, authenticated callbacks, nonce/replay protection, expiry and storage reserve protections. Review the master plan and contract state/accounting design before coding; keep the small receiver isolated and preserve this live evidence. No additional receiver transactions are needed.
