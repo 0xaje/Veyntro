@@ -5,7 +5,7 @@ PHASE / MILESTONE: Phase 1 — DAO-only receiver built and tested locally; deplo
 STATUS: IN_PROGRESS
 LAST VERIFIED COMMIT: bcb518ea38a1a4786f1b4d243e578f23335eb771 (GitHub source baseline before receiver work).
 REPOSITORY: https://github.com/0xaje/Veyntro
-NETWORK / CONTRACT IDS: NEAR testnet; council aje-veyntro.testnet; DAO veyntro.sputnikv2.testnet. Target receiver receiver.aje-veyntro.testnet is NOT DEPLOYED.
+NETWORK / CONTRACT IDS: NEAR testnet; council aje-veyntro.testnet; DAO veyntro.sputnikv2.testnet. Receiver account receiver.aje-veyntro.testnet is CREATED; code is NOT DEPLOYED.
 
 ## Completed and verified
 
@@ -46,3 +46,11 @@ Receiver/CLI stages require user computer keys and remain unexecuted. SDK/WASM r
 Cargo.toml; Cargo.lock; rust-toolchain.toml; contracts/dao-receiver/*; scripts/build-receiver.sh; scripts/receiver-integration.sh; scripts/receiver-governance.py; docs/DAO_RECEIVER.md; docs/PROGRESS.md; docs/PROGRESS_HISTORY.md; docs/BLOCKERS.md; docs/DECISIONS.md; evidence/RECEIVER_BUILD.json; evidence/receiver-build.log; README.md.
 
 Earlier inspection details are preserved in docs/PROGRESS_HISTORY.md. Old missing-tool, missing-repository and uncreated-DAO notes there are historical.
+
+## Receiver account creation verified — 2026-11-02
+
+User reproduced all 9 local tests and the WASM release build. User-reported local WASM SHA256: 970db1c72542dbd325c37228188f013b0b1e2eb6bb2714b9de8ae1fd1206c1d4. This differs from the assistant's local artifact; builds are not claimed independently reproducible. Do not rebuild or replace the user's WASM between deployment and deployed-code hash verification.
+
+Creation transaction bW9JVbuFEFRpc5oz3Q4honvwkeZ7AUoNAtCosDqcDUV independently verified FINAL with SuccessValue and no failing returned receipts. receiver.aje-veyntro.testnet has 1.5 test NEAR, public key ed25519:2gTwxY1r3ZtLPtcALErwZjYV9sSsAw72S9UXx7psxx8j, and no deployed contract at block 275949108. The preliminary CLI validation error did not prevent the creation transaction succeeding. Do not repeat account creation.
+
+Next action: user runs `bash scripts/receiver-integration.sh deploy` from the same built checkout. Then verify final deploy/init receipts, onchain code against user's actual WASM hash, configured DAO, funding_count=0 and total_received=0 before proposing funding. Evidence: evidence/RECEIVER_ACCOUNT_CREATION.json. No deployment or governance-funded call is claimed yet.
