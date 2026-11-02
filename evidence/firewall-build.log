@@ -1,0 +1,96 @@
+   Compiling veyntro-commitment-firewall v0.1.0 (/workspace/scratch/7efd416468c4/contracts/commitment-firewall)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.14s
+     Running unittests src/lib.rs (target/debug/deps/veyntro_commitment_firewall-b83d5c2c701c5d9c)
+
+running 56 tests
+test tests::expiry_is_permissionless_and_idempotent ... ok
+test tests::emergency_verifier_rotation_does_not_require_spendable_funds ... ok
+test tests::actual_balance_shortfall_never_increases_capacity ... ok
+test tests::expiry_during_pending_payment_releases_only_unused_and_failure_releases_rest ... ok
+test tests::cancellation_keeps_pending_payment_backed ... ok
+test tests::expiry_during_pending_success_does_not_release_paid_money_twice ... ok
+test tests::callback_after_expiry_without_cleanup_releases_unused_money ... ok
+test tests::cancellation_during_successful_payout_does_not_double_release ... ok
+test tests::growing_storage_reserve_is_protected ... ok
+test tests::failed_callback_after_expiry_without_cleanup_releases_full_unused_liability ... ok
+test tests::failed_withdrawal_retry_requires_a_new_nonce ... ok
+test tests::full_payment_closes_commitment_and_returns_unused_storage_allowance ... ok
+test tests::failed_payout_retains_backing_and_retry_uses_new_nonce ... ok
+test tests::pending_payout_stays_in_liabilities_without_double_subtraction ... ok
+test tests::records_only_dao_funding_not_deployment_or_direct_balance ... ok
+test tests::pending_state_survives_serialization_and_then_reconciles ... ok
+test tests::rejects_attestation_by_other_account - should panic ... ok
+test tests::rejects_beneficiary_cancellation - should panic ... ok
+test tests::prepaid_storage_allows_payment_when_ledger_has_no_free_capacity ... ok
+test tests::rejects_attestation_replay - should panic ... ok
+test tests::rejects_attestation_that_expired_before_the_commitment - should panic ... ok
+test tests::rejects_hostile_initialization - should panic ... ok
+test tests::rejects_deadline_at_current_time - should panic ... ok
+test tests::rejects_early_release - should panic ... ok
+test tests::rejects_invalid_policy_hash - should panic ... ok
+test tests::rejects_callback_spoof - should panic ... ok
+test tests::rejects_callback_with_multiple_results - should panic ... ok
+test tests::rejects_callback_without_a_result - should panic ... ok
+test tests::rejects_non_dao_funding - should panic ... ok
+test tests::rejects_overlapping_commitments - should panic ... ok
+test tests::rejects_payment_by_dao_or_other_account - should panic ... ok
+test tests::rejects_payout_above_remaining - should panic ... ok
+test tests::rejects_payout_at_exact_expiry - should panic ... ok
+test tests::rejects_rotated_out_verifier - should panic ... ok
+test tests::rejects_tiny_operating_reserve - should panic ... ok
+test tests::rejects_replay_after_failure - should panic ... ok
+test tests::rejects_second_inflight_payment_on_same_commitment - should panic ... ok
+test tests::rejects_stale_evidence - should panic ... ok
+test tests::rejects_unauthorized_commitment - should panic ... ok
+test tests::rejects_unbounded_public_listing - should panic ... ok
+test tests::rejects_verifier_withdrawal - should panic ... ok
+test tests::rejects_wrong_callback_kind - should panic ... ok
+test tests::rejects_success_response_with_unexpected_native_transfer_data - should panic ... ok
+test tests::rejects_unverified_payment - should panic ... ok
+test tests::rejects_withdrawal_of_committed_money - should panic ... ok
+test tests::rejects_wrong_evidence_policy - should panic ... ok
+test tests::replayed_withdrawal_cannot_schedule_a_second_transfer - should panic ... ok
+test tests::rejects_zero_funding - should panic ... ok
+test tests::views_show_no_fabricated_evidence_before_verification ... ok
+test tests::verifier_rotation_invalidates_unspent_evidence ... ok
+test tests::success_settles_exactly_once ... ok
+test tests::withdrawal_is_reserved_then_restored_on_failure ... ok
+test tests::simultaneous_reservations_and_out_of_order_callbacks_preserve_ledger ... ok
+test tests::withdrawal_success_settles_once ... ok
+test tests::repeated_failed_requests_cannot_create_unbounded_storage - should panic ... ok
+test tests::many_payment_failure_success_interleavings_preserve_all_invariants ... ok
+
+test result: ok. 56 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.17s
+
+     Running unittests src/lib.rs (target/debug/deps/veyntro_dao_receiver-c5d92ff3be5098de)
+
+running 9 tests
+test tests::rejects_setup_by_another_account - should panic ... ok
+test tests::rejects_signer_spoofing_through_another_contract - should panic ... ok
+test tests::rejects_council_bypassing_governance - should panic ... ok
+test tests::rejects_amount_overflow - should panic ... ok
+test tests::rejects_zero_deposit - should panic ... ok
+test tests::rejects_counter_overflow - should panic ... ok
+test tests::rejects_funding_above_the_integration_limit - should panic ... ok
+test tests::accepts_dao_receipt_even_when_council_signed_the_original_transaction ... ok
+test tests::starts_with_no_recorded_funding ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+   Doc-tests veyntro_commitment_firewall
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests veyntro_dao_receiver
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Checking veyntro-commitment-firewall v0.1.0 (/workspace/scratch/7efd416468c4/contracts/commitment-firewall)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.81s
+   Compiling veyntro-commitment-firewall v0.1.0 (/workspace/scratch/7efd416468c4/contracts/commitment-firewall)
+    Finished `release` profile [optimized] target(s) in 1.65s
+a850073c270245b74668bf692f3fcc9a763ed791f94b4786427cbb39dfc4862a  target/wasm32-unknown-unknown/release/veyntro_commitment_firewall.wasm

@@ -26,3 +26,11 @@ User clarified that repository creation waits until November 1 and requested con
 Implement a separate capped receiver for the Phase 1 DAO call gate. It is not deployed as the final treasury contract. It has no withdrawal method and accepts at most 0.01 NEAR through its funding method. Use user-signed CLI stages; never move keys to this workspace.
 
 Pin near-sdk 5.30.0 to Rust 1.95 after confirming official MSRV; compile with --cfg near for the onchain path and lock transitive dependencies. Initial Rust 1.93 attempt failed; final local build passes. This is a local release build, not container reproducibility or live compatibility proof.
+
+## 2026-11-02 — Commitment Firewall accounting and bounded storage
+
+Follow master-plan sections 3–5 in a separate contract; preserve receiver evidence. Use immediate-write legacy UnorderedMap collections so post-write storage measurements occur before promises are scheduled. Preallocate fixed evidence fields and 32 operation-storage slots per commitment, measured at most 1024 bytes each, to prevent fully reserved funds blocking payment-record creation and unbounded beneficiary storage growth. Unused slot allowance releases on close.
+
+Add a DAO withdrawal nonce argument to the conceptual master-plan method: callback-failure/governance retries must not create a second transfer for one authorization. This is required replay protection, not a new product feature. Actual balance is a conservative cap; pending transfers/refunds may pause new actions. No admin method can fabricate callback outcomes. Keep emergency verifier rotation possible even during impaired backing.
+
+This implements onchain evidence authorization only; actual GitHub checks remain Phase 3. Full testnet lifecycle remains a Phase 2 exit gate.

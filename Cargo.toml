@@ -1,5 +1,5 @@
 [workspace]
-members = ["contracts/dao-receiver"]
+members = ["contracts/dao-receiver", "contracts/commitment-firewall"]
 resolver = "2"
 
 [profile.release]

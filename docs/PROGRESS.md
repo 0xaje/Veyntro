@@ -1,82 +1,49 @@
 # Veyntro — current progress
 
-DATE/TIME (UTC): 2026-11-02T20:17:19.855858+00:00
-PHASE / MILESTONE: Phase 1 DAO integration VERIFIED; Phase 2 Commitment Firewall next
-STATUS: VERIFIED (Phase 1 only)
-LAST VERIFIED COMMIT: bcb518ea38a1a4786f1b4d243e578f23335eb771 (GitHub source baseline before receiver work).
+DATE/TIME (UTC): 2026-11-02T21:05:47.503182+00:00
+PHASE / MILESTONE: Phase 2 — Commitment Firewall implemented and tested locally; live lifecycle pending
+STATUS: IN_PROGRESS
+LAST VERIFIED COMMIT: 9aa5212c66f8867e8f315625c8d197cee7844750 (source baseline before this change).
 REPOSITORY: https://github.com/0xaje/Veyntro
-NETWORK / CONTRACT IDS: NEAR testnet; council aje-veyntro.testnet; DAO veyntro.sputnikv2.testnet. Receiver account receiver.aje-veyntro.testnet is CREATED; code and initialization are VERIFIED.
+NETWORK / CONTRACT IDS: testnet; DAO veyntro.sputnikv2.testnet; council aje-veyntro.testnet; receiver receiver.aje-veyntro.testnet verified. Firewall, verifier and beneficiary accounts NOT CREATED/DEPLOYED by this session.
 
-## Completed and verified
+## Source of truth and completed milestones
 
-- DAO creation and actual council/policy verified previously. Creation tx: 6oV4Y8DX7hxXK2FB2hietaongMPtKzZzbaWazMAyP8JX. Live proposal bond was 1 NEAR; voting period 7 days.
-- Implemented contracts/dao-receiver. Account-only initialization; DAO-predecessor authorization; positive deposits; checked totals/counter; JSON funded events; public get_funding_state. Total recorded funding capped at 0.01 test NEAR. No withdrawals.
-- Pin Rust 1.95.0, near-sdk 5.30.0 and Cargo.lock. Verified SDK upstream requires Rust 1.95 and protocol 88. Earlier Rust 1.93 attempt failed with MSRV errors; final toolchain resolves them.
-- scripts/build-receiver.sh passes formatting, 9 SDK unit tests, Clippy warnings-as-errors and locked WASM release build with --cfg near.
-- WASM: 129393 bytes; SHA256 738b22839e7ec0a17ae6dcfea48ab0af9e9525ec7f154dbea9e5d38e0194b723.
-- Added user-signed deployment/governance scripts. Python helper checks deployed WASM hash, receiver state and actual policy. Approval preparation validates the selected real proposal before signing. Shell/Python syntax and hash-conversion checks passed. Invalid proposal ID rejected locally.
+Read master plan version 1.2, AGENTS.md and authoritative GitHub progress before coding. Phase 1 is independently VERIFIED: creation, proposal 0, council approval, actual 0.01 NEAR receipt from DAO to receiver and rejected direct council call with unchanged ledger. Full previous progress is preserved in docs/PHASE_1_PROGRESS.md and real receipt files remain in evidence/. Do not repeat Phase 1 writes or replace its receiver.
 
-## Exact commands / evidence
+## Phase 2 work completed locally
 
-PATH="$HOME/.cargo/bin:$PATH" bash scripts/build-receiver.sh — exit 0.
-python -m py_compile scripts/receiver-governance.py scripts/preflight.py — passed.
-bash -n scripts/receiver-integration.sh scripts/build-receiver.sh — passed.
-Local SDK harness tests are development tests, NOT transactions or live payment proof. See evidence/RECEIVER_BUILD.json, evidence/receiver-build.log, evidence/DAO_INTEGRATION.md and docs/DAO_RECEIVER.md.
+- New contracts/commitment-firewall, separate from the deployed receiver. DAO-only funding/reservation/cancellation/withdrawal/verifier rotation; beneficiary-only payouts to immutable recipients; permissionless expiry.
+- Checked accounting: DAO accountable funds, storage/gas reserve, remaining liabilities INCLUDING pending payouts, pending uncommitted withdrawals, conservative actual-balance cap. Deployment/direct-transfer balances are not free accountable funds.
+- Pending transfer operations, private typed callbacks, exactly one bounded native-transfer result, exactly-once settlement, failure recovery and cancellation/expiry interleavings. Missing/failed callbacks stay encumbered; no invented reconciliation success.
+- Drawdown and DAO withdrawal nonces prevent replay. A failed transfer consumes its nonce; retries use a new nonce.
+- Fixed evidence slots; verifier-only expiring policy-matched attestations with nonce/epoch checks. Rotation invalidates unspent old attestations. Real GitHub API service is NOT implemented here.
+- Future operation storage reserved up front: 32 attempts per commitment, 1024 bytes each, actual growth checked. Unused allowance released on close. See docs/FIREWALL_ACCOUNTING.md for costs/limits and docs/FIREWALL_API.md for parameters.
+- Paginated public views and actual-state events. No UI redesign, frontend, fake balances or hosted product was added.
 
-## Current boundaries
+## Verification commands and actual results
 
-The receiver is a separate integration contract, not the Commitment Firewall. It does not create commitments or pay beneficiaries. No receiver account, deployment, proposal or vote has been executed by the assistant. The user controls signing keys. Receiver code replacement remains possible through its user-controlled full-access key; no trustless custody claim. DAO factory auto_update is true.
+PATH="$HOME/.cargo/bin:$PATH" bash scripts/build-firewall.sh — exit 0. Formatting passed; 56 firewall tests and 9 receiver tests passed; Clippy with -D warnings passed; locked WASM release build passed using --cfg near.
 
-Product wallet UI, verifier, operator and full financial accounting remain NOT IMPLEMENTED. No redesign or fake activity. Installed third-party skills were not found in this refreshed environment, so no skill-based review is claimed. Manual review covered authorization, checked arithmetic, bounded test funding and signing boundaries.
+Rust 1.95.0; near-sdk 5.30.0; existing lockfile updated only for the new workspace member. WASM 219782 bytes, SHA256 a850073c270245b74668bf692f3fcc9a763ed791f94b4786427cbb39dfc4862a. This local build is not claimed independently reproducible. The user's deployed receiver hash remains separately recorded.
+
+CI workflow added with immutable checkout revision, read-only contents permission and pinned project Rust toolchain. CI has NOT been claimed passed; check the actual run after publication. Third-party quality/design skill files were not found in the refreshed local skill locations; no skill-specific audit is claimed. Manual review identified and fixed prepaid payment storage and withdrawal replay issues.
+
+Evidence: evidence/FIREWALL_BUILD.json; evidence/firewall-build.log; evidence/FIREWALL_CHECK_ATTEMPTS.md. Local SDK harness tests are development checks, not real blockchain or GitHub activity.
+
+## Remaining live gates / risks
+
+- New full-contract account, separate verifier and beneficiary accounts; funding plan using actual testnet balances and free faucet only. Candidate names firewall-aje-veyntro.testnet, verifier-aje-veyntro.testnet, worker-aje-veyntro.testnet returned UNKNOWN_ACCOUNT at block 275952357 (availability observation only). No keys generated in this workspace.
+- Deployment and generated ABI guard checks; real DAO funding and two commitments; rejected overcommitment; real evidence-backed payout; failed/retried transfer; expiry release; callbacks/final receipts and public numerical reconciliation. None is verified yet for the firewall.
+- Full-access deployment key authority and callback liveness/recovery need review. A stuck callback remains pending rather than releasing funds. No security-audit or trustless-custody claim.
+- Storage reserve is conservative and includes future operation slots. Pending refunds/settlement may temporarily pause new actions. Withdrawing the exact displayed capacity can need extra operation storage margin.
+- GitHub verifier service, wallet frontend, hosting, indexing and operator remain unimplemented. Phase 0 detailed competitor coverage and Nigeria/prize/KYC confirmation remain open; do not claim those resolved.
 
 ## Next exact action
 
-1. User obtains current repository source and runs bash scripts/build-receiver.sh. Toolchain components install through rustup; install rustup first if missing.
-2. User runs bash scripts/receiver-integration.sh create-account. It creates receiver.aje-veyntro.testnet using 1.5 test NEAR from council wallet, plus fees. Return actual tx hash; verify final account creation.
-3. Run deploy stage only after account creation is verified, then verify final receipts, deployed code hash and initial zero funding state.
-4. Run propose stage; obtain actual proposal ID. Run approve ACTUAL_ID only after matching proposal checks; capture final vote execution and funded event.
-5. Verify receiver recorded exactly 0.01 NEAR once, check all receipts, and demonstrate rejected direct council funding. Only then mark Phase 1 VERIFIED and continue to the Commitment Firewall.
+1. Publish this verified source and evidence, then user pulls main in ~/Veyntro-build and runs bash scripts/build-firewall.sh. Record user's actual artifact hash.
+2. User creates NEW firewall-aje-veyntro.testnet through the free CLI faucet, keeping keys locally. Verify creation/final receipts and balance; do not deploy over the receiver.
+3. Establish separate actual verifier and beneficiary accounts, review contract/key authority and live funding amounts, then prepare initialization and DAO funding proposals from real state.
+4. Keep Phase 2 IN_PROGRESS until its entire real testnet financial lifecycle and final evidence gate pass. No more receiver writes are needed.
 
-## Open issues
-
-Receiver/CLI stages require user computer keys and remain unexecuted. SDK/WASM runtime compatibility remains unverified until actual deployment/call. Phase 0 competitor coverage and Nigeria-specific prize eligibility/KYC are not fully verified and remain tracked, without blocking this bounded testnet integration preparation. Public hosted product not available yet.
-
-## Files changed
-
-Cargo.toml; Cargo.lock; rust-toolchain.toml; contracts/dao-receiver/*; scripts/build-receiver.sh; scripts/receiver-integration.sh; scripts/receiver-governance.py; docs/DAO_RECEIVER.md; docs/PROGRESS.md; docs/PROGRESS_HISTORY.md; docs/BLOCKERS.md; docs/DECISIONS.md; evidence/RECEIVER_BUILD.json; evidence/receiver-build.log; README.md.
-
-Earlier inspection details are preserved in docs/PROGRESS_HISTORY.md. Old missing-tool, missing-repository and uncreated-DAO notes there are historical.
-
-## Receiver account creation verified — 2026-11-02
-
-User reproduced all 9 local tests and the WASM release build. User-reported local WASM SHA256: 970db1c72542dbd325c37228188f013b0b1e2eb6bb2714b9de8ae1fd1206c1d4. This differs from the assistant's local artifact; builds are not claimed independently reproducible. Do not rebuild or replace the user's WASM between deployment and deployed-code hash verification.
-
-Creation transaction bW9JVbuFEFRpc5oz3Q4honvwkeZ7AUoNAtCosDqcDUV independently verified FINAL with SuccessValue and no failing returned receipts. receiver.aje-veyntro.testnet has 1.5 test NEAR, public key ed25519:2gTwxY1r3ZtLPtcALErwZjYV9sSsAw72S9UXx7psxx8j, and no deployed contract at block 275949108. The preliminary CLI validation error did not prevent the creation transaction succeeding. Do not repeat account creation.
-
-Next action: user runs `bash scripts/receiver-integration.sh deploy` from the same built checkout. Then verify final deploy/init receipts, onchain code against user's actual WASM hash, configured DAO, funding_count=0 and total_received=0 before proposing funding. Evidence: evidence/RECEIVER_ACCOUNT_CREATION.json. No deployment or governance-funded call is claimed yet.
-
-## Receiver deployment verified — 2026-11-02
-
-Transaction 3CvGqXFDC7EabLBEga4symki7BYYFvajYgNSeZx6ibd4 independently returned FINAL and SuccessValue; all returned receipts succeeded. At block 275949494, receiver.aje-veyntro.testnet code hash BAeg5fB4ECXTgjeZHnqJzzGPgt9Ayq6N9Ah4WdA63V63 matches the user's WASM SHA256 970db1c72542dbd325c37228188f013b0b1e2eb6bb2714b9de8ae1fd1206c1d4. Live get_funding_state returned dao_account_id=veyntro.sputnikv2.testnet, total_received=0 and funding_count=0. Evidence: evidence/RECEIVER_DEPLOYMENT.json.
-
-Next: user runs `bash scripts/receiver-integration.sh propose` from the same checkout/artifact. It fetches the current policy bond and verifies local/deployed code and initial state before submitting. Capture actual proposal transaction hash and returned proposal ID; do not guess the ID or approve before verification. DAO-approved funding remains NOT VERIFIED.
-
-## Funding proposal 0 verified — 2026-11-02
-
-Transaction MpedkLXCwRKQqZ6JneUhnYbwC6MAcbnbzDGsc9C75cv is FINAL with successful receipts and returned actual proposal ID 0. Live get_proposal(0) shows InProgress, proposer aje-veyntro.testnet, receiver receiver.aje-veyntro.testnet, method fund_treasury, args e30= ({}), attached action deposit 10000000000000000000000 yoctoNEAR (0.01 NEAR), and action gas 30000000000000. No votes recorded at verification. This is proposal submission only; no approved funding proof yet. Evidence: evidence/RECEIVER_FUNDING_PROPOSAL.json.
-
-Next user action: `bash scripts/receiver-integration.sh approve 0`. This revalidates the proposal and deployed local artifact, signs the council vote and initiates execution if threshold is reached. Capture vote tx and independently verify ALL final receipts, proposal status, funded event and receiver state before completing Phase 1. Do not resubmit the proposal.
-
-## DAO-approved funding independently verified — 2026-11-02
-
-Vote/execution tx 4nwqawJPDf5jnurzTPsVRjMSigjL1LajjcadyKrQ4arU is FINAL with successful final status and no failing returned receipts. EXPERIMENTAL_tx_status exposes the actual receiver receipt: predecessor_id=veyntro.sputnikv2.testnet, original signer=aje-veyntro.testnet, method fund_treasury, deposit=10000000000000000000000 yoctoNEAR. Receiver funded event recorded exactly 0.01 NEAR once. Live funding state confirms total_received=10000000000000000000000 and funding_count=1. Proposal 0 is Approved with council [1,0,0] and the council member's Approve vote. Receiver code hash remains BAeg5fB4ECXTgjeZHnqJzzGPgt9Ayq6N9Ah4WdA63V63. Evidence: evidence/DAO_FUNDING_EXECUTION.json.
-
-Core DAO-to-receiver payable integration is VERIFIED. Phase 1 still requires the planned live negative permission check: direct council call to receiver.fund_treasury with 1 yoctoNEAR must fail with 'Only the DAO can add money'. Verify final failure and unchanged total/count. Do not repeat proposal submission/approval. Receiver already reached its 0.01 NEAR integration cap. Full Commitment Firewall remains NOT IMPLEMENTED.
-
-## Phase 1 exit gate VERIFIED — 2026-11-02
-
-Direct council funding attempt 454bNnvsLQwwowW3bNLvXminfoVHR3BSxnED1D1gueEt is FINAL with the expected Failure: Smart contract panicked: Only the DAO can add money. No funded event was emitted. Live get_funding_state remains total_received=10000000000000000000000 (0.01 NEAR), funding_count=1 and correct DAO. Receiver balance remains 1508882723020688000000000 yoctoNEAR, matching the pre-rejection snapshot. The attached 1 yoctoNEAR did not remain with the receiver. User paid testnet gas. Evidence: evidence/DAO_PERMISSION_REJECTION.json.
-
-Phase 1 is VERIFIED: actual SputnikDAO creation, real proposal 0 and council vote, payable DAO-to-receiver execution with actual predecessor/deposit proof, deployed code verification, and live rejection of council bypass with unchanged state. This certifies the integration gate only. It does not certify full treasury accounting, payout callbacks, GitHub evidence, frontend or operator functionality.
-
-NEXT MILESTONE: Phase 2 — implement the separate Commitment Firewall with checked backing/reservations, pending-safe payouts and withdrawals, authenticated callbacks, nonce/replay protection, expiry and storage reserve protections. Review the master plan and contract state/accounting design before coding; keep the small receiver isolated and preserve this live evidence. No additional receiver transactions are needed.
+FILES CHANGED: contracts/commitment-firewall/*; Cargo.toml/Cargo.lock; scripts/build-firewall.sh; docs/FIREWALL_ACCOUNTING.md; docs/FIREWALL_API.md; docs/PROGRESS.md; docs/PHASE_1_PROGRESS.md; docs/DECISIONS.md; docs/BLOCKERS.md; .github/workflows/contracts.yml; README.md; evidence/FIREWALL_BUILD.json; evidence/FIREWALL_CHECK_ATTEMPTS.md; evidence/firewall-build.log.

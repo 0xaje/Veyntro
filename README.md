@@ -6,7 +6,7 @@ Veyntro is being built to help DAOs and communities set money aside for approved
 
 ## Current status
 
-Development is in progress. The public application and Commitment Firewall are not implemented yet.
+Development is in progress. The public application is not implemented yet. The Commitment Firewall is implemented and tested locally; its testnet deployment and financial lifecycle remain pending.
 
 Verified on NEAR testnet:
 
@@ -14,7 +14,17 @@ Verified on NEAR testnet:
 - SputnikDAO: veyntro.sputnikv2.testnet.
 - [DAO creation transaction](https://explorer.testnet.near.org/transactions/6oV4Y8DX7hxXK2FB2hietaongMPtKzZzbaWazMAyP8JX) — final and successful.
 
-The separate DAO-only receiver passes 9 local SDK unit tests, Clippy and WASM compilation. Phase 1 is now verified on NEAR testnet: receiver deployment, DAO proposal 0 and approval, an actual 0.01 NEAR DAO-to-receiver call, and rejection of direct council funding with unchanged records. [Execution evidence](evidence/DAO_FUNDING_EXECUTION.json) and [permission rejection](evidence/DAO_PERMISSION_REJECTION.json) are independently inspectable. The Commitment Firewall and public application remain unimplemented.
+The separate DAO-only receiver passes 9 local SDK unit tests, Clippy and WASM compilation. Phase 1 is now verified on NEAR testnet: receiver deployment, DAO proposal 0 and approval, an actual 0.01 NEAR DAO-to-receiver call, and rejection of direct council funding with unchanged records. [Execution evidence](evidence/DAO_FUNDING_EXECUTION.json) and [permission rejection](evidence/DAO_PERMISSION_REJECTION.json) are independently inspectable. The Commitment Firewall now passes 56 local tests, Clippy and WASM compilation; it is not deployed or live-verified yet. The public application remains unimplemented.
+
+## Build the Commitment Firewall
+
+Requires the same pinned Rust toolchain. Run:
+
+```bash
+bash scripts/build-firewall.sh
+```
+
+This checks all 56 firewall tests and 9 receiver tests, formatting, Clippy and the locked WASM build. Read the [accounting design](docs/FIREWALL_ACCOUNTING.md) and [contract API](docs/FIREWALL_API.md). Storage/gas reserves and up to 32 prepaid payment attempts per commitment are enforced. Test inputs are local checks, not GitHub attestations or blockchain activity. The real GitHub verifier and wallet application remain pending. [Current build evidence](evidence/FIREWALL_BUILD.json) records exact local results.
 
 ## Build the receiver
 

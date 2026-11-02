@@ -30,3 +30,7 @@ B-004 remains partially unresolved; current official rules/tracks have been revi
 ## Receiver milestone update — 2026-11-02
 
 Repository and DAO blockers are resolved: source is on GitHub and DAO creation is verified. Rust 1.95 and WASM target are installed for this run. Local receiver tests/build passed. Active next blocker: receiver account creation and deployment need the user's locally stored signing key. Do not request/export that key. Use docs/DAO_RECEIVER.md stage commands. No live receiver outcome is claimed.
+
+## Phase 2 update — 2026-11-02
+
+Phase 1 is verified and supersedes earlier receiver blockers. Firewall local build/56 tests passed. Active next gate: create a separate full-contract account via free testnet faucet, then verifier/beneficiary accounts, actual funding and live lifecycle verification. Callback gas/ABI/rollback/runtime outcomes are not certified by SDK unit tests. Product frontend/verifier service are still absent.
