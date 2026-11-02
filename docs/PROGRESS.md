@@ -148,3 +148,7 @@ Actual CLI fetched GitHub run 41525421351 and current final-block commitment 0, 
 
 NEXT EXACT ACTION: user pulls main in ~/Veyntro-build; uses Node24 LTS >=24.12; npm --prefix services/verifier ci --ignore-scripts --no-audit --no-fund; run check and test; run CLI with evidence/FIRST_COMMITMENT_POLICY.json, reservation0, run41525421351, signer verifier-aje-veyntro.testnet and a NEW /tmp/veyntro-attestation-TIMESTAMP.json output. Return summary and output filename. Then inspect prepared binding/transaction and prepare user-local NEAR CLI submit_attestation signing command; verify final attestation before drawdown. Do not sign historical evidence/FIRST_ATTESTATION_PREPARED.json. Payout/failed-transfer callback/expiry release still pending. Hosted authentication, beneficiary request validation, rate limiting, durable requests, scoped verifier signing and frontend remain unfinished. Do not deploy this CLI as a public signing service. Commitment1 expires Nov2 23:33:42 UTC; permissionless release still needs transaction.
 
+
+## Verifier publication and CI verified
+
+Source commit f353f6292dce99062e740a0c433adff7d1988267 published and CLI file independently read back. GitHub Verifier checks run 41531876110 completed/success for that exact source: https://github.com/0xaje/Veyntro/actions/runs/41531876110 . Evidence: evidence/VERIFIER_CI.json. This supersedes the earlier pending verifier CI note. Phase 2 remains IN_PROGRESS; no attestation or payout signed/sent. User-local fresh preparation is the next exact action above.
