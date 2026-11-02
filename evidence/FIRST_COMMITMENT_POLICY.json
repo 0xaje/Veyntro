@@ -1,0 +1,1 @@
+{"allow_forks":false,"branch":"main","commit_sha":"3c18cad4f81b949f3e264961da61c97d5613964e","conclusion":"success","contract_account_id":"firewall-aje-veyntro.testnet","event":"push","max_run_age_seconds":604800,"network":"testnet","repository":"0xaje/Veyntro","schema":"veyntro.github-ci.v1","workflow_id":404996405,"workflow_path":".github/workflows/contracts.yml"}
