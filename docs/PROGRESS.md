@@ -60,3 +60,9 @@ Next action: user runs `bash scripts/receiver-integration.sh deploy` from the sa
 Transaction 3CvGqXFDC7EabLBEga4symki7BYYFvajYgNSeZx6ibd4 independently returned FINAL and SuccessValue; all returned receipts succeeded. At block 275949494, receiver.aje-veyntro.testnet code hash BAeg5fB4ECXTgjeZHnqJzzGPgt9Ayq6N9Ah4WdA63V63 matches the user's WASM SHA256 970db1c72542dbd325c37228188f013b0b1e2eb6bb2714b9de8ae1fd1206c1d4. Live get_funding_state returned dao_account_id=veyntro.sputnikv2.testnet, total_received=0 and funding_count=0. Evidence: evidence/RECEIVER_DEPLOYMENT.json.
 
 Next: user runs `bash scripts/receiver-integration.sh propose` from the same checkout/artifact. It fetches the current policy bond and verifies local/deployed code and initial state before submitting. Capture actual proposal transaction hash and returned proposal ID; do not guess the ID or approve before verification. DAO-approved funding remains NOT VERIFIED.
+
+## Funding proposal 0 verified — 2026-11-02
+
+Transaction MpedkLXCwRKQqZ6JneUhnYbwC6MAcbnbzDGsc9C75cv is FINAL with successful receipts and returned actual proposal ID 0. Live get_proposal(0) shows InProgress, proposer aje-veyntro.testnet, receiver receiver.aje-veyntro.testnet, method fund_treasury, args e30= ({}), attached action deposit 10000000000000000000000 yoctoNEAR (0.01 NEAR), and action gas 30000000000000. No votes recorded at verification. This is proposal submission only; no approved funding proof yet. Evidence: evidence/RECEIVER_FUNDING_PROPOSAL.json.
+
+Next user action: `bash scripts/receiver-integration.sh approve 0`. This revalidates the proposal and deployed local artifact, signs the council vote and initiates execution if threshold is reached. Capture vote tx and independently verify ALL final receipts, proposal status, funded event and receiver state before completing Phase 1. Do not resubmit the proposal.
