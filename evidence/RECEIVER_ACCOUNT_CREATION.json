@@ -1,0 +1,145 @@
+{
+  "checked_at_utc": "2026-11-02T20:30:55.784155+00:00",
+  "network": "testnet",
+  "account_id": "receiver.aje-veyntro.testnet",
+  "user_reported_wasm_sha256": "970db1c72542dbd325c37228188f013b0b1e2eb6bb2714b9de8ae1fd1206c1d4",
+  "transaction": {
+    "ok": true,
+    "result": {
+      "final_execution_status": "FINAL",
+      "receipts_outcome": [
+        {
+          "block_hash": "7iQ8r95qtNzd6iUncosVKjjVAriss327DS2ZLPKwxFa5",
+          "id": "xM65m7j1kk4eJwQbMpeJNpD3wE5Lf4nTQX26Pt3eEmK",
+          "outcome": {
+            "executor_id": "receiver.aje-veyntro.testnet",
+            "gas_burnt": 7524947687500,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                null,
+                null,
+                null
+              ],
+              "gas_profile": [],
+              "version": 4
+            },
+            "receipt_ids": [
+              "7LoEcTrHjHkfx9dkbafmXj1eJc1FoMwZv4asiXtXsh5r"
+            ],
+            "status": {
+              "SuccessValue": ""
+            },
+            "tokens_burnt": "7032494768750000000000"
+          },
+          "proof": [
+            {
+              "direction": "Left",
+              "hash": "4TJ7svCjJ4YT88whacjmXeGJCk46Nw8kiQWkgXaVsLhB"
+            }
+          ]
+        },
+        {
+          "block_hash": "BTu3dTwnsrnphAi7b9JoXZB8vFdFjZMBTEX7VECn1QzK",
+          "id": "7LoEcTrHjHkfx9dkbafmXj1eJc1FoMwZv4asiXtXsh5r",
+          "outcome": {
+            "executor_id": "aje-veyntro.testnet",
+            "gas_burnt": 223182562500,
+            "logs": [],
+            "metadata": {
+              "contracts": [
+                null
+              ],
+              "gas_profile": [],
+              "version": 4
+            },
+            "receipt_ids": [],
+            "status": {
+              "SuccessValue": ""
+            },
+            "tokens_burnt": "0"
+          },
+          "proof": []
+        }
+      ],
+      "status": {
+        "SuccessValue": ""
+      },
+      "transaction": {
+        "actions": [
+          "CreateAccount",
+          {
+            "Transfer": {
+              "deposit": "1500000000000000000000000"
+            }
+          },
+          {
+            "AddKey": {
+              "access_key": {
+                "nonce": 0,
+                "permission": "FullAccess"
+              },
+              "public_key": "ed25519:2gTwxY1r3ZtLPtcALErwZjYV9sSsAw72S9UXx7psxx8j"
+            }
+          }
+        ],
+        "hash": "bW9JVbuFEFRpc5oz3Q4honvwkeZ7AUoNAtCosDqcDUV",
+        "nonce": 275945842000002,
+        "priority_fee": 0,
+        "public_key": "ed25519:41omTzXKyua3Z7SZyq1FM1qqYGCqXW1MpGUk7EiYAggz",
+        "receiver_id": "receiver.aje-veyntro.testnet",
+        "signature": "ed25519:nnFperQBR7SFeZAne4zYsmSC8f1ofe7MJ72tkEGeG3M9VekBBzcoWyiJWPok2uw5gncJX4RpfgDodo5rCzg1wEn",
+        "signer_id": "aje-veyntro.testnet"
+      },
+      "transaction_outcome": {
+        "block_hash": "GWMdGQQk2aXQ5ephsB66FU4S75NaTyF8K7Z2QhCXHYFJ",
+        "id": "bW9JVbuFEFRpc5oz3Q4honvwkeZ7AUoNAtCosDqcDUV",
+        "outcome": {
+          "executor_id": "aje-veyntro.testnet",
+          "gas_burnt": 824947687500,
+          "logs": [],
+          "metadata": {
+            "gas_profile": null,
+            "version": 1
+          },
+          "receipt_ids": [
+            "xM65m7j1kk4eJwQbMpeJNpD3wE5Lf4nTQX26Pt3eEmK"
+          ],
+          "status": {
+            "SuccessReceiptId": "xM65m7j1kk4eJwQbMpeJNpD3wE5Lf4nTQX26Pt3eEmK"
+          },
+          "tokens_burnt": "82494768750000000000"
+        },
+        "proof": []
+      }
+    }
+  },
+  "account": {
+    "ok": true,
+    "result": {
+      "amount": "1500000000000000000000000",
+      "block_hash": "3MMhrvDQzJ6dHQ3gBMDDpc4mh15Ss7P7MVf7zzFqk9Qt",
+      "block_height": 275949108,
+      "code_hash": "11111111111111111111111111111111",
+      "locked": "0",
+      "storage_paid_at": 0,
+      "storage_usage": 182
+    }
+  },
+  "keys": {
+    "ok": true,
+    "result": {
+      "block_hash": "3MMhrvDQzJ6dHQ3gBMDDpc4mh15Ss7P7MVf7zzFqk9Qt",
+      "block_height": 275949108,
+      "keys": [
+        {
+          "access_key": {
+            "nonce": 275948967000000,
+            "permission": "FullAccess"
+          },
+          "public_key": "ed25519:2gTwxY1r3ZtLPtcALErwZjYV9sSsAw72S9UXx7psxx8j"
+        }
+      ]
+    }
+  }
+}
