@@ -31,7 +31,7 @@ def view(account, method, args, block_hash):
     return json.loads(bytes(result["result"]))
 
 
-def current_state():
+def current_state(verification=False):
     status = rpc("status", [])
     if status["chain_id"] != "testnet" or status["sync_info"]["syncing"]:
         raise ValueError("A synced NEAR testnet RPC is required")
@@ -39,7 +39,8 @@ def current_state():
     policy = view(DAO, "get_policy", {}, block["hash"])
     council = next(role for role in policy["roles"] if role["name"] == "council")
     members = council["kind"]["Group"]
-    if members != [OLD_MEMBER]:
+    expected = {OLD_MEMBER, NEW_MEMBER} if verification else {OLD_MEMBER}
+    if len(members) != len(expected) or set(members) != expected:
         raise ValueError("Council membership changed; stop and review the DAO")
     if council["permissions"] != [
         "*:Finalize", "*:AddProposal", "*:VoteApprove", "*:VoteReject", "*:VoteRemove"
@@ -73,7 +74,7 @@ def main():
     if args.mode in ("vote", "verify") and (args.id is None or args.id < 0):
         parser.error("--id must be the actual nonnegative proposal ID")
     try:
-        block, policy, members = current_state()
+        block, policy, members = current_state(args.mode == "verify")
         if args.mode == "prepare":
             if NEW_MEMBER in members:
                 raise ValueError("aje.testnet is already a council member")
