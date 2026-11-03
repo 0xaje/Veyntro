@@ -536,3 +536,30 @@ Replaced green highlights in light mode with the signature blue accent from dark
 
 
 
+
+
+## Phase 4 UI corrections after user review — 2026-11-03
+
+Work branch: `codex/phase4-ui-corrections`, based on frontend branch commit `b598a2960d6d4080dee02248b5d6a24f95222dea`.
+
+Applied to the React app:
+- Split the long dashboard into Overview, Commitments, DAO approval, and Activity views using the existing hash navigation. Direct links and browser back/forward update the selected view. The overview links to the other views.
+- Replaced the unclear dot-only theme control with a named Light/Dark mode button. It now has a simple two-way toggle, persists the selected mode, migrates the previous theme preference key, and applies the saved theme before the app renders.
+- Restored Veyntro's forest-green accent and changed the dark palette from pure black to a softer dark green/charcoal palette.
+- Added a form-panel container breakpoint and constrained the native date-time input. The form stacks its fields when the actual form panel is narrow, including at wide browser widths.
+- Kept the Activity view honest: it still says its onchain operation list excludes funding and commitment changes and that records lack direct transaction links.
+
+Verification performed in the cloned review branch:
+- `npm --prefix apps/web ci --ignore-scripts --no-audit --no-fund`: completed.
+- `npm --prefix apps/web run check`: passed.
+- `npm --prefix apps/web run build`: passed. Existing warnings remain for the 607.70 kB Meteor wallet bundle, externalized Node built-ins, and guarded `eval` usage in `js-sha256`.
+- `git diff --check`: passed.
+- Browser visual verification was attempted, but no local Chromium/Chrome binary is installed in this environment. Do not claim the date field's visual fit or route interactions have been verified in a real browser yet.
+
+Still open; this is not a 10/10 or Phase 4 completion claim:
+- Activity is incomplete against the master plan: the current contract view lacks funding/commitment event indexing and per-transaction hashes. Do not invent these records. Determine a reliable public event/transaction source and add it before claiming a full audit history.
+- No hosted app, live wallet signing walkthrough, or fresh live RPC comparison was performed for this correction branch.
+- Recheck date control fit and routes at desktop and mobile sizes in a real browser, including a narrow governance card.
+- The production bundle warnings need a focused dependency/bundle review; do not hide them by raising the size threshold.
+
+NEXT EXACT ACTION: install or use a real browser in the development environment and visually check all four views, the deadline field at wide and narrow widths, keyboard navigation, light/dark persistence, and a real testnet data load. Then resolve the Activity evidence/indexing gap and verify the full hosted wallet flow before marking Phase 4 complete.
