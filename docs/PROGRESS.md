@@ -563,3 +563,14 @@ Still open; this is not a 10/10 or Phase 4 completion claim:
 - The production bundle warnings need a focused dependency/bundle review; do not hide them by raising the size threshold.
 
 NEXT EXACT ACTION: install or use a real browser in the development environment and visually check all four views, the deadline field at wide and narrow widths, keyboard navigation, light/dark persistence, and a real testnet data load. Then resolve the Activity evidence/indexing gap and verify the full hosted wallet flow before marking Phase 4 complete.
+
+## UI follow-up from video review — 2026-11-03
+
+This update corrects the theme and Overview against the user's latest direction. It changes the web interface only; no contract, verifier, DAO, wallet, or backend code is changed.
+
+- The theme control is a small circular dot button with an accessible name and keyboard focus indicator. It switches the saved light/dark preference when clicked. It does not show mode text or switch automatically by time of day.
+- Light mode uses a pale slate background with blue highlights. Dark mode uses a black background with blue highlights.
+- The Overview includes a Commitment Firewall summary when real treasury state is available. It shows the contract's current coverage and physical-backing checks, tied to the live final block. It does not invent balances or activity.
+- Existing Overview, Commitments, DAO approval, and Activity navigation remains in place. Existing wallet, RPC, and transaction code is unchanged.
+
+Verification for this follow-up is pending. Do not describe the visual update as finished until the web type check and production build pass and the page has been viewed at desktop and mobile sizes. Do not mark Phase 4 complete: the Activity evidence gap and live wallet review recorded above remain open.
