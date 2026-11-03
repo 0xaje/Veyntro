@@ -426,3 +426,17 @@ The independent tester, expanded adversarial suite, hosted workflow, key-custody
 Verification note: bash scripts/build-firewall.sh was attempted in this workspace on 2026-11-03 but could not start because cargo is not installed (cargo: command not found). This does not replace or invalidate the recorded successful CI and user-terminal results. Re-run in the development environment before any contract source change or release.
 
 NEXT EXACT ACTION: build the first Phase 4 slice in apps/web: React/Vite/TypeScript, supported testnet wallet connection, and public treasury plus paginated commitments read from firewall-aje-veyntro.testnet over NEAR testnet RPC. Verify real loading/error/empty states and compare displayed amounts to fresh RPC output before adding governance and payout writes. MyNearWallet's testnet site announced limited mode effective 2026-11-01 and must not be selected as the sole wallet.
+
+
+## Phase 4 public treasury and wallet slice — 2026-11-03
+
+Added a first user-facing app slice under apps/web on a separate review branch. It uses React, Vite, TypeScript and Tailwind; reads the deployed firewall's treasury state and reservation pages from NEAR testnet RPC; pins commitment pages to the same final block as the displayed treasury; keeps public viewing available without a wallet; and adds a NEAR Wallet Selector connection through the documented Meteor Wallet testnet module. The UI includes live loading, empty, retry, stale-data and pagination states, simple-English labels, mobile-responsive layout and testnet explorer links. No sample financial data was added.
+
+Local verification on Node 24.22.1 / npm 11.9.0:
+- npm --prefix apps/web run check: passed.
+- npm --prefix apps/web run build: passed.
+- Production build split wallet code into separate chunks. Warnings remain visible: Meteor chunk 607.70 kB (171.56 kB gzip); wallet dependency transitive Node buffer/util references are externalized; js-sha256 includes guarded Node-only eval paths. These need review before release and must not be hidden.
+- No live browser RPC comparison or wallet sign-in was performed in this workspace. The app has no DAO proposal, beneficiary payout, evidence submission, expiry action, transaction activity index or hosting yet. Phase 4 remains IN_PROGRESS.
+- Contract code and testnet state were not changed.
+
+NEXT EXACT ACTION: run the app in the development environment, compare its live treasury/commitment values against NEAR testnet reads at the displayed final block, and test Meteor wallet connect/disconnect. Once those checks pass, add signed DAO governance actions and verify each transaction's final receipts before adding beneficiary payment controls.
