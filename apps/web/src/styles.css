@@ -4,6 +4,31 @@
 @import "./hallmark/tokens.css";
 @import "./hallmark/base.css";
 
+/* Wallet Selector follows the system dark setting unless its own variables are
+ * overridden. Keep its palette in sync with Veyntro's explicit theme toggle. */
+[data-theme="light"] #near-wallet-selector-modal {
+  --backdrop-bg: #0f172a88;
+  --heading-color: #0f172a;
+  --text-color: #475569;
+  --content-bg: #ffffff;
+  --option-wallet-bg-color: #f1f5f9;
+  --option-single-wallet-bg-color: #f1f5f9;
+  --bottom-section: #ffffff;
+  --change-path-bg: #e2e8f0;
+  --home-button-bg: #e2e8f0;
+  --wallet-selector-heading-color: #0f172a;
+  --wallet-selector-text-color: #475569;
+  --wallet-selector-content-bg: #ffffff;
+}
+
+[data-theme="light"] #near-wallet-selector-modal .nws-modal-wrapper .single-wallet.sidebar:not(.selected-wallet) .content .title {
+  color: #0f172a;
+}
+
+[data-theme="light"] #near-wallet-selector-modal .nws-modal-wrapper .single-wallet.sidebar.selected-wallet .content .title {
+  color: #ffffff;
+}
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { min-width: 320px; }
