@@ -32,6 +32,7 @@ export interface Reservation {
   expires_at_ns: string;
   evidence_policy_hash: string;
   evidence: { usable: boolean; commit_sha: string; valid_until_ns: string } | null;
+  last_drawdown_nonce: string;
   status: "Active" | "Cancelled" | "Expired" | "Completed";
   is_expired: boolean;
 }
@@ -117,7 +118,8 @@ function isReservation(value: unknown): value is Reservation {
   return typeof row.id === "string" && typeof row.beneficiary === "string" &&
     typeof row.approved_amount === "string" && typeof row.remaining_liability === "string" &&
     typeof row.pending_amount === "string" && typeof row.expires_at_ns === "string" &&
-    typeof row.status === "string" && typeof row.is_expired === "boolean";
+    typeof row.status === "string" && typeof row.is_expired === "boolean" &&
+    typeof row.last_drawdown_nonce === "string";
 }
 
 export async function readTreasury(): Promise<TreasurySnapshot> {
