@@ -230,3 +230,10 @@ NEXT EXACT ACTION: transfer 1 NEAR from worker-aje-veyntro.testnet to council aj
 ## Second council top-up reported — 2026-11-03
 
 User supplied successful near-cli-rs receipt for worker-aje-veyntro.testnet -> aje-veyntro.testnet, amount1 NEAR. Transaction Fnvf3VLqbxi7xnhvG18SgixDrgdN8SRtPsdB54bfGBPw (https://explorer.testnet.near.org/transactions/Fnvf3VLqbxi7xnhvG18SgixDrgdN8SRtPsdB54bfGBPw). Receipt is user-reported; resulting balance has not yet been independently checked. Last council summary before transfer was0.472 NEAR at block276019372. Check current balance and live proposal bond before submitting another proposal. Corrected call uses withdraw_available action gas100 Tgas, since source requires minimum80 Tgas. Use current proposal ID from add_proposal return value, inspect payload before approval. Callback test remains NOT RUN.
+
+
+## Corrected withdrawal proposal submitted — 2026-11-03
+
+User supplied council account summary at block276019694 showing1.48 NEAR, enough for the previously observed1 NEAR bond plus fees. User then supplied successful add_proposal receipt: proposal ID6; transaction2nMAXLvBiADJmosjKtZZLLpuc5iSyuu1hDH8eWsXwYXw (https://explorer.testnet.near.org/transactions/2nMAXLvBiADJmosjKtZZLLpuc5iSyuu1hDH8eWsXwYXw). FunctionCall targets firewall-aje-veyntro.testnet.withdraw_available with 0.01 NEAR to recovery.worker-aje-veyntro.testnet, nonce1, zero action deposit, gas100 Tgas. This meets the verified contract minimum of80 Tgas. Callback has not run yet.
+
+NEXT EXACT ACTION: inspect proposal6 at latest block, verify exact receiver, method, args, gas and zero deposit; recheck recovery.worker-aje-veyntro.testnet is still absent. If both checks pass, approve as council. Capture all nested receipts; then query firewall treasury state and get_operation(1), and verify recipient transfer failed and callback marked operation Failed while restoring the ledger. If proposal6 fails, inspect exact receipt cause before changing anything.
