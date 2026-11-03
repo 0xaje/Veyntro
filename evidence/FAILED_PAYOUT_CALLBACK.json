@@ -1,0 +1,31 @@
+{
+  "network": "NEAR testnet",
+  "source": "User-provided near-cli-rs signed transaction receipt",
+  "transaction": {
+    "id": "5hXiJWVF6T5Yy5CCwLHe1YwzSZv5LgyhkDagrBMTq28t",
+    "explorer": "https://explorer.testnet.near.org/transactions/5hXiJWVF6T5Yy5CCwLHe1YwzSZv5LgyhkDagrBMTq28t",
+    "signer": "worker-aje-veyntro.testnet",
+    "receiver": "firewall-aje-veyntro.testnet",
+    "method": "request_drawdown",
+    "returned_status": "Failed"
+  },
+  "events": [
+    {
+      "event": "payment_pending",
+      "operation_id": "3",
+      "reservation_id": "2",
+      "amount": "10000000000000000000000",
+      "recipient": "payout-failure.worker-aje-veyntro.testnet",
+      "nonce": "1"
+    },
+    {
+      "event": "operation_settled",
+      "operation_id": "3",
+      "kind": "Payout",
+      "status": "Failed",
+      "amount": "10000000000000000000000",
+      "released": "0"
+    }
+  ],
+  "reconciliation": "Pending. Query operation 3, reservation 2 and treasury state before creating the recipient or retrying."
+}
