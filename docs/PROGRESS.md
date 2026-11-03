@@ -380,3 +380,10 @@ NEXT EXACT ACTION: create payout-failure.worker-aje-veyntro.testnet as a child a
 User supplied successful account creation transaction HqgLJoSEfNT1HAySTn2Ux8yqaJbMKoQc8gnEwxeJBQJK (https://explorer.testnet.near.org/transactions/HqgLJoSEfNT1HAySTn2Ux8yqaJbMKoQc8gnEwxeJBQJK). Account payout-failure.worker-aje-veyntro.testnet created as child of worker-aje-veyntro.testnet and funded with0.1 NEAR; key remains in user's local legacy keychain. Evidence: evidence/PAYOUT_FAILURE_RECIPIENT.json; public key only, no private credential recorded.
 
 NEXT EXACT ACTION: query account balance for payout-failure.worker-aje-veyntro.testnet and get_reservation(2) to ensure attestation remains usable before deadline, commitment is Active, amount0.01 NEAR, nonce1 already consumed, pending0, and remaining liability0.01. If yes, worker retries request_drawdown id2 amount0.01 nonce2,100 Tgas, zero deposit. Verify final payout/callback and treasury state.
+
+
+## Failed payout callback retry receipt succeeded — final reconciliation pending — 2026-11-03
+
+User supplied request_drawdown transaction4mugR4TmcxwQ62164DiGFZWinfvKzbvjuqxWK4Po1ukk (https://explorer.testnet.near.org/transactions/4mugR4TmcxwQ62164DiGFZWinfvKzbvjuqxWK4Po1ukk). Before retry, reservation2 was Active with evidence usable=true, last nonce1, remaining0.01 NEAR; payout-failure.worker-aje-veyntro.testnet existed with0.1 NEAR at block276024012. Retry used nonce2 and action100 Tgas. Logs show operation4 payment_pending then operation_settled Payout/Succeeded; request returned Succeeded. Evidence: evidence/PAYOUT_FAILURE_RETRY_SUCCESS.json. Need final read views to reconcile money before closing the gate.
+
+NEXT EXACT ACTION: query get_operation(4), get_reservation(2), get_treasury_state and recipient account summary after payout. Confirm operation Succeeded; reservation remaining0 and liability released, pending0, nonce2; confirmed accountable funds and actual balance each decrease exactly0.01 NEAR from pre-retry values; treasury remains solvent/physically backed. No further payment until these checks are complete.
