@@ -114,7 +114,7 @@ function ProposalRow({ proposal, daoPolicy, accountId, busy, onVote }: {
         <div className="proposal-actions">
           {canApprove && !alreadyVoted && <button className="button-primary" disabled={busy} onClick={() => onVote(proposal.id, "VoteApprove")}>Approve</button>}
           {canReject && !alreadyVoted && <button className="button-secondary" disabled={busy} onClick={() => onVote(proposal.id, "VoteReject")}>Reject</button>}
-          {alreadyVoted && <span className="proposal-meta">Your {proposal.votes[accountId!].toLowerCase()} vote was recorded. This request is still waiting for more council votes.</span>}
+          {alreadyVoted && <span className="proposal-meta">Your vote to {proposal.votes[accountId!] === "Approve" ? "approve" : "reject"} was recorded. This request is still waiting for more council votes.</span>}
           {!canApprove && !canReject && !alreadyVoted && <span className="proposal-meta">This wallet cannot vote under the DAO’s current policy.</span>}
         </div>
       )}
