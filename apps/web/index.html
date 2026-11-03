@@ -6,6 +6,12 @@
     <meta name="theme-color" content="#f5f7f6" />
     <meta name="description" content="See how a shared treasury is funded, what money is set aside, and what is available." />
     <title>Veyntro — Every commitment accounted for</title>
+    <script>
+      window.global = window;
+      if (!window.process) {
+        window.process = { env: {} };
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
