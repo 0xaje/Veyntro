@@ -317,3 +317,10 @@ NEXT EXACT ACTION: read SputnikDAO get_proposal(8) at current final block and co
 ## Payout-failure proposal 8 inspected — 2026-11-03
 
 User supplied final-block get_proposal(8). Status InProgress, no votes. Stored call matches: receiver firewall-aje-veyntro.testnet; method create_reservation; decoded terms beneficiary worker-aje-veyntro.testnet, recipient payout-failure.worker-aje-veyntro.testnet, amount0.01 NEAR, expiry1793866186320758628 ns, policy hash22941ad52c55ba33751c7e27e8738948dc0bf08fae6e708d21b6b661ccc09048; action deposit0, gas30 Tgas. Expiry is roughly48 hours after submission, adequate. Council may approve after reviewing the same fields. No commitment created until execution receipt succeeds.
+
+
+## Payout-failure test commitment 2 created — 2026-11-03
+
+User supplied successful council approval transaction7QiuF85u5E2YxfUrugQw4zF9Mvr6gkyQZPpRUyswZzzN (https://explorer.testnet.near.org/transactions/7QiuF85u5E2YxfUrugQw4zF9Mvr6gkyQZPpRUyswZzzN). Firewall emitted commitment_created ID2: beneficiary worker-aje-veyntro.testnet; recipient payout-failure.worker-aje-veyntro.testnet; amount0.01 NEAR; expiry1793866186320758628 ns; approved policy hash22941ad52c55ba33751c7e27e8738948dc0bf08fae6e708d21b6b661ccc09048. The approval and event are user-reported. Current treasury and commitment views have not yet been checked; no evidence attestation or payout has occurred.
+
+NEXT EXACT ACTION: read firewall get_reservation(2) and get_treasury_state() at current final block. Verify the stored terms, Active status, evidence=null, nonce0, remaining0.01, and correct liability/available/backing totals. Then run the existing verifier CLI against policy evidence/FIRST_COMMITMENT_POLICY.json, reservation2 and genuine GitHub Actions run41525421351, signer verifier-aje-veyntro.testnet. The run is dated Nov2 and policy max age is7 days; the CLI must fetch real GitHub/RPC state and fail closed if stale or mismatched. Inspect its unsigned output before signing. Never use a saved/historical attestation.
