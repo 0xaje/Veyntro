@@ -574,3 +574,24 @@ This update corrects the theme and Overview against the user's latest direction.
 - Existing Overview, Commitments, DAO approval, and Activity navigation remains in place. Commitment, DAO approval, and Activity views stay mounted while hidden so leaving a page does not discard unfinished form or action state. Existing wallet, RPC, and transaction code is unchanged.
 
 Verification for this follow-up is pending. Do not describe the visual update as finished until the web type check and production build pass and the page has been viewed at desktop and mobile sizes. Do not mark Phase 4 complete: the Activity evidence gap and live wallet review recorded above remain open.
+
+
+## Phase 4 wallet and payment repair — 2026-11-03
+
+Branch: `codex/phase4-ui-corrections`; draft PR: https://github.com/0xaje/Veyntro/pull/1. This note supersedes earlier README/progress statements saying the app does not exist. The app source is in this review branch; it is not merged or hosted.
+
+Reviewed the deployed contract API against the web action code and fixed two exact ABI mismatches:
+- Expiry cleanup now calls `release_expired`, matching the public contract method; the previous `release_expired_reservation` name did not exist.
+- Payout requests now include `operation_nonce = last_drawdown_nonce + 1`, and the reservation reader validates that onchain nonce before enabling the action. The UI also blocks zero and above-liability amounts.
+- The payout UI reads the contract's final callback result and distinguishes `Succeeded`, `Failed`, and no returned outcome. It does not report an accepted wallet submission as a completed payment. Expiry cleanup reports the returned amount as money made available in the contract, not an outgoing transfer.
+- Wallet initialization now has a retry action and logs the actual setup exception to the browser console while keeping the visible message in simple English. This is diagnostic and recovery handling; the initialization root cause is still unknown until exercised in the target browser.
+
+Local verification ran on Node 24.22.1 / npm 11.9.0 after fetching the exact app source from the review branch:
+- `npm --prefix apps/web ci --ignore-scripts --no-audit --no-fund`: passed, 183 packages installed.
+- `npm --prefix apps/web run check`: passed.
+- `npm --prefix apps/web run build`: passed. Existing warnings remain: 607.70 kB Meteor wallet chunk, browser-externalized `buffer`/`util` references, and guarded `eval` warnings from `js-sha256`. These are open for dependency review; the warning threshold was not raised.
+- This workspace has no Git metadata and no installed desktop browser. The source was checked from the PR branch in a temporary workspace. No wallet popup, signed app transaction, mobile visual check, or hosted deployment was verified here. Testnet contract state was not changed.
+
+**Current Phase 4 status: IN_PROGRESS.** Public reads and governance/action code exist, but the wallet and transaction flows have not passed a live browser walkthrough. Activity still lacks funding/commitment event indexing and exact transaction links. The current frontend bundle warnings need review.
+
+**Next exact action:** run this review branch in the project development environment, select `Connect Wallet`, inspect the browser console if setup fails, and test a real testnet connect/disconnect without sending a transaction. Confirm the connected testnet account first. Then verify a low-risk permissionless `release_expired` action only if an actually expired commitment is available; otherwise stop without creating test activity. After wallet setup, test the DAO proposal read/permission path and beneficiary payout on existing evidence-backed state, with the user reviewing every signature. Update this record with actual browser, wallet, receipt and RPC results. Do not claim app writes are verified based on a build alone.
