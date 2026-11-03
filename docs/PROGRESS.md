@@ -410,3 +410,8 @@ Phase3 was not skipped. Its acceptance flow has already been exercised ahead of 
 Correct phase order/status: Phase2 remains IN_PROGRESS until remaining contract adversarial/security review and external tester gate are complete. Phase3's defined core gate is already VERIFIED and should not be repeated. After Phase2 closes, proceed to Phase4 — public React/Vite/TypeScript app with real Wallet Selector and public read views. Phase4 is NOT_STARTED. The earlier wording that said “next formal product milestone is Phase4” skipped this explanation; it did not mean Phase3 had been skipped.
 
 Model note: this plan confusion was an explanation/tracking error, not a reason to change models. Keep this status explicit in future handoffs.
+
+
+## Phase 2 first-pass static review recorded — OPEN — 2026-11-03
+
+Added docs/SECURITY_REVIEW.md. Review covered accounting, governance, callback, type and public-view source plus selected adversarial test bodies. No confirmed critical accounting/authorization flaw was identified in the scoped review. This is explicitly not an audit or security clearance; tests were not rerun in this review. Material trust/reliability limits recorded: trusted verifier key, callback liveness/stuck pending funds, full-access deployment key authority, bounded attempts, and no public app. Independent external tester, exact-source CI/test rerun, key-custody review and callback runbook remain open. Phase2 IN_PROGRESS. Phase3 acceptance remains verified for CLI/manual signing; Phase4 app not started.
