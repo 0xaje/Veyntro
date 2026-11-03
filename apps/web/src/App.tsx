@@ -79,7 +79,7 @@ function CommitmentCard({ row, onRefresh }: { row: TreasurySnapshot["reservation
 }
 
 export default function App() {
-  const { account, connect, disconnect, error: walletError, ready } = useWallet();
+  const { account, connect, disconnect, error: walletError, initializing: walletInitializing, ready, retry: retryWallet } = useWallet();
   const [effectiveTheme, setEffectiveTheme] = useState<"light" | "dark">(() => {
     try {
       const saved = localStorage.getItem("veyntro-theme") ?? localStorage.getItem("veyntro-theme-mode");
@@ -267,9 +267,9 @@ export default function App() {
             ) : (
               <button
                 className="wallet-button"
-                onClick={connect}
+                onClick={() => void connect()}
                 disabled={!ready || Boolean(walletError)}
-                title={walletError ? "Wallet connection unavailable" : ready ? "Connect wallet" : "Loading wallet…"}
+                title={walletError ? "Wallet setup needs attention" : ready ? "Connect wallet" : "Loading wallet…"}
               >
                 {walletError ? "Wallet unavailable" : ready ? "Connect wallet" : "Loading wallet…"}
               </button>
@@ -290,7 +290,7 @@ export default function App() {
           </a>
         </section>
 
-        {walletError && <div className="inline-alert" role="status">{walletError}</div>}
+        {walletError && (\n          <div className="inline-alert error-alert" role="alert">\n            <span>{walletError}</span>\n            <button type="button" onClick={retryWallet} disabled={walletInitializing}>Try again</button>\n          </div>\n        )}
         {loadError && (
           <div className="inline-alert error-alert" role="alert">
             <span>{snapshot ? `Could not refresh live data. Showing the last final view from block ${snapshot.blockHeight}. ${loadError}` : loadError}</span>
