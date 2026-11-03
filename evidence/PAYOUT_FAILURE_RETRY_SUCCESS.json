@@ -41,5 +41,44 @@
     ],
     "returned_status": "Succeeded"
   },
-  "reconciliation": "Pending: query get_operation(4), get_reservation(2), get_treasury_state and recipient balance after this payout."
+  "reconciliation": {
+    "operation_view": {
+      "id": "4",
+      "kind": "Payout",
+      "reservation_id": "2",
+      "amount": "10000000000000000000000",
+      "recipient": "payout-failure.worker-aje-veyntro.testnet",
+      "status": "Succeeded"
+    },
+    "reservation_view": {
+      "id": "2",
+      "status": "Completed",
+      "approved_amount": "10000000000000000000000",
+      "remaining_liability": "0",
+      "pending_amount": "0",
+      "last_drawdown_nonce": "2",
+      "payment_attempts_left": 0,
+      "evidence_usable": false
+    },
+    "treasury_after": {
+      "actual_balance": "13878226047696256200000000",
+      "confirmed_accountable_funds": "3880000000000000000000000",
+      "reservation_liabilities": "300000000000000000000000",
+      "pending_payouts": "0",
+      "pending_withdrawals": "0",
+      "operating_reserve": "2606740000000000000000000",
+      "money_available": "973260000000000000000000",
+      "ledger_solvent": true,
+      "physical_backing_check": true
+    },
+    "recipient_after": {
+      "balance_near": "0.110",
+      "block_height": 276024439
+    },
+    "pre_retry_state": {
+      "actual_balance": "13888226047696256200000000",
+      "confirmed_accountable_funds": "3890000000000000000000000"
+    },
+    "interpretation": "Operation4 succeeded and commitment2 is Completed. Contract actual balance and confirmed accountable funds each decreased by exactly0.01 NEAR, matching the payout; total liabilities are now0.3 NEAR, pending amounts are zero, and backing/solvency pass. Recipient has0.110 NEAR, consistent with0.1 initial funding plus0.01 payout. Dynamic operating reserve decreased after the commitment closed and its unused operation storage was released."
+  }
 }
