@@ -265,3 +265,8 @@ NEXT EXACT ACTION: query current council account balance and live SputnikDAO bon
 ## Council balance checked for retry — 2026-11-03
 
 User supplied account summary for aje-veyntro.testnet at block276020381: balance1.48 NEAR. This is sufficient for a new1 NEAR proposal bond plus fees based on the previous live policy. Failed withdrawal callback is verified; operation1 Failed, nonce1 consumed. Recipient recovery.worker-aje-veyntro.testnet has now been created and funded. NEXT ACTION: submit fresh SputnikDAO proposal for 0.01 NEAR withdrawal to recovery.worker-aje-veyntro.testnet using nonce2, zero action deposit, 100 Tgas call gas and current bond. Capture dynamic proposal ID; inspect exact payload before voting. Verify transfer receipt, operation status and final firewall view. Retry not yet submitted.
+
+
+## Withdrawal retry proposal submitted — 2026-11-03
+
+User supplied successful SputnikDAO add_proposal receipt: proposal ID7, transaction fyTGzJiLamBB1Kr3nPhiRWh4x9GL9yNmj6Tbc1JYsPK (https://explorer.testnet.near.org/transactions/fyTGzJiLamBB1Kr3nPhiRWh4x9GL9yNmj6Tbc1JYsPK). Payload as returned matches withdrawal of0.01 NEAR to recovery.worker-aje-veyntro.testnet with nonce2, zero action deposit and100 Tgas. Bond attached1 NEAR. Approval not yet recorded. NEXT ACTION: inspect get_proposal(7) at current final block and verify receiver, method, args, gas, deposit and proposal status. If exact and still awaiting vote, council approves proposal7. Then check nested receipts and reconcile operation2 and treasury state; do not claim retry success until succeeded receipt and views confirm.
