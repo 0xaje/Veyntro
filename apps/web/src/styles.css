@@ -51,6 +51,10 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 .commitment-details-extra p + p { margin-top: var(--space-xs); }
 .commitment-details-extra code { font-size: var(--text-xs); }
 .commitment-details-extra a { color: var(--color-accent-deep); }
+.proposal-review { margin-top: var(--space-sm); padding: var(--space-sm); border: 1px solid var(--color-rule); border-radius: var(--radius-inner); background: var(--color-paper-2); color: var(--color-ink-2); font-size: var(--text-xs); overflow-wrap: anywhere; }
+.proposal-review p + p, .proposal-review-action + .proposal-review-action { margin-top: var(--space-xs); }
+.proposal-review summary { min-height: 36px; display: flex; align-items: center; cursor: pointer; color: var(--color-accent-deep); }
+.proposal-review code { overflow-wrap: anywhere; }
 @media (max-width: 40rem) { .docs-grid { grid-template-columns: 1fr; } }
 .topbar {
   position: sticky;
