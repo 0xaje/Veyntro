@@ -55,6 +55,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 .proposal-review p + p, .proposal-review-action + .proposal-review-action { margin-top: var(--space-xs); }
 .proposal-review summary { min-height: 36px; display: flex; align-items: center; cursor: pointer; color: var(--color-accent-deep); }
 .proposal-review code { overflow-wrap: anywhere; }
+.proposal-review pre { white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 40rem) { .docs-grid { grid-template-columns: 1fr; } }
 .topbar {
   position: sticky;
