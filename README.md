@@ -1,44 +1,73 @@
 # Veyntro
 
-Every commitment accounted for.
+**Every commitment accounted for.**
 
-Veyntro is being built to help DAOs and communities set money aside for approved work without promising the same funds twice. The Commitment Firewall will enforce backed commitments, limited payments and the return of unused money on NEAR.
+Veyntro helps DAOs and communities set money aside for approved work without promising the same funds twice. The Commitment Firewall checks each new commitment against the treasury's existing obligations and pending payments.
 
-## Current status
+## Current status — 3 November 2026
 
-Development is in progress. The public application is not implemented yet. The Commitment Firewall is deployed on NEAR testnet. DAO funding, two commitments, overcommitment rejection and missing-evidence payment rejection are independently verified. Payments and expiry release remain pending.
+Veyntro's NEAR testnet contract has been used for real DAO funding, commitments, an overcommitment rejection, GitHub evidence checks, payments, failed-transfer recovery and expiry release. The verifier is a local command-line tool that prepares an unsigned attestation; it is not a public signing service.
 
-Verified on NEAR testnet:
+A React, Vite and TypeScript app is in the open draft [Phase 4 pull request](https://github.com/0xaje/Veyntro/pull/1). It reads live testnet state and includes DAO and beneficiary actions. It is **not hosted or ready for community use yet**. The browser wallet connection and signed app transactions still need a live browser walkthrough. Recent code fixes the expiry method name and payout nonce; local type-check and build pass, but neither a browser wallet connection nor an app-signed transaction is claimed verified.
 
-- Council: aje-veyntro.testnet.
-- SputnikDAO: veyntro.sputnikv2.testnet.
-- [DAO creation transaction](https://explorer.testnet.near.org/transactions/6oV4Y8DX7hxXK2FB2hietaongMPtKzZzbaWazMAyP8JX) — final and successful.
+The contract's first-pass static review is not a security audit. Independent testing and release hardening remain open.
 
-The separate DAO-only receiver passes 9 local SDK unit tests, Clippy and WASM compilation. Phase 1 is now verified on NEAR testnet: receiver deployment, DAO proposal 0 and approval, an actual 0.01 NEAR DAO-to-receiver call, and rejection of direct council funding with unchanged records. [Execution evidence](evidence/DAO_FUNDING_EXECUTION.json) and [permission rejection](evidence/DAO_PERMISSION_REJECTION.json) are independently inspectable. The Commitment Firewall passes 56 local tests, Clippy and WASM compilation and is deployed at firewall-aje-veyntro.testnet. [DAO funding](evidence/FIREWALL_DAO_FUNDING.json), [two commitments](evidence/SECOND_COMMITMENT_EXECUTION.json), [overcommitment rejection](evidence/OVERCOMMITMENT_REJECTION.json) and [missing-evidence rejection](evidence/MISSING_EVIDENCE_REJECTION.json) are verified. The public application remains unimplemented.
+## Testnet accounts
 
-## Build the Commitment Firewall
+- DAO: [veyntro.sputnikv2.testnet](https://explorer.testnet.near.org/accounts/veyntro.sputnikv2.testnet)
+- Commitment Firewall: [firewall-aje-veyntro.testnet](https://explorer.testnet.near.org/accounts/firewall-aje-veyntro.testnet)
+- Council: `aje-veyntro.testnet`
+- Evidence verifier: `verifier-aje-veyntro.testnet`
 
-Requires the same pinned Rust toolchain. Run:
+## Verified evidence
+
+- [DAO creation](https://explorer.testnet.near.org/transactions/6oV4Y8DX7hxXK2FB2hietaongMPtKzZzbaWazMAyP8JX)
+- [DAO funding of the Firewall](https://explorer.testnet.near.org/transactions/BwjKrwuyGq1k5kYjZHQTBaof8DbGeT3UyczuWRAWPE5y)
+- [Rejected overcommitment](https://explorer.testnet.near.org/transactions/HnMJXawR3zD6onxcQe6n27wrYVQ1X591U7r4miPrnEtt)
+- [GitHub-checked payment](https://explorer.testnet.near.org/transactions/673VxeaAwfGbJ8pres4mJHxifLwYQbjJ1VdpCoRcf5bn)
+- [Permissionless expiry release](https://explorer.testnet.near.org/transactions/3bWgBZGtCJEHxdgo4Kcm995fXPXzskbfXbpKSG5enMv1)
+- [Failed payout callback](https://explorer.testnet.near.org/transactions/5hXiJWVF6T5Yy5CCwLHe1YwzSZv5LgyhkDagrBMTq28t)
+- [Successful retry](https://explorer.testnet.near.org/transactions/4mugR4TmcxwQ62164DiGFZWinfvKzbvjuqxWK4Po1ukk)
+
+The saved records are under [evidence/](evidence/). Read [docs/PROGRESS.md](docs/PROGRESS.md) for the full development history and current blockers.
+
+## Run the web app
+
+Use Node.js 24.12 or newer within major version 24.
+
+```bash
+npm --prefix apps/web ci
+npm --prefix apps/web run check
+npm --prefix apps/web run build
+npm --prefix apps/web run dev -- --host 127.0.0.1
+```
+
+The app reads NEAR testnet by default. Optional settings:
+
+- `VITE_NEAR_RPC_URL` — a NEAR testnet RPC endpoint.
+- `VITE_FIREWALL_CONTRACT_ID` — Firewall contract account; defaults to the testnet account above.
+
+Guest pages read public contract and DAO data. A wallet is needed for signed actions. **Never put a seed phrase or private key in the app, a repository, or a chat.** Testnet money has no mainnet value.
+
+## Build the contracts
+
+With the pinned Rust toolchain and required WASM target:
 
 ```bash
 bash scripts/build-firewall.sh
-```
-
-This checks all 56 firewall tests and 9 receiver tests, formatting, Clippy and the locked WASM build. Read the [accounting design](docs/FIREWALL_ACCOUNTING.md) and [contract API](docs/FIREWALL_API.md). Storage/gas reserves and up to 32 prepaid payment attempts per commitment are enforced. Test inputs are local checks, not GitHub attestations or blockchain activity. The GitHub verifier core and key-free preparation CLI now check real GitHub API and final testnet state; 28 adversarial tests and a live check pass. [Verifier setup and trust model](services/verifier/README.md). Onchain attestation, hosted authenticated verification and wallet application remain pending. [Current build evidence](evidence/FIREWALL_BUILD.json) records exact local results.
-
-## Build the receiver
-
-Requires rustup, Python 3, Node/npm, and C build tools. The checked-in toolchain pins Rust 1.95.0; the SDK is exactly 5.30.0. From the repository root:
-
-```bash
 bash scripts/build-receiver.sh
 ```
 
-[DAO receiver deployment walkthrough](docs/DAO_RECEIVER.md) explains the separate user-signed stages and exact live exit gate. The receiver accepts at most 0.01 test NEAR and has no withdrawals; it is not the product treasury.
+See [the Firewall accounting rules](docs/FIREWALL_ACCOUNTING.md), [contract methods](docs/FIREWALL_API.md), and [DAO receiver walkthrough](docs/DAO_RECEIVER.md).
 
-## Development records
+## Trust and limits
 
-Read [AGENTS.md](AGENTS.md), [master plan](docs/MASTER_PLAN.md) and [current progress](docs/PROGRESS.md) before changes. [Build evidence](evidence/RECEIVER_BUILD.json) and [DAO evidence](evidence/DAO_INTEGRATION.md) distinguish local checks from real transactions. Never commit private keys or recovery phrases.
+- SputnikDAO authorizes treasury funding and changes to commitments.
+- The contract enforces its money limits and payment rules.
+- The GitHub verifier checks a specific workflow run, then signs an onchain attestation using its own account. The DAO controls which verifier account is trusted. This verifier is not trustless; protect and rotate its key if needed.
+- The operator cannot spend treasury funds. Expired money can be released by any caller, but a caller still has to send the transaction.
+- The public app's Activity page currently shows recorded payments and withdrawals only. It does not yet index every funding and commitment change or link each stored operation to its exact transaction.
 
-Primary hackathon track: Social Money.
+## Project documents
 
+Read [AGENTS.md](AGENTS.md), [docs/MASTER_PLAN.md](docs/MASTER_PLAN.md), and [docs/PROGRESS.md](docs/PROGRESS.md) before changing the product. Do not mark a feature complete without local checks and real integration evidence.
