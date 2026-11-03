@@ -1,6 +1,6 @@
 {
   "network": "NEAR testnet",
-  "source": "User-provided read-only preconditions and signed transaction receipt; final reconciliation pending",
+  "source": "User-provided NEAR testnet transaction receipt and final-block contract/account read-only views; arithmetic reconciled.",
   "pre_retry": {
     "reservation_id": "2",
     "status": "Active",
@@ -80,5 +80,6 @@
       "confirmed_accountable_funds": "3890000000000000000000000"
     },
     "interpretation": "Operation4 succeeded and commitment2 is Completed. Contract actual balance and confirmed accountable funds each decreased by exactly0.01 NEAR, matching the payout; total liabilities are now0.3 NEAR, pending amounts are zero, and backing/solvency pass. Recipient has0.110 NEAR, consistent with0.1 initial funding plus0.01 payout. Dynamic operating reserve decreased after the commitment closed and its unused operation storage was released."
-  }
+  },
+  "reconciliation_verified": true
 }
