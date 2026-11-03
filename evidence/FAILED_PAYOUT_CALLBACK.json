@@ -27,5 +27,36 @@
       "released": "0"
     }
   ],
-  "reconciliation": "Pending. Query operation 3, reservation 2 and treasury state before creating the recipient or retrying."
+  "reconciliation": {
+    "operation_view": {
+      "id": "3",
+      "kind": "Payout",
+      "reservation_id": "2",
+      "amount": "10000000000000000000000",
+      "recipient": "payout-failure.worker-aje-veyntro.testnet",
+      "status": "Failed"
+    },
+    "reservation_view": {
+      "id": "2",
+      "status": "Active",
+      "approved_amount": "10000000000000000000000",
+      "remaining_liability": "10000000000000000000000",
+      "pending_amount": "0",
+      "last_drawdown_nonce": "1",
+      "payment_attempts_left": 31,
+      "evidence_usable": true
+    },
+    "treasury_view": {
+      "actual_balance": "13888226047696256200000000",
+      "confirmed_accountable_funds": "3890000000000000000000000",
+      "reservation_liabilities": "310000000000000000000000",
+      "pending_payouts": "0",
+      "pending_withdrawals": "0",
+      "operating_reserve": "2921650000000000000000000",
+      "money_available": "658350000000000000000000",
+      "ledger_solvent": true,
+      "physical_backing_check": true
+    },
+    "interpretation": "The failed payout did not transfer funds: actual balance, confirmed funds, commitment liability and remaining amount are unchanged. Pending payout is cleared. Nonce1 and one attempt slot were consumed; evidence remains usable. Operating reserve decreased by0.00771 NEAR as an unused pre-reserved operation slot was consumed and actual storage for the completed operation required less reserve, increasing Money Available by0.00771 NEAR. Retry must use nonce2."
+  }
 }
