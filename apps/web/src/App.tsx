@@ -20,6 +20,34 @@ function Amount({ value }: { value: string }) {
   return <>{formatNear(value)} <span className="amount-unit">NEAR</span></>;
 }
 
+type AppView = "overview" | "commitments" | "governance" | "activity";
+
+function viewFromHash(hash: string): AppView {
+  if (hash === "#commitments" || hash.startsWith("#commitment-")) return "commitments";
+  if (hash === "#governance") return "governance";
+  if (hash === "#activity") return "activity";
+  return "overview";
+}
+
+const VIEW_COPY: Record<AppView, { title: string; description: string }> = {
+  overview: {
+    title: "Every commitment accounted for.",
+    description: "See what the treasury holds, what is set aside for work, and what can still be used.",
+  },
+  commitments: {
+    title: "Commitments",
+    description: "See what the DAO has set aside, who is doing the work, and when it is due.",
+  },
+  governance: {
+    title: "DAO approval",
+    description: "Review proposals and ask the DAO to approve a treasury action.",
+  },
+  activity: {
+    title: "Payments and withdrawals",
+    description: "Review the payment and withdrawal records available from the contract.",
+  },
+};
+
 function CommitmentCard({ row, onRefresh }: { row: TreasurySnapshot["reservations"][number]; onRefresh: () => Promise<void> }) {
   const status = row.is_expired && row.status === "Active" ? "Expired" : row.status;
   const statusLabel = status === "Active" ? "In progress" : status;
@@ -52,72 +80,41 @@ function CommitmentCard({ row, onRefresh }: { row: TreasurySnapshot["reservation
 
 export default function App() {
   const { account, connect, disconnect, error: walletError, ready } = useWallet();
-  const [themeMode, setThemeMode] = useState<"auto" | "light" | "dark">(() => {
-    try {
-      const saved = localStorage.getItem("veyntro-theme-mode");
-      if (saved === "auto" || saved === "light" || saved === "dark") return saved;
-    } catch {
-      // Ignore storage access issues
-    }
-    return "auto";
-  });
-
   const [effectiveTheme, setEffectiveTheme] = useState<"light" | "dark">(() => {
-    if (typeof window === "undefined") return "light";
     try {
-      const saved = localStorage.getItem("veyntro-theme-mode");
+      const saved = localStorage.getItem("veyntro-theme") ?? localStorage.getItem("veyntro-theme-mode");
       if (saved === "light" || saved === "dark") return saved;
     } catch {
-      // Ignore
+      // Keep the app usable when browser storage is unavailable.
     }
-    const hour = new Date().getHours();
-    const isNightTime = hour >= 19 || hour < 7;
-    const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    return isNightTime || systemPrefersDark ? "dark" : "light";
+    return "light";
   });
 
   useEffect(() => {
-    function computeTheme() {
-      if (themeMode === "light" || themeMode === "dark") {
-        return themeMode;
-      }
-      // Automatic day / night detection + system preference
-      const hour = new Date().getHours();
-      const isNightTime = hour >= 19 || hour < 7;
-      const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      return isNightTime || systemPrefersDark ? "dark" : "light";
-    }
-
-    const current = computeTheme();
-    setEffectiveTheme(current);
-    document.documentElement.setAttribute("data-theme", current);
-
+    document.documentElement.setAttribute("data-theme", effectiveTheme);
     try {
-      localStorage.setItem("veyntro-theme-mode", themeMode);
+      localStorage.setItem("veyntro-theme", effectiveTheme);
     } catch {
-      // Ignore
+      // The theme still applies for this visit if storage is unavailable.
     }
+  }, [effectiveTheme]);
 
-    // Interval to check day/night transitions automatically
-    const timer = window.setInterval(() => {
-      if (themeMode === "auto") {
-        const next = computeTheme();
-        setEffectiveTheme(next);
-        document.documentElement.setAttribute("data-theme", next);
+  const toggleTheme = () => setEffectiveTheme((current) => current === "dark" ? "light" : "dark");
+  const [activeView, setActiveView] = useState<AppView>(() => viewFromHash(window.location.hash));
+
+  useEffect(() => {
+    const syncView = () => {
+      const hash = window.location.hash;
+      setActiveView(viewFromHash(hash));
+      if (hash.startsWith("#commitment-")) {
+        window.setTimeout(() => document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView({ block: "start" }), 0);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
-    }, 60_000);
-
-    return () => window.clearInterval(timer);
-  }, [themeMode]);
-
-  const toggleTheme = () => {
-    setThemeMode((prev) => {
-      // Cycles: auto -> light -> dark -> auto
-      if (prev === "auto") return effectiveTheme === "dark" ? "light" : "dark";
-      if (prev === "dark") return "light";
-      return "dark";
-    });
-  };
+    };
+    window.addEventListener("hashchange", syncView);
+    return () => window.removeEventListener("hashchange", syncView);
+  }, []);
 
   const [snapshot, setSnapshot] = useState<TreasurySnapshot | null>(null);
   const [dao, setDao] = useState<DaoSnapshot | null>(null);
@@ -241,26 +238,25 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="Veyntro home">
+        <a className="brand" href="#overview" aria-label="Veyntro overview">
           <span className="brand-mark" aria-hidden="true">V</span>
           <span>Veyntro</span>
         </a>
         <nav className="main-nav" aria-label="Main navigation">
-          <a href="#treasury">Your money</a>
-          <a href="#commitments">Commitments</a>
-          <a href="#governance">DAO approval</a>
-          <a href="#activity">Activity</a>
+          <a href="#overview" aria-current={activeView === "overview" ? "page" : undefined}>Overview</a>
+          <a href="#commitments" aria-current={activeView === "commitments" ? "page" : undefined}>Commitments</a>
+          <a href="#governance" aria-current={activeView === "governance" ? "page" : undefined}>DAO approval</a>
+          <a href="#activity" aria-current={activeView === "activity" ? "page" : undefined}>Activity</a>
         </nav>
         <div className="topbar-controls">
           <button
             type="button"
-            className={`theme-dot-toggle ${effectiveTheme === "dark" ? "is-dark" : "is-light"}`}
+            className="theme-toggle"
             onClick={toggleTheme}
-            aria-label={`Current mode: ${effectiveTheme}. Click to switch to ${effectiveTheme === "dark" ? "light" : "dark"} mode`}
-            title={`Current mode: ${effectiveTheme} (${themeMode === "auto" ? "auto daylight" : "manual"}). Click to switch`}
+            aria-label={`Switch to ${effectiveTheme === "dark" ? "light" : "dark"} mode`}
           >
-            <span className="theme-dot" aria-hidden="true" />
-            <span className="visually-hidden">{effectiveTheme === "dark" ? "Dark mode active. Switch to light" : "Light mode active. Switch to dark"}</span>
+            <span className="theme-icon" aria-hidden="true">{effectiveTheme === "dark" ? "☼" : "☾"}</span>
+            <span>{effectiveTheme === "dark" ? "Light mode" : "Dark mode"}</span>
           </button>
           <div className="wallet-area">
             <span className="network-pill">NEAR testnet</span>
@@ -285,8 +281,8 @@ export default function App() {
       <main id="top">
         <section className="intro" aria-labelledby="page-title">
           <div className="intro-copy">
-            <h1 id="page-title">Every commitment accounted for.</h1>
-            <p className="intro-text">See what the treasury holds, what is set aside for work, and what can still be used.</p>
+            <h1 id="page-title">{VIEW_COPY[activeView].title}</h1>
+            <p className="intro-text">{VIEW_COPY[activeView].description}</p>
           </div>
           <a className="contract-link" href={explorerAccountUrl(FIREWALL_CONTRACT_ID)} target="_blank" rel="noreferrer">
             <span className="contract-label">Live contract</span>
@@ -302,7 +298,7 @@ export default function App() {
           </div>
         )}
 
-        <section className="treasury-section" id="treasury" aria-labelledby="treasury-title">
+        {activeView === "overview" && <section className="treasury-section" id="treasury" aria-labelledby="treasury-title">
           <div className="section-heading">
             <div>
               <p className="section-kicker">Treasury overview</p>
@@ -356,9 +352,15 @@ export default function App() {
               </details>
             </>
           )}
-        </section>
+        </section>}
 
-        <section className="commitments-section" id="commitments" aria-labelledby="commitments-title">
+        {activeView === "overview" && <nav className="overview-shortcuts" aria-label="More treasury pages">
+          <a href="#commitments"><strong>Commitments</strong><span>See money set aside for work</span></a>
+          <a href="#governance"><strong>DAO approval</strong><span>Review and request treasury actions</span></a>
+          <a href="#activity"><strong>Activity</strong><span>See recorded payments and withdrawals</span></a>
+        </nav>}
+
+        {activeView === "commitments" && <section className="commitments-section" id="commitments" aria-labelledby="commitments-title">
           <div className="section-heading">
             <div>
               <p className="section-kicker">Onchain records</p>
@@ -385,11 +387,11 @@ export default function App() {
           {hasMore && (
             <div className="load-more-wrap"><button className="load-more-button" onClick={() => void loadMore()} disabled={loadingMore}>{loadingMore ? "Loading…" : "Show more commitments"}</button></div>
           )}
-        </section>
+        </section>}
 
-        <GovernancePanel dao={dao} treasury={snapshot} loading={daoLoading} error={daoError} onRefresh={refresh} />
+        {activeView === "governance" && <GovernancePanel dao={dao} treasury={snapshot} loading={daoLoading} error={daoError} onRefresh={refresh} />}
 
-        <ActivityPanel
+        {activeView === "activity" && <ActivityPanel
           page={operationsPage}
           loading={operationsLoading}
           error={operationsError}
@@ -397,7 +399,7 @@ export default function App() {
           currentBlockHash={snapshot?.blockHash ?? null}
           currentBlockHeight={snapshot?.blockHeight ?? null}
           onLoadOlder={() => void loadOlderOperations()}
-        />
+        />}
 
         <section className="trust-note" aria-label="About this page">
           <span className="trust-icon" aria-hidden="true">✓</span>
