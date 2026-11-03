@@ -1,0 +1,36 @@
+{
+  "network": "NEAR testnet",
+  "source": "User-provided final-block read-only views following council-approved SputnikDAO proposal 8.",
+  "proposal": {
+    "id": "8",
+    "submission_tx": "HFb6nSNRZYySTiK52HzLfditqH6Guc6NzgnKY464Bq6h",
+    "approval_tx": "7QiuF85u5E2YxfUrugQw4zF9Mvr6gkyQZPpRUyswZzzN"
+  },
+  "commitment": {
+    "id": "2",
+    "status": "Active",
+    "beneficiary": "worker-aje-veyntro.testnet",
+    "payout_recipient": "payout-failure.worker-aje-veyntro.testnet",
+    "approved_amount": "10000000000000000000000",
+    "remaining_liability": "10000000000000000000000",
+    "pending_amount": "0",
+    "evidence": null,
+    "last_drawdown_nonce": "0",
+    "payment_attempts_left": 32,
+    "expires_at_ns": "1793866186320758628",
+    "evidence_policy_hash": "22941ad52c55ba33751c7e27e8738948dc0bf08fae6e708d21b6b661ccc09048"
+  },
+  "treasury": {
+    "actual_balance": "13888226047696256200000000",
+    "confirmed_accountable_funds": "3890000000000000000000000",
+    "reservation_liabilities": "310000000000000000000000",
+    "operating_reserve": "2929360000000000000000000",
+    "money_available": "650640000000000000000000",
+    "pending_payouts": "0",
+    "pending_withdrawals": "0",
+    "last_withdrawal_nonce": "2",
+    "ledger_solvent": true,
+    "physical_backing_check": true
+  },
+  "note": "No GitHub attestation or payout has been submitted for this commitment yet."
+}
