@@ -605,3 +605,9 @@ Added `.github/workflows/web.yml` on the same review branch. It uses pinned chec
 ### Web CI failure and correction — 2026-11-03
 
 The first two Web app checks exposed a source-generation mistake: `apps/web/src/App.tsx` had literal backslash-n text in the wallet retry alert. The failure was at TypeScript compile (run 41647307715, then 41647380801); dependency installation passed in both. The App source was corrected in commit `b265e412c98cfbe61b089f018b6f93e5bf1a7d9e`. Web app checks run 41647513452 then passed on that corrected commit, including the app type check and production build. CI evidence: https://github.com/0xaje/Veyntro/actions/runs/41647513452. The initial failed runs remain part of the record. A successful build still does not verify a wallet popup or real wallet-signed action.
+
+## Phase 4 wallet browser diagnosis — 2026-11-03
+
+The user's Chrome console showed wallet setup failing first at `Buffer.from` because Vite externalized the Node buffer module. Added the browser `buffer` package, Vite alias, and global Buffer; local type-check/build and CI run 41652172750 passed. A new Chrome recording then showed `ReferenceError: global is not defined` at the wallet dependency's `global.crypto` initialization. Added `globalThis.global = globalThis` before wallet dynamic imports (via `Object.assign`). Local type-check passed; CI and an actual browser connect/disconnect check remain pending. The red notice is a wallet setup error and retry action; the top-bar button is the connection control. Do not claim wallet operation or signed transactions until observed in the browser.
+
+NEXT EXACT ACTION: pull commit 0854f42b78ef058d1272e297dc2b730b5c646a66 on the draft branch, restart Vite, hard-refresh Chrome, and verify wallet modal, testnet account connection, and disconnect. If setup still fails, capture the new exact console stack and fix it before any wallet-signed action.
