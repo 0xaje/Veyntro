@@ -8,7 +8,7 @@ Veyntro helps DAOs and communities set money aside for approved work without pro
 
 Veyntro's NEAR testnet contract has been used for real DAO funding, commitments, an overcommitment rejection, GitHub evidence checks, payments, failed-transfer recovery and expiry release. The verifier is a local command-line tool that prepares an unsigned attestation; it is not a public signing service.
 
-The React, Vite and TypeScript app reads live testnet state. Browser wallet connection, DAO proposal and vote, commitment creation, and beneficiary payout were exercised locally with real NEAR testnet actions. The web app is **not hosted or ready for community use yet**. A Render Static Site setup is prepared in [`render.yaml`](render.yaml); see [deployment steps](docs/DEPLOY_WEB.md). Hosted wallet flow, direct links, and mobile checks still need verification. Evidence submission still requires a verifier key on Ubuntu.
+The React, Vite and TypeScript app reads live testnet state. Browser wallet connection, DAO proposal and vote, commitment creation, and beneficiary payout were exercised locally with real NEAR testnet actions. The web app is hosted at [veyntro-web.onrender.com](https://veyntro-web.onrender.com/) on a free Render Static Site. Public guest reads of live treasury data, DAO proposals, and a direct commitment page were verified on the hosted URL; see [deployment and checks](docs/DEPLOY_WEB.md) and [progress](docs/PROGRESS.md). Hosted wallet connection and signed actions, mobile checks, and public evidence submission still need verification or implementation. Evidence submission still requires a verifier key on Ubuntu.
 
 The contract's first-pass static review is not a security audit. Independent testing and release hardening remain open.
 
