@@ -595,3 +595,8 @@ Local verification ran on Node 24.22.1 / npm 11.9.0 after fetching the exact app
 **Current Phase 4 status: IN_PROGRESS.** Public reads and governance/action code exist, but the wallet and transaction flows have not passed a live browser walkthrough. Activity still lacks funding/commitment event indexing and exact transaction links. The current frontend bundle warnings need review.
 
 **Next exact action:** run this review branch in the project development environment, select `Connect Wallet`, inspect the browser console if setup fails, and test a real testnet connect/disconnect without sending a transaction. Confirm the connected testnet account first. Then verify a low-risk permissionless `release_expired` action only if an actually expired commitment is available; otherwise stop without creating test activity. After wallet setup, test the DAO proposal read/permission path and beneficiary payout on existing evidence-backed state, with the user reviewing every signature. Update this record with actual browser, wallet, receipt and RPC results. Do not claim app writes are verified based on a build alone.
+
+
+### Web CI added — 2026-11-03
+
+Added `.github/workflows/web.yml` on the same review branch. It uses pinned checkout/setup-node action revisions and Node 24.22.1, installs the locked app dependencies without lifecycle scripts, and runs the web type check and production build for app/workflow changes. Local app check/build already passed as recorded above. GitHub reported no workflow runs for the branch at the time this note was written, so the new CI job is not yet claimed passed. This workflow does not test wallet popups or sign transactions.
