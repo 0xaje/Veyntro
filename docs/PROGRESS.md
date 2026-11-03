@@ -600,3 +600,8 @@ Local verification ran on Node 24.22.1 / npm 11.9.0 after fetching the exact app
 ### Web CI added — 2026-11-03
 
 Added `.github/workflows/web.yml` on the same review branch. It uses pinned checkout/setup-node action revisions and Node 24.22.1, installs the locked app dependencies without lifecycle scripts, and runs the web type check and production build for app/workflow changes. Local app check/build already passed as recorded above. GitHub reported no workflow runs for the branch at the time this note was written, so the new CI job is not yet claimed passed. This workflow does not test wallet popups or sign transactions.
+
+
+### Web CI failure and correction — 2026-11-03
+
+The first two Web app checks exposed a source-generation mistake: `apps/web/src/App.tsx` had literal backslash-n text in the wallet retry alert. The failure was at TypeScript compile (run 41647307715, then 41647380801); dependency installation passed in both. The App source was corrected in commit `b265e412c98cfbe61b089f018b6f93e5bf1a7d9e`. Web app checks run 41647513452 then passed on that corrected commit, including the app type check and production build. CI evidence: https://github.com/0xaje/Veyntro/actions/runs/41647513452. The initial failed runs remain part of the record. A successful build still does not verify a wallet popup or real wallet-signed action.
