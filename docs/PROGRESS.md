@@ -3,7 +3,7 @@
 DATE/TIME (UTC): 2026-11-03 — status corrected against docs/MASTER_PLAN.md
 PHASE / MILESTONE: Phase 4 — user-facing app; first public-view and wallet-connected app slice
 STATUS: IN_PROGRESS
-LAST VERIFIED COMMIT: 98cbda3d000795e70a9e658d0ec8c84c0b353a4a (current docs/review; contract source matches tested commit 3c18cad4f81b949f3e264961da61c97d5613964e).
+LAST VERIFIED COMMIT: Phase 4 source branch `phase4/public-treasury-wallet-slice`; live wallet/RPC checks remain open.
 REPOSITORY: https://github.com/0xaje/Veyntro
 NETWORK / CONTRACT IDS: testnet; DAO veyntro.sputnikv2.testnet; council aje-veyntro.testnet; receiver receiver.aje-veyntro.testnet verified. Firewall account firewall-aje-veyntro.testnet CREATED with 10 test NEAR; contract DEPLOYED and initialized; final transaction/code hash/initial views verified. Verifier verifier-aje-veyntro.testnet and beneficiary worker-aje-veyntro.testnet CREATED and verified; each has 10 test NEAR.
 
