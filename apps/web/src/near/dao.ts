@@ -38,7 +38,7 @@ interface RpcResponse {
   error?: { name?: string; cause?: { name?: string; info?: Record<string, unknown> }; data?: string };
 }
 
-async function callDaoView<T>(accountId: string, method: string, args: Record<string, unknown>): Promise<{ value: T; blockHash: string; blockHeight: number }> {
+async function callDaoView<T>(accountId: string, method: string, args: Record<string, unknown>, blockHash?: string): Promise<{ value: T; blockHash: string; blockHeight: number }> {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 15_000);
   try {
@@ -52,7 +52,7 @@ async function callDaoView<T>(accountId: string, method: string, args: Record<st
         method: "query",
         params: {
           request_type: "call_function",
-          finality: "final",
+          ...(blockHash ? { block_id: blockHash } : { finality: "final" }),
           account_id: accountId,
           method_name: method,
           args_base64: btoa(JSON.stringify(args)),
@@ -80,7 +80,9 @@ async function callDaoView<T>(accountId: string, method: string, args: Record<st
 
 export async function readDao(accountId: string): Promise<DaoSnapshot> {
   const policyRes = await callDaoView<DaoPolicy>(accountId, "get_policy", {});
-  const proposalsRes = await callDaoView<DaoProposal[]>(accountId, "get_proposals", { from_index: 0, limit: 50 });
+  if (!policyRes.blockHash) throw new Error("NEAR testnet did not return a final DAO block.");
+  const proposalsRes = await callDaoView<DaoProposal[]>(accountId, "get_proposals", { from_index: 0, limit: 50 }, policyRes.blockHash);
+  if (proposalsRes.blockHash && proposalsRes.blockHash !== policyRes.blockHash) throw new Error("DAO reads returned different blocks. Refresh and try again.");
   return {
     accountId,
     policy: policyRes.value,
@@ -88,6 +90,15 @@ export async function readDao(accountId: string): Promise<DaoSnapshot> {
     blockHash: policyRes.blockHash,
     blockHeight: policyRes.blockHeight,
   };
+}
+
+export async function readDaoVoteTarget(accountId: string, id: number): Promise<{ policy: DaoPolicy; proposal: DaoProposal }> {
+  if (!Number.isSafeInteger(id) || id < 0) throw new Error("The proposal number is not valid.");
+  const policy = await callDaoView<DaoPolicy>(accountId, "get_policy", {});
+  if (!policy.blockHash) throw new Error("NEAR testnet did not return a final DAO block.");
+  const proposal = await callDaoView<DaoProposal>(accountId, "get_proposal", { id }, policy.blockHash);
+  if (proposal.blockHash && proposal.blockHash !== policy.blockHash) throw new Error("DAO reads returned different blocks. Refresh and try again.");
+  return { policy: policy.value, proposal: proposal.value };
 }
 
 export function accountCanUsePermission(policy: DaoPolicy, accountId: string, kind: string, action: string): boolean {
