@@ -63,7 +63,9 @@ const VIEW_COPY: Record<AppView, { title: string; description: string }> = {
 function CommitmentCard({ row, onRefresh, detail = false }: { row: Reservation; onRefresh: () => Promise<void>; detail?: boolean }) {
   const status = row.is_expired && row.status === "Active" ? "Expired" : row.status;
   const statusLabel = status === "Active" ? "In progress" : status;
-  const evidenceLabel = row.evidence?.usable ? "GitHub check accepted" : "GitHub check needed";
+  const evidenceLabel = row.evidence
+    ? row.status === "Completed" ? "Work checked" : row.evidence.usable ? "GitHub check accepted" : "Work check no longer usable"
+    : "GitHub check needed";
   return (
     <article className="commitment-card" id={`commitment-${row.id}`}>
       <div className="commitment-heading">
@@ -84,7 +86,7 @@ function CommitmentCard({ row, onRefresh, detail = false }: { row: Reservation; 
           <p><strong>Payment account:</strong> {row.payout_recipient}</p>
           <p><strong>Work-check rule hash:</strong> <code>{row.evidence_policy_hash}</code></p>
           {row.evidence && <p><strong>Checked commit:</strong> <code>{row.evidence.commit_sha}</code></p>}
-          {row.evidence && <p><strong>Work check ends:</strong> {formatDeadline(row.evidence.valid_until_ns)}</p>}
+          {row.evidence && <p><strong>Work check valid until:</strong> {formatDeadline(row.evidence.valid_until_ns)}</p>}
           <p><a href="/activity">See available payment records</a></p>
         </div>
       ) : <a className="commitment-detail-link" href={`/commitments/${encodeURIComponent(row.id)}`}>View commitment details</a>}
