@@ -8,7 +8,7 @@ Veyntro helps DAOs and communities set money aside for approved work without pro
 
 Veyntro's NEAR testnet contract has been used for real DAO funding, commitments, an overcommitment rejection, GitHub evidence checks, payments, failed-transfer recovery and expiry release. The verifier is a local command-line tool that prepares an unsigned attestation; it is not a public signing service.
 
-A React, Vite and TypeScript app is in the open draft [Phase 4 pull request](https://github.com/0xaje/Veyntro/pull/1). It reads live testnet state and includes DAO and beneficiary actions. It is **not hosted or ready for community use yet**. The browser wallet connection and signed app transactions still need a live browser walkthrough. Recent code fixes the expiry method name and payout nonce; local type-check and build pass, but neither a browser wallet connection nor an app-signed transaction is claimed verified.
+The React, Vite and TypeScript app reads live testnet state. Browser wallet connection, DAO proposal and vote, commitment creation, and beneficiary payout were exercised locally with real NEAR testnet actions. The web app is **not hosted or ready for community use yet**. A Render Static Site setup is prepared in [`render.yaml`](render.yaml); see [deployment steps](docs/DEPLOY_WEB.md). Hosted wallet flow, direct links, and mobile checks still need verification. Evidence submission still requires a verifier key on Ubuntu.
 
 The contract's first-pass static review is not a security audit. Independent testing and release hardening remain open.
 
@@ -16,7 +16,7 @@ The contract's first-pass static review is not a security audit. Independent tes
 
 - DAO: [veyntro.sputnikv2.testnet](https://explorer.testnet.near.org/accounts/veyntro.sputnikv2.testnet)
 - Commitment Firewall: [firewall-aje-veyntro.testnet](https://explorer.testnet.near.org/accounts/firewall-aje-veyntro.testnet)
-- Council: `aje-veyntro.testnet`
+- Council: `aje.testnet` (sole current council voter; the former CLI voter was removed by DAO proposal 12)
 - Evidence verifier: `verifier-aje-veyntro.testnet`
 
 ## Verified evidence
