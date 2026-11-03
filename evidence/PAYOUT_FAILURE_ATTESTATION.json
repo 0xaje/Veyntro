@@ -1,0 +1,23 @@
+{
+  "network": "NEAR testnet",
+  "source": "User-provided successful near-cli-rs transaction output",
+  "transaction": {
+    "id": "4ZAVqkSqZfxpQhv5zWGYAUAJtYFV7A3xxRNaXBsrwDCR",
+    "explorer": "https://explorer.testnet.near.org/transactions/4ZAVqkSqZfxpQhv5zWGYAUAJtYFV7A3xxRNaXBsrwDCR",
+    "method": "submit_attestation",
+    "signer": "verifier-aje-veyntro.testnet",
+    "receiver": "firewall-aje-veyntro.testnet",
+    "status": "succeeded"
+  },
+  "event": {
+    "id": "2",
+    "evidence_digest": "768c1b825c341cb9691ca39e36fc7369d6a57cd5f44c4833bf312b8bdc55e114",
+    "commit_sha": "3c18cad4f81b949f3e264961da61c97d5613964e",
+    "policy_hash": "22941ad52c55ba33751c7e27e8738948dc0bf08fae6e708d21b6b661ccc09048",
+    "nonce": "1",
+    "valid_until_ns": "1793695499336000000",
+    "verifier": "verifier-aje-veyntro.testnet",
+    "epoch": "0"
+  },
+  "note": "The receipt shows acceptance. A fresh get_reservation view and recipient absence check are still needed before requesting payout."
+}
