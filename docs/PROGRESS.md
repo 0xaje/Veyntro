@@ -436,7 +436,7 @@ Local verification on Node 24.22.1 / npm 11.9.0:
 - npm --prefix apps/web run check: passed.
 - npm --prefix apps/web run build: passed.
 - Production build split wallet code into separate chunks. Warnings remain visible: Meteor chunk 607.70 kB (171.56 kB gzip); wallet dependency transitive Node buffer/util references are externalized; js-sha256 includes guarded Node-only eval paths. These need review before release and must not be hidden.
-- No live browser RPC comparison or wallet sign-in was performed in this workspace. The app has no DAO proposal, beneficiary payout, evidence submission, expiry action, transaction activity index or hosting yet. Phase 4 remains IN_PROGRESS.
+- No live browser RPC comparison or wallet sign-in was performed in this workspace. A paging race was found and fixed: rows from an older block are not merged after a newer treasury refresh. The app has no DAO proposal, beneficiary payout, evidence submission, expiry action, transaction activity index or hosting yet. Phase 4 remains IN_PROGRESS.
 - Contract code and testnet state were not changed.
 
 NEXT EXACT ACTION: run the app in the development environment, compare its live treasury/commitment values against NEAR testnet reads at the displayed final block, and test Meteor wallet connect/disconnect. Once those checks pass, add signed DAO governance actions and verify each transaction's final receipts before adding beneficiary payment controls.

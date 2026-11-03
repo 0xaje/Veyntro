@@ -52,6 +52,7 @@ export default function App() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageError, setPageError] = useState<string | null>(null);
   const hasSnapshot = useRef(false);
+  const latestBlockHash = useRef<string | null>(null);
 
   const refresh = useCallback(async () => {
     if (hasSnapshot.current) setRefreshing(true);
@@ -59,6 +60,7 @@ export default function App() {
     try {
       const next = await readTreasury();
       hasSnapshot.current = true;
+      latestBlockHash.current = next.blockHash;
       setSnapshot(next);
       setLoadError(null);
     } catch (error) {
@@ -85,6 +87,9 @@ export default function App() {
     setPageError(null);
     try {
       const rows = await readReservationPage(snapshot.nextFromIndex, snapshot.blockHash);
+      if (latestBlockHash.current !== snapshot.blockHash) {
+        throw new Error("The treasury changed while commitments were loading. Refresh and try again.");
+      }
       setSnapshot((current) => current ? {
         ...current,
         reservations: [...current.reservations, ...rows],
