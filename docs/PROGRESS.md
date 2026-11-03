@@ -270,3 +270,8 @@ User supplied account summary for aje-veyntro.testnet at block276020381: balance
 ## Withdrawal retry proposal submitted — 2026-11-03
 
 User supplied successful SputnikDAO add_proposal receipt: proposal ID7, transaction fyTGzJiLamBB1Kr3nPhiRWh4x9GL9yNmj6Tbc1JYsPK (https://explorer.testnet.near.org/transactions/fyTGzJiLamBB1Kr3nPhiRWh4x9GL9yNmj6Tbc1JYsPK). Payload as returned matches withdrawal of0.01 NEAR to recovery.worker-aje-veyntro.testnet with nonce2, zero action deposit and100 Tgas. Bond attached1 NEAR. Approval not yet recorded. NEXT ACTION: inspect get_proposal(7) at current final block and verify receiver, method, args, gas, deposit and proposal status. If exact and still awaiting vote, council approves proposal7. Then check nested receipts and reconcile operation2 and treasury state; do not claim retry success until succeeded receipt and views confirm.
+
+
+## Retry proposal 7 inspected — 2026-11-03
+
+User supplied get_proposal(7) at final block. Status InProgress, no votes. Payload matches: receiver firewall-aje-veyntro.testnet, method withdraw_available, amount0.01 NEAR, recipient recovery.worker-aje-veyntro.testnet, nonce2, deposit0, action gas100 Tgas. Safe to cast the council approval as the next step. No withdrawal has executed yet.
