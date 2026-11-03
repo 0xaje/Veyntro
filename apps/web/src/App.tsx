@@ -12,9 +12,11 @@ import {
   formatNear,
   readTreasury,
   readReservationPage,
+  readReservation,
   readOperationPage,
   type TreasurySnapshot,
   type OperationsPage,
+  type Reservation,
 } from "./near/rpc";
 
 function Amount({ value }: { value: string }) {
@@ -23,12 +25,15 @@ function Amount({ value }: { value: string }) {
 
 type AppView = "overview" | "commitments" | "governance" | "activity" | "docs";
 
-function viewFromHash(hash: string): AppView {
+function viewFromLocation(hash: string, path: string): AppView {
   if (hash === "#commitments" || hash.startsWith("#commitment-")) return "commitments";
   if (hash === "#governance") return "governance";
   if (hash === "#activity") return "activity";
   if (hash === "#docs") return "docs";
-  if (!hash && window.location.pathname === "/docs") return "docs";
+  if (path === "/commitments" || path.startsWith("/commitments/")) return "commitments";
+  if (path === "/governance") return "governance";
+  if (path === "/activity") return "activity";
+  if (path === "/docs") return "docs";
   return "overview";
 }
 
@@ -55,7 +60,7 @@ const VIEW_COPY: Record<AppView, { title: string; description: string }> = {
   },
 };
 
-function CommitmentCard({ row, onRefresh }: { row: TreasurySnapshot["reservations"][number]; onRefresh: () => Promise<void> }) {
+function CommitmentCard({ row, onRefresh, detail = false }: { row: Reservation; onRefresh: () => Promise<void>; detail?: boolean }) {
   const status = row.is_expired && row.status === "Active" ? "Expired" : row.status;
   const statusLabel = status === "Active" ? "In progress" : status;
   const evidenceLabel = row.evidence?.usable ? "GitHub check accepted" : "GitHub check needed";
@@ -74,6 +79,15 @@ function CommitmentCard({ row, onRefresh }: { row: TreasurySnapshot["reservation
         <div><span>Deadline</span><strong>{formatDeadline(row.expires_at_ns)}</strong></div>
         <div><span>Work check</span><strong>{evidenceLabel}</strong></div>
       </div>
+      {detail ? (
+        <div className="commitment-details-extra">
+          <p><strong>Payment account:</strong> {row.payout_recipient}</p>
+          <p><strong>Work-check rule hash:</strong> <code>{row.evidence_policy_hash}</code></p>
+          {row.evidence && <p><strong>Checked commit:</strong> <code>{row.evidence.commit_sha}</code></p>}
+          {row.evidence && <p><strong>Work check ends:</strong> {formatDeadline(row.evidence.valid_until_ns)}</p>}
+          <p><a href="/activity">See available payment records</a></p>
+        </div>
+      ) : <a className="commitment-detail-link" href={`/commitments/${encodeURIComponent(row.id)}`}>View commitment details</a>}
       {row.pending_amount !== "0" && (
         <p className="pending-note">A payment is being processed: <Amount value={row.pending_amount} />.</p>
       )}
@@ -107,12 +121,12 @@ export default function App() {
   }, [effectiveTheme]);
 
   const toggleTheme = () => setEffectiveTheme((current) => current === "dark" ? "light" : "dark");
-  const [activeView, setActiveView] = useState<AppView>(() => viewFromHash(window.location.hash));
+  const [activeView, setActiveView] = useState<AppView>(() => viewFromLocation(window.location.hash, window.location.pathname));
 
   useEffect(() => {
     const syncView = () => {
       const hash = window.location.hash;
-      setActiveView(viewFromHash(hash));
+      setActiveView(viewFromLocation(hash, window.location.pathname));
       if (hash.startsWith("#commitment-")) {
         window.setTimeout(() => document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView({ block: "start" }), 0);
       } else {
@@ -193,6 +207,25 @@ export default function App() {
   }, [refresh]);
 
   const state = snapshot?.state;
+  const detailId = /^\/commitments\/(\d+)$/.exec(window.location.pathname)?.[1] ?? null;
+  const [detailRow, setDetailRow] = useState<Reservation | null>(null);
+  const [detailError, setDetailError] = useState<string | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+
+  useEffect(() => {
+    if (!detailId || !snapshot?.blockHash) return;
+    let cancelled = false;
+    setDetailLoading(true);
+    setDetailError(null);
+    void readReservation(detailId, snapshot.blockHash).then((row) => {
+      if (!cancelled) setDetailRow(row);
+    }).catch((error: unknown) => {
+      if (!cancelled) setDetailError(error instanceof Error ? error.message : "The commitment could not be loaded.");
+    }).finally(() => {
+      if (!cancelled) setDetailLoading(false);
+    });
+    return () => { cancelled = true; };
+  }, [detailId, snapshot?.blockHash]);
   const commitmentSummary = snapshot ? `Showing ${snapshot.reservations.length}` : null;
 
   const hasMore = Boolean(snapshot && BigInt(snapshot.state.next_reservation_id) > BigInt(snapshot.nextFromIndex));
@@ -251,9 +284,9 @@ export default function App() {
         </a>
         <nav className="main-nav" aria-label="Main navigation">
           <a href="/#overview" aria-current={activeView === "overview" ? "page" : undefined}>Overview</a>
-          <a href="/#commitments" aria-current={activeView === "commitments" ? "page" : undefined}>Commitments</a>
-          <a href="/#governance" aria-current={activeView === "governance" ? "page" : undefined}>DAO approval</a>
-          <a href="/#activity" aria-current={activeView === "activity" ? "page" : undefined}>Activity</a>
+          <a href="/commitments" aria-current={activeView === "commitments" ? "page" : undefined}>Commitments</a>
+          <a href="/governance" aria-current={activeView === "governance" ? "page" : undefined}>DAO approval</a>
+          <a href="/activity" aria-current={activeView === "activity" ? "page" : undefined}>Activity</a>
           <a href="/docs" aria-current={activeView === "docs" ? "page" : undefined}>How it works</a>
         </nav>
         <div className="topbar-controls">
@@ -380,9 +413,9 @@ export default function App() {
         </section>}
 
         {activeView === "overview" && <nav className="overview-shortcuts" aria-label="More treasury pages">
-          <a href="#commitments"><strong>Commitments</strong><span>See money set aside for work</span></a>
-          <a href="#governance"><strong>DAO approval</strong><span>Review and request treasury actions</span></a>
-          <a href="#activity"><strong>Activity</strong><span>See recorded payments and withdrawals</span></a>
+          <a href="/commitments"><strong>Commitments</strong><span>See money set aside for work</span></a>
+          <a href="/governance"><strong>DAO approval</strong><span>Review and request treasury actions</span></a>
+          <a href="/activity"><strong>Activity</strong><span>See recorded payments and withdrawals</span></a>
         </nav>}
 
         <div className="view-preserved" hidden={activeView !== "commitments"}>
@@ -392,10 +425,20 @@ export default function App() {
               <p className="section-kicker">Onchain records</p>
               <h2 id="commitments-title">Commitments</h2>
             </div>
-          {commitmentSummary && <span className="count-label">{commitmentSummary} commitments</span>}
+          {!detailId && commitmentSummary && <span className="count-label">{commitmentSummary} commitments</span>}
           </div>
 
-          {loading && !snapshot ? (
+          {detailId && <a className="commitment-detail-link" href="/commitments">← All commitments</a>}
+
+          {detailId ? detailLoading || (loading && !snapshot) ? (
+            <div className="loading-panel compact" role="status">Loading commitment {detailId}…</div>
+          ) : detailError ? (
+            <div className="inline-alert error-alert" role="alert">{detailError}</div>
+          ) : detailRow ? (
+            <CommitmentCard row={detailRow} onRefresh={refresh} detail />
+          ) : snapshot ? (
+            <div className="empty-panel">Commitment {detailId} was not found at the latest final block.</div>
+          ) : null : loading && !snapshot ? (
             <div className="loading-panel compact" role="status">Loading commitments…</div>
           ) : snapshot?.reservations.length ? (
             <div className="commitment-list">
@@ -409,8 +452,8 @@ export default function App() {
           ) : (
             <div className="empty-panel">Commitments will appear after live treasury data loads.</div>
           )}
-          {pageError && <div className="inline-alert error-alert" role="alert">{pageError}</div>}
-          {hasMore && (
+          {!detailId && pageError && <div className="inline-alert error-alert" role="alert">{pageError}</div>}
+          {!detailId && hasMore && (
             <div className="load-more-wrap"><button className="load-more-button" onClick={() => void loadMore()} disabled={loadingMore}>{loadingMore ? "Loading…" : "Show more commitments"}</button></div>
           )}
         </section>
