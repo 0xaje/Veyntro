@@ -1,0 +1,57 @@
+{
+  "network": "NEAR testnet",
+  "verification_source": "User-provided near-cli-rs transaction receipt and read-only contract views",
+  "callback_transaction": {
+    "id": "7QZ1MrK1FDZGjDkuhzfDtZixKSXKFyUVEjz8UWZ581F4",
+    "explorer": "https://explorer.testnet.near.org/transactions/7QZ1MrK1FDZGjDkuhzfDtZixKSXKFyUVEjz8UWZ581F4",
+    "events": [
+      {
+        "event": "withdrawal_pending",
+        "operation_id": "1",
+        "amount": "10000000000000000000000",
+        "recipient": "recovery.worker-aje-veyntro.testnet",
+        "nonce": "1"
+      },
+      {
+        "event": "operation_settled",
+        "operation_id": "1",
+        "kind": "Withdrawal",
+        "status": "Failed",
+        "amount": "10000000000000000000000",
+        "released": "0"
+      }
+    ]
+  },
+  "operation_view": {
+    "id": "1",
+    "kind": "Withdrawal",
+    "amount": "10000000000000000000000",
+    "recipient": "recovery.worker-aje-veyntro.testnet",
+    "status": "Failed",
+    "created_at_ns": "1793692079332215605",
+    "completed_at_ns": "1793692080424796288"
+  },
+  "treasury_view": {
+    "actual_balance": "13898226047696256200000000",
+    "confirmed_accountable_funds": "3900000000000000000000000",
+    "reservation_liabilities": "300000000000000000000000",
+    "pending_withdrawals": "0",
+    "pending_payouts": "0",
+    "last_withdrawal_nonce": "1",
+    "next_operation_id": "2",
+    "operating_reserve": "2595050000000000000000000",
+    "money_available": "1004950000000000000000000",
+    "ledger_solvent": true,
+    "physical_backing_check": true
+  },
+  "prior_state_comparison": {
+    "actual_balance": "13898226047696256200000000",
+    "confirmed_accountable_funds": "3900000000000000000000000",
+    "reservation_liabilities": "300000000000000000000000",
+    "pending_withdrawals": "0",
+    "last_withdrawal_nonce": "0",
+    "operating_reserve": "2592580000000000000000000",
+    "money_available": "1007420000000000000000000"
+  },
+  "interpretation": "The 0.01 NEAR transfer failed and the callback marked the operation Failed. No amount left the firewall: actual balance, confirmed funds and liabilities match the prior view. Nonce 1 is consumed. Money available fell by 0.00247 NEAR because the new persistent operation increased the dynamic operating reserve by that amount."
+}
