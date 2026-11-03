@@ -275,3 +275,10 @@ User supplied successful SputnikDAO add_proposal receipt: proposal ID7, transact
 ## Retry proposal 7 inspected — 2026-11-03
 
 User supplied get_proposal(7) at final block. Status InProgress, no votes. Payload matches: receiver firewall-aje-veyntro.testnet, method withdraw_available, amount0.01 NEAR, recipient recovery.worker-aje-veyntro.testnet, nonce2, deposit0, action gas100 Tgas. Safe to cast the council approval as the next step. No withdrawal has executed yet.
+
+
+## Withdrawal retry receipt succeeded; final views pending — 2026-11-03
+
+User supplied successful council approval transaction4c9wTM3nshdpAXRDG9Dgne1QdMDTeq2SsH4duX52whVv (https://explorer.testnet.near.org/transactions/4c9wTM3nshdpAXRDG9Dgne1QdMDTeq2SsH4duX52whVv). Proposal7 execution emitted withdrawal_pending for operation2, amount0.01 NEAR, recipient recovery.worker-aje-veyntro.testnet, nonce2; then operation_settled status Succeeded, released0. This proves the authorized withdrawal completed according to the callback event. Evidence: evidence/WITHDRAWAL_RETRY_SUCCESS.json. Final view reconciliation and recipient balance check are still required.
+
+NEXT EXACT ACTION: query get_operation(2), get_treasury_state(), and recovery.worker-aje-veyntro.testnet account summary. Confirm operation Succeeded; pending withdrawals0; last nonce2; confirmed funds decreased from3.9 to3.89 NEAR; liabilities remain0.3 NEAR; actual firewall balance decreased by exactly0.01 NEAR from13.8982260476962562 to13.8882260476962562 NEAR; solvency/backing remain true. Recipient balance should reflect the real transfer, considering its 0.1 NEAR initial funding and storage/fees. Then reconcile observed exact values; do not assert expected values without views. Phase2 remains IN_PROGRESS until final contract, user interface, and other planned gates are complete.
