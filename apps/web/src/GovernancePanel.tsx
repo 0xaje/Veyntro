@@ -7,6 +7,7 @@ import {
   decodeFunctionResult,
   encodeBase64Json,
   proposalKindName,
+  readDaoVoteTarget,
   validateAccountId,
   type DaoProposal,
   type DaoSnapshot,
@@ -102,6 +103,12 @@ function ProposalRow({ proposal, daoPolicy, accountId, busy, onVote }: {
             ))}
           </details>
         </div>
+      )}
+      {!functionCall && (
+        <details className="proposal-review">
+          <summary>Review the DAO change</summary>
+          <pre><code>{JSON.stringify(proposal.kind, null, 2)}</code></pre>
+        </details>
       )}
       {proposal.status === "InProgress" && (
         <div className="proposal-actions">
@@ -257,7 +264,20 @@ export default function GovernancePanel({ dao, treasury, loading, error, onRefre
     setStatusChecked(false);
     setBusyProposalId(proposalId);
     try {
-      if (!dao) throw new Error("The DAO policy is not available. Refresh and try again.");
+      if (!dao || !account) throw new Error("Connect a NEAR testnet wallet and refresh the DAO first.");
+      const displayed = dao.proposals.find((proposal) => proposal.id === proposalId);
+      if (!displayed) throw new Error("This proposal is no longer in the list. Refresh before voting.");
+      const latest = await readDaoVoteTarget(dao.accountId, proposalId);
+      const kind = proposalKindName(latest.proposal);
+      if (latest.proposal.status !== "InProgress" || latest.proposal.votes?.[account.accountId]) {
+        throw new Error("This proposal is closed or your account has already voted. Refresh the DAO view.");
+      }
+      if (displayed.description !== latest.proposal.description || JSON.stringify(displayed.kind) !== JSON.stringify(latest.proposal.kind)) {
+        throw new Error("The proposal details changed. Refresh and review them before voting.");
+      }
+      if (!accountCanUsePermission(latest.policy, account.accountId, kind, action)) {
+        throw new Error("This wallet cannot vote under the DAO’s current policy.");
+      }
       const result = await sendDaoCall("act_proposal", { id: proposalId, action, memo: null }, "0");
       setSentAction({ transactionId: result.transactionId, proposalId: String(proposalId), hadFailedReceipt: result.hadFailedReceipt });
       setFailedReceipt(result.hadFailedReceipt);
