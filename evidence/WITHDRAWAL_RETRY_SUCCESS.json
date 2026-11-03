@@ -1,6 +1,6 @@
 {
   "network": "NEAR testnet",
-  "verification_source": "User-provided near-cli-rs signed transaction receipt; final read-only balance reconciliation pending",
+  "verification_source": "User-provided NEAR testnet transaction receipt and latest-final-block contract/account views; values independently reconciled arithmetically.",
   "transaction": {
     "id": "4c9wTM3nshdpAXRDG9Dgne1QdMDTeq2SsH4duX52whVv",
     "explorer": "https://explorer.testnet.near.org/transactions/4c9wTM3nshdpAXRDG9Dgne1QdMDTeq2SsH4duX52whVv",
@@ -23,5 +23,38 @@
       }
     ]
   },
-  "reconciliation": "Read get_operation(2), get_treasury_state and recipient account balance before marking final reconciliation complete."
+  "reconciliation": {
+    "operation_view": {
+      "id": "2",
+      "kind": "Withdrawal",
+      "amount": "10000000000000000000000",
+      "recipient": "recovery.worker-aje-veyntro.testnet",
+      "status": "Succeeded"
+    },
+    "treasury_view": {
+      "actual_balance": "13888226047696256200000000",
+      "confirmed_accountable_funds": "3890000000000000000000000",
+      "reservation_liabilities": "300000000000000000000000",
+      "pending_withdrawals": "0",
+      "pending_payouts": "0",
+      "last_withdrawal_nonce": "2",
+      "operating_reserve": "2597520000000000000000000",
+      "money_available": "992480000000000000000000",
+      "ledger_solvent": true,
+      "physical_backing_check": true
+    },
+    "recovery_account": {
+      "balance_near": "0.110",
+      "block_height": 276021056
+    },
+    "comparison_to_pre_retry": {
+      "actual_balance_before": "13898226047696256200000000",
+      "actual_balance_after": "13888226047696256200000000",
+      "confirmed_funds_before": "3900000000000000000000000",
+      "confirmed_funds_after": "3890000000000000000000000",
+      "withdrawal": "10000000000000000000000",
+      "exact_amount_debited": true
+    },
+    "interpretation": "The contract balance and confirmed accountable funds each fell by exactly 0.01 NEAR. The recipient balance is 0.110 NEAR after 0.1 NEAR initial funding and 0.01 NEAR withdrawal. There are no pending withdrawals, nonce2 is consumed, and solvency/backing checks pass. Money Available is 0.99248 NEAR after the successful withdrawal and the extra 0.00247 NEAR operating reserve for storing operation2."
+  }
 }
