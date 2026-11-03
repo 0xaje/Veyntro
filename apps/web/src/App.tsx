@@ -251,12 +251,12 @@ export default function App() {
         <div className="topbar-controls">
           <button
             type="button"
-            className="theme-toggle"
+            className="theme-dot-toggle"
             onClick={toggleTheme}
             aria-label={`Switch to ${effectiveTheme === "dark" ? "light" : "dark"} mode`}
+            title={`Switch to ${effectiveTheme === "dark" ? "light" : "dark"} mode`}
           >
-            <span className="theme-icon" aria-hidden="true">{effectiveTheme === "dark" ? "☼" : "☾"}</span>
-            <span>{effectiveTheme === "dark" ? "Light mode" : "Dark mode"}</span>
+            <span className="theme-dot" aria-hidden="true" />
           </button>
           <div className="wallet-area">
             <span className="network-pill">NEAR testnet</span>
@@ -297,6 +297,23 @@ export default function App() {
             <button onClick={() => void refresh()}>Try again</button>
           </div>
         )}
+
+        {activeView === "overview" && state && <section className="firewall-summary" aria-labelledby="firewall-summary-title">
+          <div className="firewall-copy">
+            <p className="section-kicker">Commitment Firewall</p>
+            <h2 id="firewall-summary-title">New promises leave room for existing work.</h2>
+            <p>Before money is set aside, the contract checks current commitments, pending payments, and its safety reserve.</p>
+          </div>
+          <div className="firewall-status" aria-label="Live contract checks">
+            <span className={state.ledger_solvent ? "check-ok" : "check-fail"}>
+              Commitment coverage: {state.ledger_solvent ? "Covered" : "Needs attention"}
+            </span>
+            <span className={state.physical_backing_check ? "check-ok" : "check-fail"}>
+              Contract funds: {state.physical_backing_check ? "Enough for current obligations" : "Below current obligations"}
+            </span>
+            <small>Live check at final block {snapshot?.blockHeight.toLocaleString("en-US")}</small>
+          </div>
+        </section>}
 
         {activeView === "overview" && <section className="treasury-section" id="treasury" aria-labelledby="treasury-title">
           <div className="section-heading">
