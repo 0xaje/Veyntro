@@ -38,11 +38,17 @@ The source tests include authorization denial, overcommitment, replay protection
 - failed beneficiary payout callback, retained liability, and nonce-2 successful retry;
 - final balance reconciliation with solvency and physical-backing flags true.
 
-Remaining gates:
-- Independent external tester must attempt unauthorized callers, replay/double settlement, concurrent commitments, pending-expiry/cancellation interleavings, verifier rotation and mismatched evidence.
-- Re-run the current pinned contract test/build workflow against the exact reviewed source revision before Phase 2 closure.
+## Follow-up and phase placement
+
+The master plan's Phase 2 exit is the evidenced testnet financial lifecycle and no known critical accounting issue. The recorded lifecycle and successful contract CI/user build results satisfy that gate. The exact contract files in the reviewed current tree have the same Git blob hashes as the source tested by workflow run 41525421351 (source commit 3c18cad4f81b949f3e264961da61c97d5613964e). Phase 2 is therefore complete under the plan; this limited static review remains a review record and is not an audit.
+
+The following work is scheduled under Phase 6/release hardening, not as a blocker to starting Phase 4:
+- Independent tester attempts unauthorized callers, replay/double settlement, concurrent commitments, pending-expiry/cancellation interleavings, verifier rotation and mismatched evidence.
+- Run the full adversarial matrix against the hosted app and exact release build.
 - Review full-access key custody, callback monitoring and recovery runbook.
-- Record any findings and fixes; re-review deployed code hash before calling this gate complete.
+- Record and fix findings, then verify the deployed code hash before release.
+
+The current workspace could not rerun the firewall script on 2026-11-03 because cargo is not installed here. Existing successful CI and user-terminal build evidence is preserved; rerun the pinned command in the development environment before changing or releasing contract code.
 
 ## Evidence references
 
