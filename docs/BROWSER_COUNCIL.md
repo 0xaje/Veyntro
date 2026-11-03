@@ -1,6 +1,6 @@
 # Browser council access on NEAR testnet
 
-This procedure adds `aje.testnet` to the `council` role of `veyntro.sputnikv2.testnet`. The existing `aje-veyntro.testnet` member remains. It gives `aje.testnet` the ability to vote on DAO actions, including treasury actions. With the current half-of-council threshold, either of two members may be able to approve a proposal alone. Do not use this procedure for an account you do not control.
+This procedure adds `aje.testnet` to the `council` role of `veyntro.sputnikv2.testnet`. The existing `aje-veyntro.testnet` member remains. It gives `aje.testnet` the ability to vote on DAO actions, including treasury actions. Live proposal 11 showed that one approval from `aje.testnet` did not pass with two council members; the second member's vote was needed. Do not use this procedure for an account you do not control. See `docs/RETIRE_CLI_COUNCIL.md` for the one-time move to browser-only approval.
 
 The preparation script reads live final testnet state and writes unsigned public JSON. It stops if the DAO council, permissions, or threshold have changed. It never reads keys. Signatures remain in the user's wallets or Ubuntu legacy keychain. Review each CLI transaction summary before sending.
 
