@@ -67,8 +67,12 @@ function ProposalRow({ proposal, daoPolicy, accountId, busy, onVote }: {
   onVote: (id: number, action: "VoteApprove" | "VoteReject") => void;
 }) {
   const kind = proposalKindName(proposal);
-  const functionCall = proposal.kind.FunctionCall as { receiver_id?: string; actions?: Array<{ method_name?: string }> } | undefined;
+  const functionCall = proposal.kind.FunctionCall as { receiver_id?: string; actions?: Array<{ method_name?: string; deposit?: string; gas?: string; args?: string }> } | undefined;
   const firstAction = functionCall?.actions?.[0]?.method_name;
+  const fundingAction = functionCall?.receiver_id === FIREWALL_CONTRACT_ID && functionCall.actions?.length === 1 && firstAction === "fund_treasury"
+    ? functionCall.actions?.[0] : null;
+  const fundingAmount = fundingAction?.deposit && /^\d+$/.test(fundingAction.deposit)
+    ? formatNear(fundingAction.deposit) : null;
   const alreadyVoted = Boolean(accountId && proposal.votes?.[accountId]);
   const canApprove = Boolean(accountId && accountCanUsePermission(daoPolicy, accountId, kind, "VoteApprove"));
   const canReject = Boolean(accountId && accountCanUsePermission(daoPolicy, accountId, kind, "VoteReject"));
@@ -82,6 +86,23 @@ function ProposalRow({ proposal, daoPolicy, accountId, busy, onVote }: {
         <span className={`status status-${proposal.status.toLowerCase()}`}>{statusLabel(proposal.status)}</span>
       </div>
       <p className="proposal-meta">Asked by {proposal.proposer}. {kind === "FunctionCall" ? actionLabel(firstAction) : "DAO policy change"}</p>
+      {functionCall && (
+        <div className="proposal-review">
+          <p><strong>Contract:</strong> {functionCall.receiver_id ?? "Not shown"}</p>
+          {fundingAmount && <p><strong>Money to add if approved:</strong> {fundingAmount} NEAR from the DAO</p>}
+          <details>
+            <summary>Review every contract action</summary>
+            {functionCall.actions?.map((action, index) => (
+              <div className="proposal-review-action" key={index}>
+                <p><strong>Action {index + 1}:</strong> {action.method_name ?? "Unknown"}</p>
+                <p><strong>NEAR sent by DAO:</strong> {action.deposit && /^\d+$/.test(action.deposit) ? formatNear(action.deposit) : "Unknown"} NEAR</p>
+                <p><strong>Gas:</strong> {action.gas ?? "Unknown"}</p>
+                <p><strong>Arguments:</strong> <code>{action.args ?? "None shown"}</code></p>
+              </div>
+            ))}
+          </details>
+        </div>
+      )}
       {proposal.status === "InProgress" && (
         <div className="proposal-actions">
           {canApprove && !alreadyVoted && <button className="button-primary" disabled={busy} onClick={() => onVote(proposal.id, "VoteApprove")}>Approve</button>}
