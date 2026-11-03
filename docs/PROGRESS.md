@@ -571,6 +571,6 @@ This update corrects the theme and Overview against the user's latest direction.
 - The theme control is a small circular dot button with an accessible name and keyboard focus indicator. It switches the saved light/dark preference when clicked. It does not show mode text or switch automatically by time of day.
 - Light mode uses a pale slate background with blue highlights. Dark mode uses a black background with blue highlights.
 - The Overview includes a Commitment Firewall summary when real treasury state is available. It shows the contract's current coverage and physical-backing checks, tied to the live final block. It does not invent balances or activity.
-- Existing Overview, Commitments, DAO approval, and Activity navigation remains in place. Existing wallet, RPC, and transaction code is unchanged.
+- Existing Overview, Commitments, DAO approval, and Activity navigation remains in place. Commitment, DAO approval, and Activity views stay mounted while hidden so leaving a page does not discard unfinished form or action state. Existing wallet, RPC, and transaction code is unchanged.
 
 Verification for this follow-up is pending. Do not describe the visual update as finished until the web type check and production build pass and the page has been viewed at desktop and mobile sizes. Do not mark Phase 4 complete: the Activity evidence gap and live wallet review recorded above remain open.
