@@ -4,6 +4,10 @@
 
 Veyntro helps DAOs and communities set money aside for approved work without promising the same funds twice. The Commitment Firewall checks each new commitment against the treasury's existing obligations and pending payments.
 
+**The problem:** a treasury can show 10 NEAR while 8 NEAR is already promised to ongoing work. Another 4 NEAR promise would overbook the same money. Veyntro shows only 2 NEAR available and rejects the extra promise in the contract. A DAO approves the work, a fixed amount is set aside, a chosen work check is recorded, and the beneficiary can request a payment within that limit. Unused money becomes available again after expiry.
+
+**Try it:** [Open the live testnet app](https://veyntro-web.onrender.com/), read the public treasury without connecting, review the [DAO requests](https://veyntro-web.onrender.com/governance), then inspect [a completed commitment](https://veyntro-web.onrender.com/commitments/3). The recorded testnet actions are linked below. The public evidence submission step is not available yet; see Trust and limits.
+
 ## Current status — 3 November 2026
 
 Veyntro's NEAR testnet contract has been used for real DAO funding, commitments, an overcommitment rejection, GitHub evidence checks, payments, failed-transfer recovery and expiry release. The verifier is a local command-line tool that prepares an unsigned attestation; it is not a public signing service.
