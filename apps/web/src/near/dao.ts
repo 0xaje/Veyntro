@@ -81,12 +81,17 @@ async function callDaoView<T>(accountId: string, method: string, args: Record<st
 export async function readDao(accountId: string): Promise<DaoSnapshot> {
   const policyRes = await callDaoView<DaoPolicy>(accountId, "get_policy", {});
   if (!policyRes.blockHash) throw new Error("NEAR testnet did not return a final DAO block.");
-  const proposalsRes = await callDaoView<DaoProposal[]>(accountId, "get_proposals", { from_index: 0, limit: 50 }, policyRes.blockHash);
+  const lastIdRes = await callDaoView<number>(accountId, "get_last_proposal_id", {}, policyRes.blockHash);
+  if (!Number.isSafeInteger(lastIdRes.value) || lastIdRes.value < 0) throw new Error("The DAO returned an invalid proposal count.");
+  const proposalsRes = await callDaoView<DaoProposal[]>(accountId, "get_proposals", {
+    from_index: Math.max(0, lastIdRes.value - 50), limit: 50,
+  }, policyRes.blockHash);
   if (proposalsRes.blockHash && proposalsRes.blockHash !== policyRes.blockHash) throw new Error("DAO reads returned different blocks. Refresh and try again.");
+  if (!Array.isArray(proposalsRes.value)) throw new Error("The DAO returned an invalid proposal list.");
   return {
     accountId,
     policy: policyRes.value,
-    proposals: proposalsRes.value,
+    proposals: proposalsRes.value.reverse(),
     blockHash: policyRes.blockHash,
     blockHeight: policyRes.blockHeight,
   };
