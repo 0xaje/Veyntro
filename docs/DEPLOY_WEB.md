@@ -2,7 +2,7 @@
 
 The web app reads NEAR testnet directly. Visitors can view it without a wallet. A wallet is needed only to sign actions. The web bundle contains no private signing key.
 
-1. In Render, connect the `0xaje/Veyntro` GitHub repository and create a Blueprint using the root `render.yaml` on branch `codex/phase4-ui-corrections`.
+1. In Render, connect the `0xaje/Veyntro` GitHub repository and create a Blueprint using the root `render.yaml` on branch `main`.
 2. Check that the service is a **Static Site** and that its publish directory is `apps/web/dist`. Render should give it an HTTPS `onrender.com` address. Do not enter any NEAR private key or seed phrase as an environment variable for this site.
 3. Open the HTTPS address in a private window. Check `/`, `/governance`, and `/commitments/3` directly, and reload each page. The rewrite in `render.yaml` serves the app for these paths.
 4. Connect a supported NEAR **testnet** wallet. Check the displayed account and network. Read public balances and DAO requests against the NEAR testnet, and test a signed action only when there is an appropriate live request.
