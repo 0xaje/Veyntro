@@ -1,0 +1,27 @@
+{
+  "network": "NEAR testnet",
+  "verification_source": "User-provided near-cli-rs signed transaction receipt; final read-only balance reconciliation pending",
+  "transaction": {
+    "id": "4c9wTM3nshdpAXRDG9Dgne1QdMDTeq2SsH4duX52whVv",
+    "explorer": "https://explorer.testnet.near.org/transactions/4c9wTM3nshdpAXRDG9Dgne1QdMDTeq2SsH4duX52whVv",
+    "dao_proposal_id": "7",
+    "events": [
+      {
+        "event": "withdrawal_pending",
+        "operation_id": "2",
+        "amount": "10000000000000000000000",
+        "recipient": "recovery.worker-aje-veyntro.testnet",
+        "nonce": "2"
+      },
+      {
+        "event": "operation_settled",
+        "operation_id": "2",
+        "kind": "Withdrawal",
+        "status": "Succeeded",
+        "amount": "10000000000000000000000",
+        "released": "0"
+      }
+    ]
+  },
+  "reconciliation": "Read get_operation(2), get_treasury_state and recipient account balance before marking final reconciliation complete."
+}
