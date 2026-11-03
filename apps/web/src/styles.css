@@ -46,6 +46,11 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 .docs-links h3 { margin-bottom: 0; }
 .docs-links a { color: var(--color-accent-deep); overflow-wrap: anywhere; }
 .docs-links a:hover { text-decoration-thickness: 2px; }
+.commitment-detail-link { display: inline-block; margin: var(--space-sm) 0; color: var(--color-accent-deep); font-size: var(--text-sm); }
+.commitment-details-extra { margin-top: var(--space-md); padding: var(--space-sm); border: 1px solid var(--color-rule); border-radius: var(--radius-inner); color: var(--color-ink-2); overflow-wrap: anywhere; }
+.commitment-details-extra p + p { margin-top: var(--space-xs); }
+.commitment-details-extra code { font-size: var(--text-xs); }
+.commitment-details-extra a { color: var(--color-accent-deep); }
 @media (max-width: 40rem) { .docs-grid { grid-template-columns: 1fr; } }
 .topbar {
   position: sticky;
