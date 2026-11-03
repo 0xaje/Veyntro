@@ -1,0 +1,11 @@
+{
+  "network": "NEAR testnet",
+  "source": "User-provided near-cli-rs account creation receipt",
+  "account_id": "payout-failure.worker-aje-veyntro.testnet",
+  "parent_account": "worker-aje-veyntro.testnet",
+  "initial_funding": "0.1 NEAR",
+  "public_key": "ed25519:6YtxWtFotub6XYc7NAqTLRFCRk1vRnXBwyHrSRgoR26F",
+  "transaction_id": "HqgLJoSEfNT1HAySTn2Ux8yqaJbMKoQc8gnEwxeJBQJK",
+  "explorer": "https://explorer.testnet.near.org/transactions/HqgLJoSEfNT1HAySTn2Ux8yqaJbMKoQc8gnEwxeJBQJK",
+  "private_key": "not recorded"
+}
