@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Action, FunctionCall } from "@near-js/transactions";
-import { FIREWALL_CONTRACT_ID, EXPLORER_URL, formatNear } from "./near/rpc";
+import { FIREWALL_CONTRACT_ID, EXPLORER_URL, formatDeadline, formatNear } from "./near/rpc";
 import {
   accountCanUsePermission,
   amountToYocto,
@@ -54,6 +54,30 @@ function actionLabel(method: string | undefined): string {
   return method ? labels[method] ?? "Other contract action" : "DAO request";
 }
 
+function readableActionArgs(method: string | undefined, encoded: string | undefined): string {
+  if (!encoded) return "None shown";
+  try {
+    const parsed: unknown = JSON.parse(atob(encoded));
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return encoded;
+    const args = parsed as Record<string, unknown>;
+    if (method === "create_reservation" && typeof args.beneficiary === "string" &&
+        typeof args.payout_recipient === "string" && typeof args.amount === "string" &&
+        /^\d+$/.test(args.amount) && typeof args.expires_at_ns === "string" &&
+        typeof args.evidence_policy_hash === "string") {
+      return [
+        `Person doing the work: ${args.beneficiary}`,
+        `Payment account: ${args.payout_recipient}`,
+        `Money set aside: ${formatNear(args.amount)} NEAR`,
+        `Deadline: ${formatDeadline(args.expires_at_ns)}`,
+        `Work check code: ${args.evidence_policy_hash}`,
+      ].join("\n");
+    }
+    return JSON.stringify(parsed, null, 2);
+  } catch {
+    return encoded;
+  }
+}
+
 function hasFailedReceipt(outcome: { receipts_outcome: Array<{ outcome: { status: unknown } }> }): boolean {
   return outcome.receipts_outcome.some(({ outcome: receipt }) =>
     Boolean(receipt.status && typeof receipt.status === "object" && "Failure" in receipt.status),
@@ -98,7 +122,8 @@ function ProposalRow({ proposal, daoPolicy, accountId, busy, onVote }: {
                 <p><strong>Action {index + 1}:</strong> {action.method_name ?? "Unknown"}</p>
                 <p><strong>NEAR sent by DAO:</strong> {action.deposit && /^\d+$/.test(action.deposit) ? formatNear(action.deposit) : "Unknown"} NEAR</p>
                 <p><strong>Gas:</strong> {action.gas ?? "Unknown"}</p>
-                <p><strong>Arguments:</strong> <code>{action.args ?? "None shown"}</code></p>
+                <p><strong>Arguments:</strong></p>
+                <pre><code>{readableActionArgs(action.method_name, action.args)}</code></pre>
               </div>
             ))}
           </details>
