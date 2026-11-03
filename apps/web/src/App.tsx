@@ -3,6 +3,7 @@ import { useWallet } from "./wallet/WalletProvider";
 import CommitmentActions from "./CommitmentActions";
 import GovernancePanel from "./GovernancePanel";
 import ActivityPanel from "./ActivityPanel";
+import DocsPanel from "./DocsPanel";
 import { readDao, type DaoSnapshot } from "./near/dao";
 import {
   explorerAccountUrl,
@@ -20,12 +21,14 @@ function Amount({ value }: { value: string }) {
   return <>{formatNear(value)} <span className="amount-unit">NEAR</span></>;
 }
 
-type AppView = "overview" | "commitments" | "governance" | "activity";
+type AppView = "overview" | "commitments" | "governance" | "activity" | "docs";
 
 function viewFromHash(hash: string): AppView {
   if (hash === "#commitments" || hash.startsWith("#commitment-")) return "commitments";
   if (hash === "#governance") return "governance";
   if (hash === "#activity") return "activity";
+  if (hash === "#docs") return "docs";
+  if (!hash && window.location.pathname === "/docs") return "docs";
   return "overview";
 }
 
@@ -45,6 +48,10 @@ const VIEW_COPY: Record<AppView, { title: string; description: string }> = {
   activity: {
     title: "Payments and withdrawals",
     description: "Review the payment and withdrawal records available from the contract.",
+  },
+  docs: {
+    title: "How Veyntro works",
+    description: "See who approves money, how work is checked, and what the app can show today.",
   },
 };
 
@@ -238,15 +245,16 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <a className="brand" href="#overview" aria-label="Veyntro overview">
+        <a className="brand" href="/#overview" aria-label="Veyntro overview">
           <span className="brand-mark" aria-hidden="true">V</span>
           <span>Veyntro</span>
         </a>
         <nav className="main-nav" aria-label="Main navigation">
-          <a href="#overview" aria-current={activeView === "overview" ? "page" : undefined}>Overview</a>
-          <a href="#commitments" aria-current={activeView === "commitments" ? "page" : undefined}>Commitments</a>
-          <a href="#governance" aria-current={activeView === "governance" ? "page" : undefined}>DAO approval</a>
-          <a href="#activity" aria-current={activeView === "activity" ? "page" : undefined}>Activity</a>
+          <a href="/#overview" aria-current={activeView === "overview" ? "page" : undefined}>Overview</a>
+          <a href="/#commitments" aria-current={activeView === "commitments" ? "page" : undefined}>Commitments</a>
+          <a href="/#governance" aria-current={activeView === "governance" ? "page" : undefined}>DAO approval</a>
+          <a href="/#activity" aria-current={activeView === "activity" ? "page" : undefined}>Activity</a>
+          <a href="/docs" aria-current={activeView === "docs" ? "page" : undefined}>How it works</a>
         </nav>
         <div className="topbar-controls">
           <button
@@ -423,6 +431,8 @@ export default function App() {
           onLoadOlder={() => void loadOlderOperations()}
         />
         </div>
+
+        {activeView === "docs" && <DocsPanel state={state ?? null} />}
 
         <section className="trust-note" aria-label="About this page">
           <span className="trust-icon" aria-hidden="true">✓</span>
