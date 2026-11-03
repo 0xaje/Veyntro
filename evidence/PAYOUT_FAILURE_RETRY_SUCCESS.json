@@ -1,0 +1,45 @@
+{
+  "network": "NEAR testnet",
+  "source": "User-provided read-only preconditions and signed transaction receipt; final reconciliation pending",
+  "pre_retry": {
+    "reservation_id": "2",
+    "status": "Active",
+    "evidence_usable": true,
+    "last_drawdown_nonce": "1",
+    "remaining_liability": "10000000000000000000000",
+    "recipient": "payout-failure.worker-aje-veyntro.testnet"
+  },
+  "recipient_before": {
+    "balance_near": "0.100",
+    "block_height": 276024012
+  },
+  "transaction": {
+    "id": "4mugR4TmcxwQ62164DiGFZWinfvKzbvjuqxWK4Po1ukk",
+    "explorer": "https://explorer.testnet.near.org/transactions/4mugR4TmcxwQ62164DiGFZWinfvKzbvjuqxWK4Po1ukk",
+    "method": "request_drawdown",
+    "signer": "worker-aje-veyntro.testnet",
+    "reservation_id": "2",
+    "amount": "10000000000000000000000",
+    "nonce": "2",
+    "events": [
+      {
+        "event": "payment_pending",
+        "operation_id": "4",
+        "reservation_id": "2",
+        "amount": "10000000000000000000000",
+        "recipient": "payout-failure.worker-aje-veyntro.testnet",
+        "nonce": "2"
+      },
+      {
+        "event": "operation_settled",
+        "operation_id": "4",
+        "kind": "Payout",
+        "status": "Succeeded",
+        "amount": "10000000000000000000000",
+        "released": "0"
+      }
+    ],
+    "returned_status": "Succeeded"
+  },
+  "reconciliation": "Pending: query get_operation(4), get_reservation(2), get_treasury_state and recipient balance after this payout."
+}
