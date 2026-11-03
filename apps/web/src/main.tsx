@@ -1,8 +1,11 @@
 import { createRoot } from "react-dom/client";
+import { Buffer } from "buffer";
 import "@near-wallet-selector/modal-ui/styles.css";
 import "./styles.css";
 import App from "./App";
 import { WalletProvider } from "./wallet/WalletProvider";
+
+globalThis.Buffer = Buffer;
 
 try {
   const savedTheme = localStorage.getItem("veyntro-theme") ?? localStorage.getItem("veyntro-theme-mode");
