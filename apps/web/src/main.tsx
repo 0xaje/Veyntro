@@ -6,6 +6,7 @@ import App from "./App";
 import { WalletProvider } from "./wallet/WalletProvider";
 
 globalThis.Buffer = Buffer;
+Object.assign(globalThis, { global: globalThis });
 
 try {
   const savedTheme = localStorage.getItem("veyntro-theme") ?? localStorage.getItem("veyntro-theme-mode");
