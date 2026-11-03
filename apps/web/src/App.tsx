@@ -377,7 +377,8 @@ export default function App() {
           <a href="#activity"><strong>Activity</strong><span>See recorded payments and withdrawals</span></a>
         </nav>}
 
-        {activeView === "commitments" && <section className="commitments-section" id="commitments" aria-labelledby="commitments-title">
+        <div className="view-preserved" hidden={activeView !== "commitments"}>
+        <section className="commitments-section" id="commitments" aria-labelledby="commitments-title">
           <div className="section-heading">
             <div>
               <p className="section-kicker">Onchain records</p>
@@ -404,11 +405,15 @@ export default function App() {
           {hasMore && (
             <div className="load-more-wrap"><button className="load-more-button" onClick={() => void loadMore()} disabled={loadingMore}>{loadingMore ? "Loading…" : "Show more commitments"}</button></div>
           )}
-        </section>}
+        </section>
+        </div>
 
-        {activeView === "governance" && <GovernancePanel dao={dao} treasury={snapshot} loading={daoLoading} error={daoError} onRefresh={refresh} />}
+        <div className="view-preserved" hidden={activeView !== "governance"}>
+          <GovernancePanel dao={dao} treasury={snapshot} loading={daoLoading} error={daoError} onRefresh={refresh} />
+        </div>
 
-        {activeView === "activity" && <ActivityPanel
+        <div className="view-preserved" hidden={activeView !== "activity"}>
+        <ActivityPanel
           page={operationsPage}
           loading={operationsLoading}
           error={operationsError}
@@ -416,7 +421,8 @@ export default function App() {
           currentBlockHash={snapshot?.blockHash ?? null}
           currentBlockHeight={snapshot?.blockHeight ?? null}
           onLoadOlder={() => void loadOlderOperations()}
-        />}
+        />
+        </div>
 
         <section className="trust-note" aria-label="About this page">
           <span className="trust-icon" aria-hidden="true">✓</span>
