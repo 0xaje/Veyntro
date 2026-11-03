@@ -42,25 +42,22 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 .wallet-button.connected { max-width: 300px; overflow: hidden; border-color: var(--color-accent-deep); background: var(--color-accent-deep); color: var(--color-on-accent); text-overflow: ellipsis; }
 .disconnect-word { margin-left: var(--space-sm); padding-left: var(--space-sm); border-left: 1px solid var(--color-divider-on-accent); color: var(--color-on-accent); font-size: var(--text-xs); }
 
-.theme-toggle {
-  min-height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-xs);
-  padding: 0 var(--space-sm);
+.theme-dot-toggle {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
   border: 1px solid var(--color-line-strong);
-  border-radius: var(--radius-pill);
+  border-radius: 50%;
   background: var(--color-panel);
-  color: var(--color-ink-2);
-  font-size: var(--text-xs);
-  white-space: nowrap;
   transition: border-color var(--dur-short), background var(--dur-short), transform var(--dur-micro);
 }
-.theme-toggle:hover { border-color: var(--color-accent); background: var(--color-panel-raised); color: var(--color-ink); }
-.theme-toggle:active { transform: scale(.97); }
-.theme-toggle:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-.theme-icon { color: var(--color-accent); font-size: 1.15rem; line-height: 1; }
+.theme-dot-toggle:hover { border-color: var(--color-accent); background: var(--color-panel-raised); }
+.theme-dot-toggle:active { transform: scale(.94); }
+.theme-dot-toggle:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.theme-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 0 4px var(--color-accent-soft); }
 
 main { width: min(calc(100% - 2 * var(--gutter)), var(--container)); margin-inline: auto; }
 .intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 290px); align-items: center; gap: var(--space-xl); padding: 44px 0 28px; }
@@ -76,6 +73,12 @@ h1 { max-width: 22ch; margin-bottom: var(--space-sm); color: var(--color-forest-
 .error-alert { border-color: var(--color-error); background: var(--color-error-soft); color: var(--color-ink); }
 .inline-alert button { min-height: 40px; padding-inline: var(--space-xs); border: 0; background: transparent; color: inherit; font-size: var(--text-sm); font-weight: 600; text-decoration: underline; }
 .treasury-section, .commitments-section, .activity-section, .governance-section { padding: 28px 0; border-top: 1px solid var(--color-rule); scroll-margin-top: 84px; }
+.firewall-summary { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(240px, .8fr); align-items: center; gap: var(--space-lg); margin: 4px 0 8px; padding: clamp(20px, 3vw, 32px); border: 1px solid var(--color-network-border); border-radius: 16px; background: linear-gradient(120deg, var(--color-network-surface), var(--color-panel)); }
+.firewall-copy h2 { max-width: 28ch; margin: 0 0 var(--space-xs); font-size: clamp(1.25rem, 2.5vw, 1.7rem); }
+.firewall-copy > p:last-child { max-width: 62ch; margin: 0; color: var(--color-ink-2); font-size: var(--text-sm); line-height: 1.55; }
+.firewall-status { display: grid; gap: var(--space-sm); padding: var(--space-md); border: 1px solid var(--color-card-border); border-radius: 12px; background: var(--color-panel); }
+.firewall-status .check-ok, .firewall-status .check-fail { font-size: var(--text-sm); font-weight: 600; }
+.firewall-status small { color: var(--color-muted); font-size: var(--text-xs); }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: var(--space-md); margin-bottom: var(--space-md); }
 .section-kicker { margin: 0 0 6px; color: var(--color-accent); font-size: 0.68rem; font-weight: 700; letter-spacing: .12em; line-height: 1.3; text-transform: uppercase; }
 h2 { margin-bottom: 0; color: var(--color-ink); font-size: 1.35rem; font-weight: 600; letter-spacing: -.025em; }
@@ -222,9 +225,11 @@ a:active { color: var(--color-accent-hi); }
 
 @media (max-width: 480px) {
   .topbar-controls { gap: 6px; }
-  .theme-toggle { min-height: 38px; padding-inline: 9px; }
-  .theme-toggle > span:last-child { display: none; }
   .overview-shortcuts { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .firewall-summary { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }
 }
 
 @media (max-width: 380px) {
