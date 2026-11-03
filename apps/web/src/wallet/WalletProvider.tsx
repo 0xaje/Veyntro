@@ -39,10 +39,9 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
     void (async () => {
       try {
-        const [core, meteor, hot, intear, nightly, sender, okx, here, modalUi] = await Promise.all([
+        const [core, meteor, intear, nightly, sender, okx, here, modalUi] = await Promise.all([
           import("@near-wallet-selector/core"),
           import("@near-wallet-selector/meteor-wallet"),
-          import("@near-wallet-selector/hot-wallet"),
           import("@near-wallet-selector/intear-wallet"),
           import("@near-wallet-selector/nightly"),
           import("@near-wallet-selector/sender"),
@@ -54,7 +53,6 @@ export function WalletProvider({ children }: { children: ReactNode }) {
           network: NETWORK_ID,
           modules: [
             meteor.setupMeteorWallet(),
-            hot.setupHotWallet(),
             intear.setupIntearWallet(),
             nightly.setupNightly(),
             sender.setupSender(),
