@@ -267,11 +267,11 @@ export default function App() {
             ) : (
               <button
                 className="wallet-button"
-                onClick={() => void connect()}
-                disabled={!ready || Boolean(walletError)}
-                title={walletError ? "Wallet setup needs attention" : ready ? "Connect wallet" : "Loading wallet…"}
+                onClick={walletError ? retryWallet : () => void connect()}
+                disabled={walletInitializing || (!ready && !walletError)}
+                title={walletError ? "Try wallet again" : ready ? "Connect wallet" : "Loading wallet…"}
               >
-                {walletError ? "Wallet unavailable" : ready ? "Connect wallet" : "Loading wallet…"}
+                {walletError ? "Try wallet again" : ready ? "Connect wallet" : "Loading wallet…"}
               </button>
             )}
           </div>
@@ -290,12 +290,7 @@ export default function App() {
           </a>
         </section>
 
-        {walletError && (
-          <div className="inline-alert error-alert" role="alert">
-            <span>{walletError}</span>
-            <button type="button" onClick={retryWallet} disabled={walletInitializing}>Try again</button>
-          </div>
-        )}
+        {walletError && <p className="visually-hidden" role="alert">{walletError}</p>}
         {loadError && (
           <div className="inline-alert error-alert" role="alert">
             <span>{snapshot ? `Could not refresh live data. Showing the last final view from block ${snapshot.blockHeight}. ${loadError}` : loadError}</span>
