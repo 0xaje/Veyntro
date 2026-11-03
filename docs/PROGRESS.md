@@ -3,7 +3,7 @@
 DATE/TIME (UTC): 2026-11-03 — status corrected against docs/MASTER_PLAN.md
 PHASE / MILESTONE: Phase 4 — user-facing app; first public-view and wallet-connected app slice
 STATUS: IN_PROGRESS
-LAST VERIFIED COMMIT: 98cbda3d000795e70a9e658d0ec8c84c0b353a4a (current docs/review; contract source matches tested commit 3c18cad4f81b949f3e264961da61c97d5613964e).
+LAST VERIFIED COMMIT: Phase 4 source branch `phase4/public-treasury-wallet-slice`; live wallet/RPC checks remain open.
 REPOSITORY: https://github.com/0xaje/Veyntro
 NETWORK / CONTRACT IDS: testnet; DAO veyntro.sputnikv2.testnet; council aje-veyntro.testnet; receiver receiver.aje-veyntro.testnet verified. Firewall account firewall-aje-veyntro.testnet CREATED with 10 test NEAR; contract DEPLOYED and initialized; final transaction/code hash/initial views verified. Verifier verifier-aje-veyntro.testnet and beneficiary worker-aje-veyntro.testnet CREATED and verified; each has 10 test NEAR.
 
@@ -426,3 +426,290 @@ The independent tester, expanded adversarial suite, hosted workflow, key-custody
 Verification note: bash scripts/build-firewall.sh was attempted in this workspace on 2026-11-03 but could not start because cargo is not installed (cargo: command not found). This does not replace or invalidate the recorded successful CI and user-terminal results. Re-run in the development environment before any contract source change or release.
 
 NEXT EXACT ACTION: build the first Phase 4 slice in apps/web: React/Vite/TypeScript, supported testnet wallet connection, and public treasury plus paginated commitments read from firewall-aje-veyntro.testnet over NEAR testnet RPC. Verify real loading/error/empty states and compare displayed amounts to fresh RPC output before adding governance and payout writes. MyNearWallet's testnet site announced limited mode effective 2026-11-01 and must not be selected as the sole wallet.
+
+
+## Phase 4 public treasury and wallet slice — 2026-11-03
+
+Added a first user-facing app slice under apps/web on a separate review branch. It uses React, Vite, TypeScript and Tailwind; reads the deployed firewall's treasury state and reservation pages from NEAR testnet RPC; pins commitment pages to the same final block as the displayed treasury; keeps public viewing available without a wallet; and adds a NEAR Wallet Selector connection through the documented Meteor Wallet testnet module. The UI includes live loading, empty, retry, stale-data and pagination states, simple-English labels, mobile-responsive layout and testnet explorer links. No sample financial data was added.
+
+Local verification on Node 24.22.1 / npm 11.9.0:
+- npm --prefix apps/web run check: passed.
+- npm --prefix apps/web run build: passed.
+- Production build split wallet code into separate chunks. Warnings remain visible: Meteor chunk 607.70 kB (171.56 kB gzip); wallet dependency transitive Node buffer/util references are externalized; js-sha256 includes guarded Node-only eval paths. These need review before release and must not be hidden.
+- No live browser RPC comparison or wallet sign-in was performed in this workspace. A paging race was found and fixed: rows from an older block are not merged after a newer treasury refresh. The app has no DAO proposal, beneficiary payout, evidence submission, expiry action, transaction activity index or hosting yet. Phase 4 remains IN_PROGRESS.
+- Contract code and testnet state were not changed.
+
+NEXT EXACT ACTION: run the app in the development environment, compare its live treasury/commitment values against NEAR testnet reads at the displayed final block, and test Meteor wallet connect/disconnect. Once those checks pass, add signed DAO governance actions and verify each transaction's final receipts before adding beneficiary payment controls.
+
+
+## Phase 4 Hallmark UI applied and live browser verified — 2026-11-03
+
+Applied the Hallmark UI files from the archive into `apps/web`:
+- `apps/web/src/App.tsx`
+- `apps/web/src/GovernancePanel.tsx`
+- `apps/web/src/ActivityPanel.tsx`
+- `apps/web/src/styles.css`
+- `apps/web/src/hallmark/tokens.css`
+- `apps/web/src/hallmark/base.css`
+
+Preserved full onchain RPC integration, SputnikDAO proposal and voting flows, wallet connection, and contract behavior. Created matching TypeScript modules `apps/web/src/near/dao.ts` (SputnikDAO queries, permissions, proposal builders), `apps/web/src/CommitmentActions.tsx` (drawdown claim and expiry release), and added operation history pagination and `last_withdrawal_nonce` tracking to `apps/web/src/near/rpc.ts`. Set testnet RPC default to `https://test.rpc.fastnear.com` because the legacy `rpc.testnet.near.org` endpoint returns HTTP 429 deprecation errors.
+
+Verification results:
+- `npm --prefix apps/web run check`: passed with zero errors (`tsc -b --pretty false`).
+- `npm --prefix apps/web run build`: passed (`tsc -b && vite build`), generating production bundles and split chunks.
+- Live browser verification: started Vite dev server and inspected real rendering using headless Chrome CDP. Verified:
+  - Dark layout active: `color-scheme: dark`, body background `oklch(0.175 0.014 268)`.
+  - Ledger-style treasury rows active: `display: grid`, single ruled list with `1px solid oklch(0.3 0.016 266)` bottom border.
+  - Live NEAR testnet data rendered without mock data: Money Available `0.97326 NEAR`, Money set aside `0.3 NEAR`, Accounted treasury `3.88 NEAR`, Safety reserve `2.60674 NEAR`.
+  - 3 live commitments rendered (`worker-aje-veyntro.testnet` - In progress, Expired, Completed).
+  - 5 live operations rendered (Payment 4, Payment 3, Withdrawal 2, Withdrawal 1, Payment 0).
+  - 9 live SputnikDAO proposals rendered (Requests 0-8).
+- Saved verification evidence screenshot to `/tmp/veyntro-hallmark-verified.png`.
+
+## Phase 4 Hallmark UI updated (v2 refinement) — 2026-11-03
+
+Applied the updated Hallmark UI package (`veyntro-hallmark-ui_(1).zip`) into `apps/web`:
+- `apps/web/src/App.tsx`: updated section ordering (`GovernancePanel` positioned before `ActivityPanel`), added section kickers (`Treasury overview`, `Onchain records`).
+- `apps/web/src/GovernancePanel.tsx`: added `section-kicker` label `DAO decisions`.
+- `apps/web/src/ActivityPanel.tsx`: added `section-kicker` label `Onchain records`.
+- `apps/web/src/styles.css` & `apps/web/src/hallmark/tokens.css`: refined design tokens and palette with clean high-contrast styling (`color-scheme: light`, paper background `#f5f7f6` / `rgb(245, 247, 246)`, forest emerald accents `#176b56`, structured ledger rows).
+
+Verification results:
+- `npm --prefix apps/web run check`: passed (`tsc -b --pretty false`).
+- `npm --prefix apps/web run build`: passed (`tsc -b && vite build`).
+- Live browser verification: inspected via Chrome CDP on `http://localhost:5175/`. Verified:
+  - Background `rgb(245, 247, 246)`, color scheme `light`.
+  - Treasury money ledger rows active with live testnet values: Money available `0.97326 NEAR`, Money set aside `0.3 NEAR`, Accounted treasury `3.88 NEAR`, Safety reserve `2.60674 NEAR`.
+  - Section kickers present: "Treasury overview", "Onchain records", "DAO decisions".
+  - Commitments, activity, and SputnikDAO proposals rendering properly.
+- Saved verification evidence screenshot to [`evidence/HALLMARK_UI_LIGHT_VERIFIED.png`](file:///home/oyeolorun/Veyntro-build/evidence/HALLMARK_UI_LIGHT_VERIFIED.png).
+
+## Phase 4 Light/Dark Mode & Responsive Governance Stacking — 2026-11-03
+
+Added accessible light and dark mode support and responsive governance grid improvements:
+- **Default & Preferences:** Light mode remains the default look. If no preference has been saved in `localStorage`, the app detects the device preference via `prefers-color-scheme`. User toggles are persisted in `localStorage` (`veyntro-theme`) and applied dynamically to `<html data-theme="...">`.
+- **Theme Palette:**
+  - Light mode: preserved original forest-green and sage tokens (`#f5f7f6` paper, `#103d35` forest deep, `#176b56` emerald accent, soft mint panels).
+  - Dark mode: deep forest slate background (`#121816`), elevated dark panels (`#18221f`), muted mint borders (`#273832`), emerald highlight (`#38a17d`), high-contrast body text (`#ecf3ef`), and verified WCAG-readable status badges and borders.
+- **Accessible Theme Toggle:** Added a keyboard-focusable button in top navigation with explicit screen-reader label (`aria-label="Switch to dark mode"` / `"Switch to light mode"`), text label ("Dark mode" / "Light mode"), and moon/sun icon. At narrow mobile widths (<480px), the icon remains with full accessibility label intact.
+- **Wallet Status Fix:** Corrected wallet button state when wallet connection fails or is unavailable. Instead of indefinitely displaying "Loading wallet…", it now accurately reflects "Wallet unavailable" with `disabled={true}` and matching tooltip.
+- **Responsive Stacking:** Added breakpoint at `@media (max-width: 960px)` to stack the DAO proposal list and commitment/funding/withdrawal request form vertically into a single column (`grid-template-columns: minmax(0, 1fr)`) when they no longer comfortably fit side-by-side.
+
+Verification results:
+- `npm --prefix apps/web run check`: passed 0 errors (`tsc -b --pretty false`).
+- `npm --prefix apps/web run build`: passed (`tsc -b && vite build`).
+- Live browser verification (Chrome CDP on running dev server):
+  - Desktop light mode verified (`data-theme="light"`, body background `rgb(245, 247, 246)`).
+  - Desktop dark mode verified (`data-theme="dark"`, body background `rgb(18, 24, 22)`, text `rgb(236, 243, 239)`, panels `rgb(24, 34, 31)`, borders `rgb(39, 56, 50)`).
+  - Keyboard navigation verified: focus outline visible and toggling via `Enter` key functional.
+  - Mobile layout verified at 375px: governance grid stacks to single column (`gridTemplateColumns: "343px"`), toggle button adapts cleanly.
+  - Persistence verified: `localStorage.getItem('veyntro-theme')` correctly stores selection.
+- Evidence screenshots:
+  - [`evidence/THEME_DESKTOP_LIGHT.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_DESKTOP_LIGHT.png)
+  - [`evidence/THEME_DESKTOP_DARK.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_DESKTOP_DARK.png)
+  - [`evidence/THEME_MOBILE_DARK.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_MOBILE_DARK.png)
+
+## Phase 4 True Black Dark Theme & Circular Dot Toggle — 2026-11-03
+
+Updated dark mode and the toggle control:
+- **True Black Theme:** Replaced green/olive-tinted dark tokens with true black (`#000000`, `rgb(0, 0, 0)` body background), dark panels (`#0d0d0d`), subtle neutral rules (`#262626`), and clean light-gray typography (`#f3f4f6`). No army green or greenish tint in dark mode.
+- **Circular Dot Toggle:** Replaced the wide pill button and sun/moon text with a compact circular dot toggle (38px circle with an active status dot: forest emerald in light mode, crisp white in dark mode). It is fully keyboard-accessible with visible focus ring and screen-reader accessibility labels.
+- **Automatic Day / Night Cycle:** In addition to manual clicks, the toggle supports an automatic schedule that uses the local time of day (daylight 7am–7pm = light mode, nighttime 7pm–7am = dark mode) as well as system `prefers-color-scheme`. It periodically updates without page reload.
+- **Evidence Screenshots:**
+  - [`evidence/THEME_PURE_BLACK_DESKTOP.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_PURE_BLACK_DESKTOP.png)
+  - [`evidence/THEME_PURE_BLACK_MOBILE.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_PURE_BLACK_MOBILE.png)
+- Rebuilt archive at `~/Downloads/veyntro-web-source.zip`.
+
+## Phase 4 Unified Palette Harmony — 2026-11-03
+
+Replaced green highlights in light mode with the signature blue accent from dark mode for cohesive design harmony:
+- **Consistent Accent:**
+  - Light mode: Deep slate headings (`#0f172a`), royal blue primary accents (`#2563eb`), soft blue card highlights (`#bfdbfe`), clean slate backgrounds (`#f8fafc`).
+  - Dark mode: True black background (`#000000`), dark panels (`#0d0d0d`), electric/azure blue accents (`#3b82f6` / `#60a5fa`), crisp white headings (`#ffffff`).
+- Both modes share matching accent identity across section kickers, status highlights, primary action buttons, focus states, and the circular theme dot toggle.
+- Verification evidence screenshots:
+  - [`evidence/THEME_BLUE_LIGHT.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_BLUE_LIGHT.png)
+  - [`evidence/THEME_BLUE_DARK.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_BLUE_DARK.png)
+- Rebuilt `~/Downloads/veyntro-web-source.zip`.
+
+
+
+
+
+
+
+## Phase 4 UI corrections after user review — 2026-11-03
+
+Work branch: `codex/phase4-ui-corrections`, based on frontend branch commit `b598a2960d6d4080dee02248b5d6a24f95222dea`.
+
+Applied to the React app:
+- Split the long dashboard into Overview, Commitments, DAO approval, and Activity views using the existing hash navigation. Direct links and browser back/forward update the selected view. The overview links to the other views.
+- Replaced the unclear dot-only theme control with a named Light/Dark mode button. It now has a simple two-way toggle, persists the selected mode, migrates the previous theme preference key, and applies the saved theme before the app renders.
+- Restored Veyntro's forest-green accent and changed the dark palette from pure black to a softer dark green/charcoal palette.
+- Added a form-panel container breakpoint and constrained the native date-time input. The form stacks its fields when the actual form panel is narrow, including at wide browser widths.
+- Kept the Activity view honest: it still says its onchain operation list excludes funding and commitment changes and that records lack direct transaction links.
+
+Verification performed in the cloned review branch:
+- `npm --prefix apps/web ci --ignore-scripts --no-audit --no-fund`: completed.
+- `npm --prefix apps/web run check`: passed.
+- `npm --prefix apps/web run build`: passed. Existing warnings remain for the 607.70 kB Meteor wallet bundle, externalized Node built-ins, and guarded `eval` usage in `js-sha256`.
+- `git diff --check`: passed.
+- Browser visual verification was attempted, but no local Chromium/Chrome binary is installed in this environment. Do not claim the date field's visual fit or route interactions have been verified in a real browser yet.
+
+Still open; this is not a 10/10 or Phase 4 completion claim:
+- Activity is incomplete against the master plan: the current contract view lacks funding/commitment event indexing and per-transaction hashes. Do not invent these records. Determine a reliable public event/transaction source and add it before claiming a full audit history.
+- No hosted app, live wallet signing walkthrough, or fresh live RPC comparison was performed for this correction branch.
+- Recheck date control fit and routes at desktop and mobile sizes in a real browser, including a narrow governance card.
+- The production bundle warnings need a focused dependency/bundle review; do not hide them by raising the size threshold.
+
+NEXT EXACT ACTION: install or use a real browser in the development environment and visually check all four views, the deadline field at wide and narrow widths, keyboard navigation, light/dark persistence, and a real testnet data load. Then resolve the Activity evidence/indexing gap and verify the full hosted wallet flow before marking Phase 4 complete.
+
+## UI follow-up from video review — 2026-11-03
+
+This update corrects the theme and Overview against the user's latest direction. It changes the web interface only; no contract, verifier, DAO, wallet, or backend code is changed.
+
+- The theme control is a small circular dot button with an accessible name and keyboard focus indicator. It switches the saved light/dark preference when clicked. It does not show mode text or switch automatically by time of day.
+- Light mode uses a pale slate background with blue highlights. Dark mode uses a black background with blue highlights.
+- The Overview includes a Commitment Firewall summary when real treasury state is available. It shows the contract's current coverage and physical-backing checks, tied to the live final block. It does not invent balances or activity.
+- Existing Overview, Commitments, DAO approval, and Activity navigation remains in place. Commitment, DAO approval, and Activity views stay mounted while hidden so leaving a page does not discard unfinished form or action state. Existing wallet, RPC, and transaction code is unchanged.
+
+Verification for this follow-up is pending. Do not describe the visual update as finished until the web type check and production build pass and the page has been viewed at desktop and mobile sizes. Do not mark Phase 4 complete: the Activity evidence gap and live wallet review recorded above remain open.
+
+
+## Phase 4 wallet and payment repair — 2026-11-03
+
+Branch: `codex/phase4-ui-corrections`; draft PR: https://github.com/0xaje/Veyntro/pull/1. This note supersedes earlier README/progress statements saying the app does not exist. The app source is in this review branch; it is not merged or hosted.
+
+Reviewed the deployed contract API against the web action code and fixed two exact ABI mismatches:
+- Expiry cleanup now calls `release_expired`, matching the public contract method; the previous `release_expired_reservation` name did not exist.
+- Payout requests now include `operation_nonce = last_drawdown_nonce + 1`, and the reservation reader validates that onchain nonce before enabling the action. The UI also blocks zero and above-liability amounts.
+- The payout UI reads the contract's final callback result and distinguishes `Succeeded`, `Failed`, and no returned outcome. It does not report an accepted wallet submission as a completed payment. Expiry cleanup reports the returned amount as money made available in the contract, not an outgoing transfer.
+- Wallet initialization now has a retry action and logs the actual setup exception to the browser console while keeping the visible message in simple English. This is diagnostic and recovery handling; the initialization root cause is still unknown until exercised in the target browser.
+
+Local verification ran on Node 24.22.1 / npm 11.9.0 after fetching the exact app source from the review branch:
+- `npm --prefix apps/web ci --ignore-scripts --no-audit --no-fund`: passed, 183 packages installed.
+- `npm --prefix apps/web run check`: passed.
+- `npm --prefix apps/web run build`: passed. Existing warnings remain: 607.70 kB Meteor wallet chunk, browser-externalized `buffer`/`util` references, and guarded `eval` warnings from `js-sha256`. These are open for dependency review; the warning threshold was not raised.
+- This workspace has no Git metadata and no installed desktop browser. The source was checked from the PR branch in a temporary workspace. No wallet popup, signed app transaction, mobile visual check, or hosted deployment was verified here. Testnet contract state was not changed.
+
+**Current Phase 4 status: IN_PROGRESS.** Public reads and governance/action code exist, but the wallet and transaction flows have not passed a live browser walkthrough. Activity still lacks funding/commitment event indexing and exact transaction links. The current frontend bundle warnings need review.
+
+**Next exact action:** run this review branch in the project development environment, select `Connect Wallet`, inspect the browser console if setup fails, and test a real testnet connect/disconnect without sending a transaction. Confirm the connected testnet account first. Then verify a low-risk permissionless `release_expired` action only if an actually expired commitment is available; otherwise stop without creating test activity. After wallet setup, test the DAO proposal read/permission path and beneficiary payout on existing evidence-backed state, with the user reviewing every signature. Update this record with actual browser, wallet, receipt and RPC results. Do not claim app writes are verified based on a build alone.
+
+
+### Web CI added — 2026-11-03
+
+Added `.github/workflows/web.yml` on the same review branch. It uses pinned checkout/setup-node action revisions and Node 24.22.1, installs the locked app dependencies without lifecycle scripts, and runs the web type check and production build for app/workflow changes. Local app check/build already passed as recorded above. GitHub reported no workflow runs for the branch at the time this note was written, so the new CI job is not yet claimed passed. This workflow does not test wallet popups or sign transactions.
+
+
+### Web CI failure and correction — 2026-11-03
+
+The first two Web app checks exposed a source-generation mistake: `apps/web/src/App.tsx` had literal backslash-n text in the wallet retry alert. The failure was at TypeScript compile (run 41647307715, then 41647380801); dependency installation passed in both. The App source was corrected in commit `b265e412c98cfbe61b089f018b6f93e5bf1a7d9e`. Web app checks run 41647513452 then passed on that corrected commit, including the app type check and production build. CI evidence: https://github.com/0xaje/Veyntro/actions/runs/41647513452. The initial failed runs remain part of the record. A successful build still does not verify a wallet popup or real wallet-signed action.
+
+## Phase 4 wallet browser diagnosis — 2026-11-03
+
+The user's Chrome console showed wallet setup failing first at `Buffer.from` because Vite externalized the Node buffer module. Added the browser `buffer` package, Vite alias, and global Buffer; local type-check/build and CI run 41652172750 passed. A new Chrome recording then showed `ReferenceError: global is not defined` at the wallet dependency's `global.crypto` initialization. Added `globalThis.global = globalThis` before wallet dynamic imports (via `Object.assign`). Local type-check passed; CI and an actual browser connect/disconnect check remain pending. The red notice is a wallet setup error and retry action; the top-bar button is the connection control. Do not claim wallet operation or signed transactions until observed in the browser.
+
+NEXT EXACT ACTION: pull commit 0854f42b78ef058d1272e297dc2b730b5c646a66 on the draft branch, restart Vite, hard-refresh Chrome, and verify wallet modal, testnet account connection, and disconnect. If setup still fails, capture the new exact console stack and fix it before any wallet-signed action.
+
+## Phase 4 wallet navigation and account guidance — 2026-11-03
+
+Reviewed the wallet path: WalletProvider initializes NEAR Wallet Selector and Meteor in the browser; GovernancePanel and CommitmentActions request wallet-signed transactions; the verifier service is separate and does not connect browser wallets. Moved wallet setup retry into the navbar wallet control and removed the large page-level retry banner. No contract/backend signing behavior changed. Local web type-check and build passed; actual browser connection and CI for the new UI commit remain to be verified. Only Meteor injected wallet is configured, so a user without that extension has no supported wallet option in the current modal. Browser wallet absence does not explain the earlier Buffer/global initialization exceptions; those were runtime bundling faults and were fixed separately. New browser wallet accounts have no DAO/beneficiary roles until onchain policy grants them. Never expose CLI private keys or import the firewall/verifier keys to a browser to solve this UI issue.
+
+NEXT EXACT ACTION: verify CI for commit 864de26c5014cf4e7ac814dd1b1123fee37faaa3, then pull and test the navbar wallet flow with a real Meteor testnet wallet in Chrome. Record account ID, connection/disconnection, and any exact runtime error; no transaction should be claimed until a signed receipt is verified.
+
+## Phase 4 wallet choice expansion — 2026-11-03
+
+Wallet Selector previously registered only Meteor. The frontend now registers Meteor, HOT, Intear, Nightly, Sender, OKX, and HERE modules on testnet; package versions are pinned to 10.1.4. The existing navbar control and onchain authorization rules remain. Local TypeScript check and production build passed after correcting the OKX export name. These are explicit connectors, not automatic support for every NEAR wallet. Wallet setup, chooser rendering, actual connection/disconnection, and signed testnet actions remain unverified in a browser. The prior startup failures are separate from a user's choice of extension. Review bundle and browser behavior before claiming Phase 4 complete.
+
+NEXT EXACT ACTION: check CI for code commit 3a3caac8524b96af17e03e79ddac780e119b2b96, pull the draft branch in Ubuntu, restart Vite, open the chooser, connect and disconnect at least two supported testnet wallets, and capture exact errors if setup fails. Do not sign treasury actions until account role and transaction details are verified.
+
+## Multi-wallet install correction — 2026-11-03
+
+User's npm ci failed after the seven-wallet change with `Missing: typescript@5.9.3 from lock file`. Root cause: HOT wallet brought in @hot-wallet/sdk -> @solana/web3.js with TypeScript ^5 peer requirements, conflicting with the app's pinned TypeScript 7 under npm 10. Removed the HOT module and its transitive dependencies from this PR. Remaining choices: Meteor, Intear, Nightly, Sender, OKX, HERE. Independently ran `npx npm@10 --prefix apps/web ci --ignore-scripts --no-audit --no-fund` successfully, then the web type-check and build passed locally. GitHub CI and live browser choice/connection still need verification. The prior progress note listing HOT is superseded by this correction.
+
+NEXT EXACT ACTION: verify CI for code commit 4c1cf1d1ff804aaaf802927f03fbebb6d6e5a76f, then user pulls current draft branch and runs npm ci before starting Vite. If clean install succeeds, inspect actual wallet chooser and connect/disconnect on testnet.
+
+## Phase 4 wallet recording and light chooser repair — 2026-11-03
+
+The user's 58-second Chrome recording shows a Meteor testnet wallet connecting to the navbar account and disconnecting again. This verifies that connect/disconnect worked in that browser session. It does not verify transaction signing, another wallet, mobile behavior, or a final contract receipt. Antigravity's commit `1ce78f8` added My NEAR Wallet and browser polyfills; Web app checks run 41675727519 passed. The video also shows the wallet chooser with dark wallet rows and unreadable wallet names while Veyntro is in light mode. Wallet Selector applies a dark palette from the operating system's `prefers-color-scheme` even when Veyntro's own toggle is light. Scoped light-theme variables and explicit wallet-row text colors now align the chooser with the app setting. Recheck this visually on the user's Chrome after pulling this change.
+
+Phase 4 remains IN_PROGRESS against `docs/MASTER_PLAN.md`: the UI currently has hash views for overview, commitments, DAO approval and activity; it does not implement all eight specified paths. Activity shows contract payment/withdrawal records but no funding/commitment event history or per-transaction links. The hosted HTTPS app, evidence submission screen, complete DAO and beneficiary signed workflow, expiry release, final receipts and desktop/mobile end-to-end checks are outstanding. Do not mark the phase complete from the wallet video or a build alone.
+
+## Phase 4 public explanation view — 2026-11-03
+
+Added a public `/docs` view with the contract's money rules, DAO and beneficiary roles, verifier trust limit, live account explorer links, and links to repository instructions. It reads the DAO account from the live treasury state rather than showing a fabricated value. The app plainly says that public evidence submission and complete activity indexing are unavailable. The other main views still use hash navigation, and `/verify` is not implemented. The verifier remains a local unsigned-preparation CLI with no authenticated public HTTP endpoint; exposing it as a public submit form before authorization, durable records, rate limits and limited signing custody would be unsafe. Next: complete the verifier service gate and remaining true routes, then verify the complete signed Phase 4 workflow on a hosted app.
+
+Follow-up: added direct paths for `/commitments`, `/commitments/:id`, `/governance`, and `/activity`, keeping old hashes usable. A commitment detail reads `get_reservation(id)` from the same final block as the treasury and shows real payout account, evidence hash and verified commit when present. This is a public read slice; it does not add a verifier submission flow or transaction history indexing. Type check/build and direct-path browser behavior must be verified before counting these routes as working.
+
+## Phase 4 browser DAO proposal and navigation review — 2026-11-03
+
+The user's screen recording shows testnet explorer transaction `C6EL9CRoCtLq7ZW1k2477w1TK4b1BRcTs7LCXzp1Z5dS` with status Success for `add_proposal` from `aje.testnet` to `veyntro.sputnikv2.testnet`, with a 1 NEAR attached deposit. The app shows the funding request as "Waiting for votes." The 1 NEAR on the transaction is the DAO proposal bond; it is not confirmation that the proposed 1 NEAR funding action has moved to the firewall. Saved DAO policy gives the Everyone role `*:AddProposal`, while voting is in the council group `aje-veyntro.testnet`. Re-read live policy and proposal before a council signature; verify final DAO-to-firewall receipts and live treasury state after approval. This is user-video evidence; an independent RPC receipt/state reconciliation for this proposal remains pending.
+
+The recording also shows the navbar labels wrapping unevenly at desktop width. Reduced desktop nav gaps, kept each label on one line, moved the nav to its own row at narrower widths, and allowed the mobile nav to wrap into complete rows. Build and visual confirmation after pulling remain pending.
+
+## Phase 4 proposal review before vote — 2026-11-03
+
+The prior proposal list showed a description and one action label but hid the actual receiver, amount and remaining actions. Added a read-only summary of the DAO's onchain FunctionCall proposal: receiver, funding amount when it is exactly one `fund_treasury` call to the configured firewall, and an expandable list of every action's method, attached NEAR, gas and original encoded args. This helps a council voter check the real onchain proposal before signing. It does not itself validate successful DAO execution, and a wallet signature must still be reviewed in the wallet and checked against final receipts and refreshed treasury state. CI and browser review remain pending.
+
+## Phase 4 council vote for funding request 9 — 2026-11-03
+
+User supplied local NEAR CLI output for transaction `4hb14JpA6QvayTJERTPcaFj2MyVUGgPq25emxZhFKZXt`: signer `aje-veyntro.testnet`, receiver `veyntro.sputnikv2.testnet`, `act_proposal` VoteApprove ID 9, 150 Tgas, zero attached deposit. CLI reported success and a Firewall `funded` event of 1 NEAR with `confirmed_funds` 4.88 NEAR. The proposal's read-only preflight had shown InProgress, proposer `aje.testnet`, exactly one `fund_treasury` action to `firewall-aje-veyntro.testnet`, 1 NEAR attached to that DAO action, and 30 Tgas. Public explorer access in this workspace failed; this is user-supplied CLI evidence. Next: independently read `get_proposal(9)` and `get_treasury_state` at final testnet state; confirm Approved and 4.88 NEAR accountable funds with zero pending transfer, then compare the app's refreshed numbers. Do not re-run the vote.
+
+Follow-up final-state output supplied by user: `get_proposal(9).status` is Approved; `get_treasury_state.confirmed_accountable_funds` is `4880000000000000000000000` yoctoNEAR (4.88 NEAR); pending payouts and withdrawals are both zero; `ledger_solvent` and `physical_backing_check` are both true. This reconciles the CLI's `funded` event with final public contract state and closes the DAO funding transaction check. A browser comparison of the refreshed Overview's “Accounted treasury” display is still pending. No second vote is needed.
+
+## Phase 4 browser council preparation — 2026-11-03
+
+User selected `aje.testnet` as the browser council account. Added `scripts/browser-council.py` and `docs/BROWSER_COUNCIL.md` to prepare and verify an `AddMemberToRole` proposal without reading keys or signing. The script checks live final-block policy, exact existing council membership, voting permissions and threshold, account existence, proposal bond, and the exact proposal before preparing a vote. Live read-only preparation succeeded at testnet block 276085217: council only `aje-veyntro.testnet`, new account `aje.testnet` exists, bond 1 NEAR. No DAO policy transaction has been submitted yet. Adding this account grants full council voting authority; with the recorded 1/2 threshold and two members, either may be able to approve alone. The user must review and sign proposal/vote with the existing Ubuntu council key, then verify onchain policy and test a real web vote. Do not claim browser voting is verified yet.
+
+Follow-up: user supplied successful `add_proposal` CLI result 10, transaction `8UyHhWmUaWgEBZMu2aLejZcsKkDfjeaCNP48CPj4vGJx`, signed by `aje-veyntro.testnet` with 1 NEAR proposal bond. The payload is exactly `AddMemberToRole` for `aje.testnet` in `council`. This workspace's read-only `browser-council.py vote --id 10` preflight succeeded at final block 276085550: exact kind, description, proposer, open status, unexpired period, unchanged single-member council. No approval vote or role change has happened yet. Next: user locally signs the prepared `VoteApprove` with existing council key; then verify proposal Approved and both members in live policy. Do not re-submit proposal 10.
+
+- 2026-11-03: Council proposal #10 was approved by `aje-veyntro.testnet` in testnet transaction `XQXN9TVQLUSYq1wYPd5areyvaFDY44axbpzafgtXFPA`. Independent finalized RPC verification at block 276085957 confirmed proposal status `Approved` and council members `aje.testnet` and `aje-veyntro.testnet`. The browser wallet `aje.testnet` is now authorized to vote on future open DAO proposals. The first browser-signed vote remains to be tested; proposal #10 is closed. Fixed `scripts/browser-council.py verify` to accept the exact new membership while keeping prepare/vote checks on the old membership.
+
+## Phase 4 browser vote preflight — 2026-11-03
+
+DAO reads now pin the proposal list to the same finalized block as the policy. Before a browser vote, the app re-reads the exact proposal and policy together from one final block; it rejects a closed/already-voted proposal, missing current permission, or changed details before opening the wallet. Non-FunctionCall policy changes now expose their full onchain kind for review. The web production build passed locally after a clean npm install. Published to `codex/phase4-ui-corrections` through commit `e8527c77133fd759e531ea0d9f17eb5f28f9c6fa`. The preflight is an interface safety check; SputnikDAO still enforces voting rights. A browser-signed vote, wallet receipt, hosted app, and full Phase 4 journey remain unverified. Next: pull the branch in Ubuntu, review a genuine new open proposal with `aje.testnet`, sign through the wallet, then independently compare final DAO proposal and contract state. Do not re-vote on approved proposal 10 or create a financial action just to exercise a button.
+
+## Phase 4 browser vote on proposal 11 — 2026-11-03
+
+User screenshot at final DAO block 276092047 showed funding request 11 (0.5 NEAR from DAO to firewall) as Waiting for votes and `aje.testnet` already voted. Independent finalized testnet RPC at blocks 276092254/276092266 confirmed proposal 11 is InProgress, proposer `aje.testnet`, exact single `fund_treasury` FunctionCall with 0.5 NEAR attached and 30 Tgas, `votes.aje.testnet=Approve`, council tally `[1,0,0]`, and council members `aje.testnet` and `aje-veyntro.testnet`. Therefore the browser vote was recorded but did not reach approval; the other council member must vote for this proposal to pass under the observed policy behavior. Corrected the prior assumption that one of two votes might suffice. Updated the UI to say the user's vote was recorded while more council votes are pending; local web build passed and change is on the review branch. No funding from proposal 11 has executed yet. Next: existing Ubuntu council account reviews exact proposal 11 live, votes if appropriate, then verify final DAO and firewall receipt/accounting. Do not repeat the browser vote or present 0.5 NEAR as funded before execution.
+
+## Browser-only council transition prepared — 2026-11-03
+
+Independent finalized RPC at blocks 276092967/276092979 confirmed funding proposal 11 Approved with both council votes, and Firewall accounted funds 5.38 NEAR, zero pending payouts/withdrawals, solvent and physically backed. The user's browser vote from `aje.testnet` was recorded; the Ubuntu account supplied the second approval. The earlier assumption that one of two votes could pass is contradicted by this live result and corrected in `docs/BROWSER_COUNCIL.md`.
+
+User wants `aje.testnet` to be the routine browser approval account, without Ubuntu CLI votes. Added `scripts/retire-cli-council.py` and `docs/RETIRE_CLI_COUNCIL.md` for a one-time `RemoveMemberFromRole` proposal to remove `aje-veyntro.testnet` from council. The script reads finalized policy and exact membership, checks proposal 11 Approved, and emits unsigned JSON; it does not sign, send, or read private keys. `python3 -m py_compile` passed and live prepare succeeded at block 276092911 with 1 NEAR bond; the old council account had about 1.4659 NEAR at block 276093019. No removal proposal has yet been submitted, signed or approved. Two votes remain required for the transition. After it is approved, verify the live council contains only `aje.testnet`, then test a genuine later proposal from the web; the one-member voting outcome remains unverified. Sole council control is a centralization/key-loss risk, not community multisig governance.
+
+## Browser-only council membership verified — 2026-11-03
+
+User screenshot of Veyntro `/governance` showed request 12 Approved and the exact `RemoveMemberFromRole` action for `aje-veyntro.testnet` in `council`, connected as `aje.testnet`, with final DAO block 276094025. Independent read-only `python3 scripts/retire-cli-council.py verify --id 12` succeeded at final block 276094130: proposal 12 Approved and council members exactly `["aje.testnet"]`. This verifies the one-time DAO role transition; the Ubuntu account no longer has a council vote. A future genuine proposal must still test whether one browser approval passes with the single-member council and confirm the final receipt. Do not claim that transaction path or hosted app is verified yet. The sole browser wallet now has governance control; loss/compromise is a centralization risk. No transaction hash for the browser vote was supplied, so the finalized proposal/policy state is the evidence here.
+
+## Phase 4 newest DAO requests — 2026-11-03
+
+Fixed the web DAO list to read `get_last_proposal_id` and then the newest up to 50 proposals, rather than permanently displaying IDs 0–49. Policy, count, and list are pinned to the same finalized block and the list is shown newest first. Live testnet RPC confirmed `get_last_proposal_id=13` with proposals 10–12 available; web TypeScript/production build passed. Published on review branch as `f8baaa78558395b60a90a8bf748b87d70834cc5c`. Browser rendering after pulling remains unverified. Live Firewall at blocks 276094365/276094379 has three commitments; none currently offers an active usable evidence-backed browser payout (reservation 0 evidence unusable, reservation 1 expired, reservation 2 completed). The next end-to-end commitment/evidence/payout must use new genuine work evidence and an actual beneficiary wallet; do not reuse an old successful CI run as fresh work or fabricate an eligible state. Secure public verifier request/signing remains open.
+
+## Fresh web-work GitHub evidence policy — 2026-11-03
+
+Confirmed through GitHub Actions API that workflow run 41708155809 completed successfully on 2026-11-03 for exact commit `f8baaa78558395b60a90a8bf748b87d70834cc5c`, workflow ID 405759133/path `.github/workflows/web.yml`, event pull_request, branch `codex/phase4-ui-corrections`, same non-fork repository. Extended verifier policy parser to allow an explicitly named pull_request event while preserving exact repo/head identity, SHA, workflow, branch, status, age and no-fork checks; the existing push policy still rejects a PR run. Added `evidence/WEB_APP_WORK_POLICY.json` with canonical hash `59ef3ce012e6a54b45e5f78d6ff0e90ed176404eb289a6da0cb86ab27c5b0288` and `docs/WEB_APP_WORK_EVIDENCE.md`. Verifier type check and all 29 tests passed locally. This run proves the named checks passed, not business acceptance. No commitment, attestation, payment or public verifier service was created by this work. The DAO must explicitly approve any payment for already-completed web work with real terms; this CI evidence expires after seven days from its original creation. Browser beneficiary signing and final receipt remain to be verified.
+
+## Proposed web-work commitment terms prepared — 2026-11-03
+
+Rechecked actual GitHub Actions run 41708155809: completed/success, pull_request, exact commit f8baaa78558395b60a90a8bf748b87d70834cc5c, branch codex/phase4-ui-corrections, workflow ID 405759133/path `.github/workflows/web.yml`, same non-fork repository. Finalized RPC at DAO block 276098769: only aje.testnet council, proposal bond 1 NEAR. Firewall block 276098784: 2.47326 NEAR available, confirmed 5.38 NEAR, solvent/backed. Wallet aje.testnet held about 3.9986 NEAR at block 276098798. Added docs/WEB_APP_WORK_REQUEST.md with reviewable suggestion: retroactive 0.05 NEAR testnet for the completed web app change, beneficiary and payout account aje.testnet, deadline 2026-11-07 12:00 UTC, exact policy hash 59ef3ce012e6a54b45e5f78d6ff0e90ed176404eb289a6da0cb86ab27c5b0288. No proposal, commitment, attestation, or payment was submitted by preparation. User must review and sign the DAO proposal; then verify the actual ID and one-vote outcome before verifier signing or beneficiary payout. One account covering all roles is a demonstration of signed paths, not independent governance.
+
+## Browser-only council vote created commitment 3 — 2026-11-03
+
+User screenshots show request 13 moving from Waiting for votes to Approved in the browser with aje.testnet connected. Independent finalized RPC at DAO block 276100167 confirms proposal 13 Approved with exactly one council Approve vote from aje.testnet and one create_reservation call to firewall-aje-veyntro.testnet. Firewall block 276100183 has confirmed funds 5.38 NEAR, liabilities 0.35 NEAR, zero pending, solvent/backed; next reservation ID 4. Reservation 3 at block 276100198 is Active, 0.05 NEAR approved and remaining, beneficiary/payout account aje.testnet, no evidence, nonce 0, policy hash 59ef3ce012e6a54b45e5f78d6ff0e90ed176404eb289a6da0cb86ab27c5b0288, expiry 2026-11-07 12:00 UTC. This verifies a single browser wallet council vote executed a real commitment. The screenshots showed raw base64 proposal arguments; the governance review now decodes valid commitment arguments into readable beneficiary, payout account, amount, deadline and work-check code, with fallback for unknown data. Local web production build passed; browser rendering of this new change remains open.
+
+Live verifier CLI preflight for policy evidence/WEB_APP_WORK_POLICY.json, reservation 3, run 41708155809 and signer verifier-aje-veyntro.testnet passed against GitHub API and same-final-block NEAR views. It prepared an unsigned public attestation bound to reservation 3, exact wallet/recipient/amount/policy, nonce 1, SHA f8baaa78558395b60a90a8bf748b87d70834cc5c and run ID 41708155809. This workspace did not sign or send. The 30-minute prepared deadline requires a fresh Ubuntu preflight immediately before the user's verifier-key signature. Next: user prepares a new unsigned file locally, reviews its binding/transaction, signs submit_attestation with the saved verifier key; then independently verify evidence usable and only then request payment in the browser with aje.testnet. Do not report payout from proposal approval alone.
+
+## Commitment 3 evidence attested — 2026-11-03
+
+User supplied successful NEAR CLI `submit_attestation` receipt from verifier-aje-veyntro.testnet, transaction DP2nwemLGqbXQVVtyA9C7bQy7xnd14uVeKzdixiNf78C, with `evidence_checked` event bound to reservation 3, policy hash 59ef3ce012e6a54b45e5f78d6ff0e90ed176404eb289a6da0cb86ab27c5b0288, commit f8baaa78558395b60a90a8bf748b87d70834cc5c, nonce 1 and digest b0be9f56983f7625e6f1dada730e1caaf8cc94725cbff1f300f0d1e83ecc757a. Independent finalized RPC at block 276102934 confirmed reservation 3 Active, evidence.usable=true, beneficiary and payout recipient aje.testnet, 0.05 NEAR remaining, pending zero and drawdown nonce 0. Treasury block 276102959: 5.38 NEAR accounted, 0.35 NEAR liabilities, zero pending payouts, solvent/backed. Evidence expires at 1793742449335000000 ns (approximately 26 minutes after this check). Next: connect aje.testnet in browser on commitment 3, request exactly 0.05 NEAR once before evidence expires, inspect transaction and final callback/operation/reservation/treasury, and report actual payment status. Do not submit a duplicate if the wallet outcome is unclear; read chain first.
+
+## Browser beneficiary payout for commitment 3 verified — 2026-11-03
+
+User screenshot at `/commitments/3` showed status Completed and zero still set aside while connected as aje.testnet. Independent finalized RPC at block 276103420 confirmed reservation 3 Completed, remaining liability 0, pending 0, drawdown nonce 1, evidence digest b0be9f56983f7625e6f1dada730e1caaf8cc94725cbff1f300f0d1e83ecc757a and commit f8baaa78558395b60a90a8bf748b87d70834cc5c. Operation 5 at block 276103448 is Payout, recipient aje.testnet, amount 0.05 NEAR, status Succeeded, with completed timestamp. Treasury block 276103434: confirmed accountable funds 5.33 NEAR (down exactly 0.05), liabilities 0.30 NEAR (down exactly 0.05), pending payout/withdrawal 0, solvent/backed true; actual firewall balance down exactly 0.05 NEAR from pre-payout view. The recipient account balance was observed at block 276103462, but its exact before/after change includes unrelated bond/fees, so do not use that balance alone to claim a transfer. No browser payout transaction hash was supplied; operation and final state are independent evidence of settlement. This completes the local browser proposal/vote/commitment/payout path, with verifier attestation signed from Ubuntu; hosted HTTPS and public verifier submission remain open.
+
+Fixed the commitment card's misleading `GitHub check needed` on Completed rows with recorded evidence. It now says `Work checked`; active rows with unusable prior evidence say `Work check no longer usable`. Web production build passed; browser confirmation after pulling commit bd3eba7 remains open.
+
+Prepared Render Static Site Blueprint (`render.yaml`) and `docs/DEPLOY_WEB.md` for HTTPS hosting, SPA route rewrites, and explicit public smoke checks. Local production web build passed on 3 Nov 2026. No public URL or hosted wallet transaction has been verified yet. Verifier remains CLI signed; hosted authenticated scoped signing is still open.

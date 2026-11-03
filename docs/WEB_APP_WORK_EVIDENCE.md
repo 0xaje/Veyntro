@@ -1,0 +1,7 @@
+# Evidence option for the next real commitment
+
+The verified GitHub Actions run at `https://github.com/0xaje/Veyntro/actions/runs/41708155809` completed successfully for commit `f8baaa78558395b60a90a8bf748b87d70834cc5c`, the web app change that loads the newest DAO requests. It is a pull request run from the same repository on branch `codex/phase4-ui-corrections`, workflow `.github/workflows/web.yml`, ID `405759133`. The policy is stored in `evidence/WEB_APP_WORK_POLICY.json`; its canonical SHA-256 is `59ef3ce012e6a54b45e5f78d6ff0e90ed176404eb289a6da0cb86ab27c5b0288`.
+
+This is genuine evidence that the named build checks passed. It does **not** prove that a person accepted the work, that all browser flows work, or that a payment is owed. A DAO must choose and approve a real commitment with its own amount, beneficiary, payout recipient and deadline before this evidence can be used. If the DAO wants to pay for this already completed web work, its request note should say so plainly. The workflow run was created on 2026-11-03 around 19:58 UTC and becomes too old under this policy after seven days; a later rerun does not reset its original creation time.
+
+After a matching commitment is approved, the verifier CLI can check the live GitHub run and reservation against this policy and prepare an unsigned attestation. The verifier's local key still has to sign. No public verifier service or browser evidence submission exists yet. Never reuse a prepared attestation for another reservation or sign it after expiry.

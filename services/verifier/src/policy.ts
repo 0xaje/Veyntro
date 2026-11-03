@@ -33,7 +33,7 @@ export function digest(value: unknown): string {
 export interface Policy {
   schema: 'veyntro.github-ci.v1'; network: 'testnet'; contract_account_id: string;
   repository: string; commit_sha: string; workflow_id: number; workflow_path: string;
-  event: 'push'; branch: string; conclusion: 'success'; allow_forks: false;
+  event: 'push' | 'pull_request'; branch: string; conclusion: 'success'; allow_forks: false;
   max_run_age_seconds: number;
 }
 
@@ -49,7 +49,7 @@ export function parsePolicy(value: unknown): Policy {
   requireValue(typeof p.commit_sha === 'string' && /^[0-9a-f]{40}$/.test(p.commit_sha) && !/^0+$/.test(p.commit_sha), 'Use a full commit SHA');
   requireValue(Number.isSafeInteger(p.workflow_id) && Number(p.workflow_id) > 0, 'Invalid workflow ID');
   requireValue(typeof p.workflow_path === 'string' && /^\.github\/workflows\/[A-Za-z0-9_.-]+\.ya?ml$/.test(p.workflow_path), 'Invalid workflow path');
-  requireValue(p.event === 'push' && p.conclusion === 'success' && p.allow_forks === false, 'Unsupported evidence rules');
+  requireValue((p.event === 'push' || p.event === 'pull_request') && p.conclusion === 'success' && p.allow_forks === false, 'Unsupported evidence rules');
   requireValue(typeof p.branch === 'string' && p.branch.length > 0 && p.branch.length <= 255, 'Invalid branch');
   requireValue(Number.isSafeInteger(p.max_run_age_seconds) && Number(p.max_run_age_seconds) > 0 && Number(p.max_run_age_seconds) <= 604800, 'Evidence age must be at most seven days');
   return p as unknown as Policy;
