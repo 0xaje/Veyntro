@@ -52,10 +52,13 @@ export default function ActivityPanel({ page, loading, error, loadingOlder, curr
                 </div>
                 <span className={`status status-${operation.status.toLowerCase()}`}>{statusName(operation.status)}</span>
               </div>
-              <p className="activity-meta">Sent to {operation.recipient} on {formatDeadline(operation.created_at_ns)}</p>
+              <p className="activity-meta">{operation.status === "Succeeded" ? "Sent" : operation.status === "Failed" ? "Attempted" : "Sending"} to {operation.recipient} on {formatDeadline(operation.created_at_ns)}</p>
               {operation.reservation_id !== null && (
-                <p className="activity-meta">Commitment {operation.reservation_id}</p>
+                <p className="activity-meta">
+                  <a href={`/commitments/${encodeURIComponent(operation.reservation_id)}`}>View commitment {operation.reservation_id} and its work check</a>
+                </p>
               )}
+              {operation.completed_at_ns !== "0" && <p className="activity-meta">Finished {formatDeadline(operation.completed_at_ns)}</p>}
             </article>
           ))}
         </div>

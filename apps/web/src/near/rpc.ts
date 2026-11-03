@@ -206,17 +206,20 @@ export async function readOperationPage(fromIndex: string, blockHash: string): P
     idsToFetch.push(i.toString());
   }
 
-  const ops: TreasuryOperation[] = [];
-  for (const id of idsToFetch) {
-    try {
+  const results: (TreasuryOperation | null)[] = [];
+  for (let offset = 0; offset < idsToFetch.length; offset += 4) {
+    const batch = await Promise.all(idsToFetch.slice(offset, offset + 4).map(async (id) => {
       const res = await callView<TreasuryOperation | null>("get_operation", { id }, blockHash);
-      if (res.value) {
-        ops.push(res.value);
+      if (res.blockHash && res.blockHash !== blockHash) throw new Error("NEAR testnet returned a different activity block. Refresh and try again.");
+      if (res.value && (res.value.id !== id || !["Payout", "Withdrawal"].includes(res.value.kind) ||
+        !["Pending", "Succeeded", "Failed"].includes(res.value.status))) {
+        throw new Error("The firewall returned an unexpected payment record.");
       }
-    } catch {
-      // Continue reading other operations
-    }
+      return res.value;
+    }));
+    results.push(...batch);
   }
+  const ops = results.filter((operation): operation is TreasuryOperation => operation !== null);
 
   return {
     operations: ops,
