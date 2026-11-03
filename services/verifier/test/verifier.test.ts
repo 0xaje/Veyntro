@@ -84,3 +84,13 @@ test('rejects unknown policy fields and client-supplied pass flags', () => {
   assert.throws(() => parsePolicy({ ...policy, passed: true }));
   assert.throws(() => parsePolicy({ ...policy, allow_forks: true }));
 });
+
+test('accepts a same-repository pull request run only for a policy that names it', () => {
+  const prPolicy = parsePolicy({ ...policy, event: 'pull_request' });
+  const prRun = structuredClone(original);
+  prRun.event = 'pull_request';
+  assert.equal(validateRun(prPolicy, 41525421351, prRun, now).event, 'pull_request');
+  assert.throws(() => validateRun(policy, 41525421351, prRun, now));
+  prRun.head_repository.fork = true;
+  assert.throws(() => validateRun(prPolicy, 41525421351, prRun, now));
+});
