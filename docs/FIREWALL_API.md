@@ -1,6 +1,6 @@
-# Commitment Firewall — initial API
+# Commitment Firewall — deployed contract API
 
-NOT DEPLOYED. This describes the tested local implementation, not a working hosted application. Amounts are decimal-string yoctoNEAR (`U128`); IDs, nonces and nanosecond deadlines are decimal-string `U64`. Account IDs use NEAR's validated AccountId type. All writes require a signed NEAR transaction. SDK nonpayable wrappers reject attached deposits except on fund_treasury.
+The contract is deployed on NEAR testnet as `firewall-aje-veyntro.testnet`; its deployment and verified transaction behavior are recorded in `docs/PROGRESS.md` and `evidence/`. This file documents the contract interface, not a hosted user application. A browser UI and hosted service are not yet available. Amounts are decimal-string yoctoNEAR (`U128`); IDs, nonces and nanosecond deadlines are decimal-string `U64`. Account IDs use NEAR's validated AccountId type. All writes require a signed NEAR transaction. SDK nonpayable wrappers reject attached deposits except on fund_treasury.
 
 | Method | Immediate caller | Arguments / behavior |
 | --- | --- | --- |
