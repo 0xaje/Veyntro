@@ -145,6 +145,15 @@ export async function readReservationPage(fromIndex: number, blockHash: string):
   return result.value;
 }
 
+export async function readReservation(id: string, blockHash: string): Promise<Reservation | null> {
+  if (!/^\d+$/.test(id)) throw new Error("The commitment number is not valid.");
+  const result = await callView<unknown>("get_reservation", { id }, blockHash);
+  if (result.blockHash && result.blockHash !== blockHash) throw new Error("NEAR testnet returned a different block. Refresh and try again.");
+  if (result.value === null) return null;
+  if (!isReservation(result.value)) throw new Error("The firewall returned an unexpected commitment.");
+  return result.value;
+}
+
 export function formatNear(yocto: string): string {
   if (!/^\d+$/.test(yocto)) throw new Error("NEAR amount is not a valid integer.");
   const amount = BigInt(yocto);
