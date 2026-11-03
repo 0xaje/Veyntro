@@ -1,9 +1,9 @@
 # Veyntro — current progress
 
-DATE/TIME (UTC): 2026-11-02T21:05:47.503182+00:00
-PHASE / MILESTONE: Phase 2 — Commitment Firewall implemented and tested locally; live lifecycle pending
+DATE/TIME (UTC): 2026-11-03 — status corrected against docs/MASTER_PLAN.md
+PHASE / MILESTONE: Phase 4 — user-facing app; first public-view and wallet-connected app slice
 STATUS: IN_PROGRESS
-LAST VERIFIED COMMIT: 3c18cad4f81b949f3e264961da61c97d5613964e (firewall source and local checks; not a deployed contract).
+LAST VERIFIED COMMIT: 98cbda3d000795e70a9e658d0ec8c84c0b353a4a (current docs/review; contract source matches tested commit 3c18cad4f81b949f3e264961da61c97d5613964e).
 REPOSITORY: https://github.com/0xaje/Veyntro
 NETWORK / CONTRACT IDS: testnet; DAO veyntro.sputnikv2.testnet; council aje-veyntro.testnet; receiver receiver.aje-veyntro.testnet verified. Firewall account firewall-aje-veyntro.testnet CREATED with 10 test NEAR; contract DEPLOYED and initialized; final transaction/code hash/initial views verified. Verifier verifier-aje-veyntro.testnet and beneficiary worker-aje-veyntro.testnet CREATED and verified; each has 10 test NEAR.
 
@@ -415,3 +415,14 @@ Model note: this plan confusion was an explanation/tracking error, not a reason 
 ## Phase 2 first-pass static review recorded — OPEN — 2026-11-03
 
 Added docs/SECURITY_REVIEW.md. Review covered accounting, governance, callback, type and public-view source plus selected adversarial test bodies. No confirmed critical accounting/authorization flaw was identified in the scoped review. This is explicitly not an audit or security clearance; tests were not rerun in this review. Material trust/reliability limits recorded: trusted verifier key, callback liveness/stuck pending funds, full-access deployment key authority, bounded attempts, and no public app. Independent external tester, exact-source CI/test rerun, key-custody review and callback runbook remain open. Phase2 IN_PROGRESS. Phase3 acceptance remains verified for CLI/manual signing; Phase4 app not started.
+
+
+## Phase gate correction and current handoff — 2026-11-03
+
+The current docs/MASTER_PLAN.md says Phase 2 exits after the full testnet financial lifecycle, complete transaction evidence and no known critical accounting issue. The project has recorded successful contract CI (run 41525421351), the user's successful build output (56 firewall tests, 9 receiver tests, Clippy and release WASM build), and live testnet evidence for DAO funding, commitments, rejected overcommitment, evidence-gated payment, failed/retried payout and withdrawal callbacks, expiry release, and final solvency/backing reconciliation. The first-pass static review found no confirmed critical accounting or authorization flaw in the reviewed paths. Phase 2's stated exit is SATISFIED. This is not a production audit or security clearance.
+
+The independent tester, expanded adversarial suite, hosted workflow, key-custody review and residual-risk sign-off belong to Phase 6 / release hardening, not the Phase 2 exit gate. Phase 3's real GitHub-to-attestation-to-payment path remains accepted for the CLI/manual-signing flow. Phase 4 is IN_PROGRESS but no frontend exists yet. Guest reads must use live testnet RPC and writes must use signed testnet wallet actions; do not show cached example balances as live data.
+
+Verification note: bash scripts/build-firewall.sh was attempted in this workspace on 2026-11-03 but could not start because cargo is not installed (cargo: command not found). This does not replace or invalidate the recorded successful CI and user-terminal results. Re-run in the development environment before any contract source change or release.
+
+NEXT EXACT ACTION: build the first Phase 4 slice in apps/web: React/Vite/TypeScript, supported testnet wallet connection, and public treasury plus paginated commitments read from firewall-aje-veyntro.testnet over NEAR testnet RPC. Verify real loading/error/empty states and compare displayed amounts to fresh RPC output before adding governance and payout writes. MyNearWallet's testnet site announced limited mode effective 2026-11-01 and must not be selected as the sole wallet.
