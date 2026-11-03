@@ -1,0 +1,1 @@
+{"proposal": {"description": "Veyntro integration: fund the DAO-only receiver with 0.01 test NEAR", "kind": {"FunctionCall": {"receiver_id": "receiver.aje-veyntro.testnet", "actions": [{"method_name": "fund_treasury", "args": "e30=", "deposit": "10000000000000000000000", "gas": "30000000000000"}]}}}}

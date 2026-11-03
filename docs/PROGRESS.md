@@ -440,3 +440,99 @@ Local verification on Node 24.22.1 / npm 11.9.0:
 - Contract code and testnet state were not changed.
 
 NEXT EXACT ACTION: run the app in the development environment, compare its live treasury/commitment values against NEAR testnet reads at the displayed final block, and test Meteor wallet connect/disconnect. Once those checks pass, add signed DAO governance actions and verify each transaction's final receipts before adding beneficiary payment controls.
+
+
+## Phase 4 Hallmark UI applied and live browser verified — 2026-11-03
+
+Applied the Hallmark UI files from the archive into `apps/web`:
+- `apps/web/src/App.tsx`
+- `apps/web/src/GovernancePanel.tsx`
+- `apps/web/src/ActivityPanel.tsx`
+- `apps/web/src/styles.css`
+- `apps/web/src/hallmark/tokens.css`
+- `apps/web/src/hallmark/base.css`
+
+Preserved full onchain RPC integration, SputnikDAO proposal and voting flows, wallet connection, and contract behavior. Created matching TypeScript modules `apps/web/src/near/dao.ts` (SputnikDAO queries, permissions, proposal builders), `apps/web/src/CommitmentActions.tsx` (drawdown claim and expiry release), and added operation history pagination and `last_withdrawal_nonce` tracking to `apps/web/src/near/rpc.ts`. Set testnet RPC default to `https://test.rpc.fastnear.com` because the legacy `rpc.testnet.near.org` endpoint returns HTTP 429 deprecation errors.
+
+Verification results:
+- `npm --prefix apps/web run check`: passed with zero errors (`tsc -b --pretty false`).
+- `npm --prefix apps/web run build`: passed (`tsc -b && vite build`), generating production bundles and split chunks.
+- Live browser verification: started Vite dev server and inspected real rendering using headless Chrome CDP. Verified:
+  - Dark layout active: `color-scheme: dark`, body background `oklch(0.175 0.014 268)`.
+  - Ledger-style treasury rows active: `display: grid`, single ruled list with `1px solid oklch(0.3 0.016 266)` bottom border.
+  - Live NEAR testnet data rendered without mock data: Money Available `0.97326 NEAR`, Money set aside `0.3 NEAR`, Accounted treasury `3.88 NEAR`, Safety reserve `2.60674 NEAR`.
+  - 3 live commitments rendered (`worker-aje-veyntro.testnet` - In progress, Expired, Completed).
+  - 5 live operations rendered (Payment 4, Payment 3, Withdrawal 2, Withdrawal 1, Payment 0).
+  - 9 live SputnikDAO proposals rendered (Requests 0-8).
+- Saved verification evidence screenshot to `/tmp/veyntro-hallmark-verified.png`.
+
+## Phase 4 Hallmark UI updated (v2 refinement) — 2026-11-03
+
+Applied the updated Hallmark UI package (`veyntro-hallmark-ui_(1).zip`) into `apps/web`:
+- `apps/web/src/App.tsx`: updated section ordering (`GovernancePanel` positioned before `ActivityPanel`), added section kickers (`Treasury overview`, `Onchain records`).
+- `apps/web/src/GovernancePanel.tsx`: added `section-kicker` label `DAO decisions`.
+- `apps/web/src/ActivityPanel.tsx`: added `section-kicker` label `Onchain records`.
+- `apps/web/src/styles.css` & `apps/web/src/hallmark/tokens.css`: refined design tokens and palette with clean high-contrast styling (`color-scheme: light`, paper background `#f5f7f6` / `rgb(245, 247, 246)`, forest emerald accents `#176b56`, structured ledger rows).
+
+Verification results:
+- `npm --prefix apps/web run check`: passed (`tsc -b --pretty false`).
+- `npm --prefix apps/web run build`: passed (`tsc -b && vite build`).
+- Live browser verification: inspected via Chrome CDP on `http://localhost:5175/`. Verified:
+  - Background `rgb(245, 247, 246)`, color scheme `light`.
+  - Treasury money ledger rows active with live testnet values: Money available `0.97326 NEAR`, Money set aside `0.3 NEAR`, Accounted treasury `3.88 NEAR`, Safety reserve `2.60674 NEAR`.
+  - Section kickers present: "Treasury overview", "Onchain records", "DAO decisions".
+  - Commitments, activity, and SputnikDAO proposals rendering properly.
+- Saved verification evidence screenshot to [`evidence/HALLMARK_UI_LIGHT_VERIFIED.png`](file:///home/oyeolorun/Veyntro-build/evidence/HALLMARK_UI_LIGHT_VERIFIED.png).
+
+## Phase 4 Light/Dark Mode & Responsive Governance Stacking — 2026-11-03
+
+Added accessible light and dark mode support and responsive governance grid improvements:
+- **Default & Preferences:** Light mode remains the default look. If no preference has been saved in `localStorage`, the app detects the device preference via `prefers-color-scheme`. User toggles are persisted in `localStorage` (`veyntro-theme`) and applied dynamically to `<html data-theme="...">`.
+- **Theme Palette:**
+  - Light mode: preserved original forest-green and sage tokens (`#f5f7f6` paper, `#103d35` forest deep, `#176b56` emerald accent, soft mint panels).
+  - Dark mode: deep forest slate background (`#121816`), elevated dark panels (`#18221f`), muted mint borders (`#273832`), emerald highlight (`#38a17d`), high-contrast body text (`#ecf3ef`), and verified WCAG-readable status badges and borders.
+- **Accessible Theme Toggle:** Added a keyboard-focusable button in top navigation with explicit screen-reader label (`aria-label="Switch to dark mode"` / `"Switch to light mode"`), text label ("Dark mode" / "Light mode"), and moon/sun icon. At narrow mobile widths (<480px), the icon remains with full accessibility label intact.
+- **Wallet Status Fix:** Corrected wallet button state when wallet connection fails or is unavailable. Instead of indefinitely displaying "Loading wallet…", it now accurately reflects "Wallet unavailable" with `disabled={true}` and matching tooltip.
+- **Responsive Stacking:** Added breakpoint at `@media (max-width: 960px)` to stack the DAO proposal list and commitment/funding/withdrawal request form vertically into a single column (`grid-template-columns: minmax(0, 1fr)`) when they no longer comfortably fit side-by-side.
+
+Verification results:
+- `npm --prefix apps/web run check`: passed 0 errors (`tsc -b --pretty false`).
+- `npm --prefix apps/web run build`: passed (`tsc -b && vite build`).
+- Live browser verification (Chrome CDP on running dev server):
+  - Desktop light mode verified (`data-theme="light"`, body background `rgb(245, 247, 246)`).
+  - Desktop dark mode verified (`data-theme="dark"`, body background `rgb(18, 24, 22)`, text `rgb(236, 243, 239)`, panels `rgb(24, 34, 31)`, borders `rgb(39, 56, 50)`).
+  - Keyboard navigation verified: focus outline visible and toggling via `Enter` key functional.
+  - Mobile layout verified at 375px: governance grid stacks to single column (`gridTemplateColumns: "343px"`), toggle button adapts cleanly.
+  - Persistence verified: `localStorage.getItem('veyntro-theme')` correctly stores selection.
+- Evidence screenshots:
+  - [`evidence/THEME_DESKTOP_LIGHT.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_DESKTOP_LIGHT.png)
+  - [`evidence/THEME_DESKTOP_DARK.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_DESKTOP_DARK.png)
+  - [`evidence/THEME_MOBILE_DARK.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_MOBILE_DARK.png)
+
+## Phase 4 True Black Dark Theme & Circular Dot Toggle — 2026-11-03
+
+Updated dark mode and the toggle control:
+- **True Black Theme:** Replaced green/olive-tinted dark tokens with true black (`#000000`, `rgb(0, 0, 0)` body background), dark panels (`#0d0d0d`), subtle neutral rules (`#262626`), and clean light-gray typography (`#f3f4f6`). No army green or greenish tint in dark mode.
+- **Circular Dot Toggle:** Replaced the wide pill button and sun/moon text with a compact circular dot toggle (38px circle with an active status dot: forest emerald in light mode, crisp white in dark mode). It is fully keyboard-accessible with visible focus ring and screen-reader accessibility labels.
+- **Automatic Day / Night Cycle:** In addition to manual clicks, the toggle supports an automatic schedule that uses the local time of day (daylight 7am–7pm = light mode, nighttime 7pm–7am = dark mode) as well as system `prefers-color-scheme`. It periodically updates without page reload.
+- **Evidence Screenshots:**
+  - [`evidence/THEME_PURE_BLACK_DESKTOP.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_PURE_BLACK_DESKTOP.png)
+  - [`evidence/THEME_PURE_BLACK_MOBILE.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_PURE_BLACK_MOBILE.png)
+- Rebuilt archive at `~/Downloads/veyntro-web-source.zip`.
+
+## Phase 4 Unified Palette Harmony — 2026-11-03
+
+Replaced green highlights in light mode with the signature blue accent from dark mode for cohesive design harmony:
+- **Consistent Accent:**
+  - Light mode: Deep slate headings (`#0f172a`), royal blue primary accents (`#2563eb`), soft blue card highlights (`#bfdbfe`), clean slate backgrounds (`#f8fafc`).
+  - Dark mode: True black background (`#000000`), dark panels (`#0d0d0d`), electric/azure blue accents (`#3b82f6` / `#60a5fa`), crisp white headings (`#ffffff`).
+- Both modes share matching accent identity across section kickers, status highlights, primary action buttons, focus states, and the circular theme dot toggle.
+- Verification evidence screenshots:
+  - [`evidence/THEME_BLUE_LIGHT.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_BLUE_LIGHT.png)
+  - [`evidence/THEME_BLUE_DARK.png`](file:///home/oyeolorun/Veyntro-build/evidence/THEME_BLUE_DARK.png)
+- Rebuilt `~/Downloads/veyntro-web-source.zip`.
+
+
+
+
+

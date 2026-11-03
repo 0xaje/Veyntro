@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useWallet } from "./wallet/WalletProvider";
+import CommitmentActions from "./CommitmentActions";
+import GovernancePanel from "./GovernancePanel";
+import ActivityPanel from "./ActivityPanel";
+import { readDao, type DaoSnapshot } from "./near/dao";
 import {
   explorerAccountUrl,
   FIREWALL_CONTRACT_ID,
@@ -7,23 +11,25 @@ import {
   formatNear,
   readTreasury,
   readReservationPage,
+  readOperationPage,
   type TreasurySnapshot,
+  type OperationsPage,
 } from "./near/rpc";
 
 function Amount({ value }: { value: string }) {
   return <>{formatNear(value)} <span className="amount-unit">NEAR</span></>;
 }
 
-function CommitmentCard({ row }: { row: TreasurySnapshot["reservations"][number] }) {
+function CommitmentCard({ row, onRefresh }: { row: TreasurySnapshot["reservations"][number]; onRefresh: () => Promise<void> }) {
   const status = row.is_expired && row.status === "Active" ? "Expired" : row.status;
   const statusLabel = status === "Active" ? "In progress" : status;
   const evidenceLabel = row.evidence?.usable ? "GitHub check accepted" : "GitHub check needed";
   return (
-    <article className="commitment-card">
+    <article className="commitment-card" id={`commitment-${row.id}`}>
       <div className="commitment-heading">
         <div>
-          <p className="eyebrow">Commitment {row.id}</p>
           <h3>{row.beneficiary}</h3>
+          <p className="record-label">Commitment {row.id}</p>
         </div>
         <span className={`status status-${status.toLowerCase()}`}>{statusLabel}</span>
       </div>
@@ -39,13 +45,88 @@ function CommitmentCard({ row }: { row: TreasurySnapshot["reservations"][number]
       {row.is_expired && row.status === "Active" && (
         <p className="pending-note">This commitment has expired. Its unused money can be returned by an onchain action.</p>
       )}
+      <CommitmentActions row={row} onRefresh={onRefresh} />
     </article>
   );
 }
 
 export default function App() {
   const { account, connect, disconnect, error: walletError, ready } = useWallet();
+  const [themeMode, setThemeMode] = useState<"auto" | "light" | "dark">(() => {
+    try {
+      const saved = localStorage.getItem("veyntro-theme-mode");
+      if (saved === "auto" || saved === "light" || saved === "dark") return saved;
+    } catch {
+      // Ignore storage access issues
+    }
+    return "auto";
+  });
+
+  const [effectiveTheme, setEffectiveTheme] = useState<"light" | "dark">(() => {
+    if (typeof window === "undefined") return "light";
+    try {
+      const saved = localStorage.getItem("veyntro-theme-mode");
+      if (saved === "light" || saved === "dark") return saved;
+    } catch {
+      // Ignore
+    }
+    const hour = new Date().getHours();
+    const isNightTime = hour >= 19 || hour < 7;
+    const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return isNightTime || systemPrefersDark ? "dark" : "light";
+  });
+
+  useEffect(() => {
+    function computeTheme() {
+      if (themeMode === "light" || themeMode === "dark") {
+        return themeMode;
+      }
+      // Automatic day / night detection + system preference
+      const hour = new Date().getHours();
+      const isNightTime = hour >= 19 || hour < 7;
+      const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      return isNightTime || systemPrefersDark ? "dark" : "light";
+    }
+
+    const current = computeTheme();
+    setEffectiveTheme(current);
+    document.documentElement.setAttribute("data-theme", current);
+
+    try {
+      localStorage.setItem("veyntro-theme-mode", themeMode);
+    } catch {
+      // Ignore
+    }
+
+    // Interval to check day/night transitions automatically
+    const timer = window.setInterval(() => {
+      if (themeMode === "auto") {
+        const next = computeTheme();
+        setEffectiveTheme(next);
+        document.documentElement.setAttribute("data-theme", next);
+      }
+    }, 60_000);
+
+    return () => window.clearInterval(timer);
+  }, [themeMode]);
+
+  const toggleTheme = () => {
+    setThemeMode((prev) => {
+      // Cycles: auto -> light -> dark -> auto
+      if (prev === "auto") return effectiveTheme === "dark" ? "light" : "dark";
+      if (prev === "dark") return "light";
+      return "dark";
+    });
+  };
+
   const [snapshot, setSnapshot] = useState<TreasurySnapshot | null>(null);
+  const [dao, setDao] = useState<DaoSnapshot | null>(null);
+  const [operationsPage, setOperationsPage] = useState<OperationsPage | null>(null);
+  const [daoError, setDaoError] = useState<string | null>(null);
+  const [daoLoading, setDaoLoading] = useState(true);
+  const [operationsLoading, setOperationsLoading] = useState(true);
+  const [operationsError, setOperationsError] = useState<string | null>(null);
+  const [loadingOlderOperations, setLoadingOlderOperations] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -53,22 +134,52 @@ export default function App() {
   const [pageError, setPageError] = useState<string | null>(null);
   const hasSnapshot = useRef(false);
   const latestBlockHash = useRef<string | null>(null);
+  const refreshPromise = useRef<Promise<void> | null>(null);
 
-  const refresh = useCallback(async () => {
-    if (hasSnapshot.current) setRefreshing(true);
-    else setLoading(true);
-    try {
-      const next = await readTreasury();
-      hasSnapshot.current = true;
-      latestBlockHash.current = next.blockHash;
-      setSnapshot(next);
-      setLoadError(null);
-    } catch (error) {
-      setLoadError(error instanceof Error ? error.message : "Treasury data could not be loaded.");
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
+  const refresh = useCallback(() => {
+    if (refreshPromise.current) return refreshPromise.current;
+    const task = (async () => {
+      if (hasSnapshot.current) setRefreshing(true);
+      else setLoading(true);
+      setDaoLoading(true);
+      try {
+        const next = await readTreasury();
+        hasSnapshot.current = true;
+        latestBlockHash.current = next.blockHash;
+        setSnapshot(next);
+        setLoadError(null);
+        try {
+          const nextOperations = await readOperationPage(next.state.next_operation_id, next.blockHash);
+          setOperationsPage(nextOperations);
+          setOperationsError(null);
+        } catch (error) {
+          setOperationsPage(null);
+          setOperationsError(error instanceof Error ? error.message : "Money activity could not be loaded.");
+        }
+        try {
+          const nextDao = await readDao(next.state.dao_account_id);
+          setDao(nextDao);
+          setDaoError(null);
+        } catch (error) {
+          setDao(null);
+          setDaoError(error instanceof Error ? error.message : "DAO proposals could not be loaded.");
+        }
+      } catch (error) {
+        setDao(null);
+        setDaoError("Live treasury data could not be read, so DAO actions are paused.");
+        setOperationsPage(null);
+        setOperationsError("Live treasury data could not be read.");
+        setLoadError(error instanceof Error ? error.message : "Treasury data could not be loaded.");
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+        setDaoLoading(false);
+        setOperationsLoading(false);
+        refreshPromise.current = null;
+      }
+    })();
+    refreshPromise.current = task;
+    return task;
   }, []);
 
   useEffect(() => {
@@ -102,6 +213,31 @@ export default function App() {
     }
   };
 
+  const loadOlderOperations = async () => {
+    if (!snapshot || !operationsPage || BigInt(operationsPage.nextFromIndex) === 0n || loadingOlderOperations) return;
+    if (operationsPage.blockHash !== snapshot.blockHash) {
+      setOperationsError("Activity changed. Refresh before loading older records.");
+      return;
+    }
+    setLoadingOlderOperations(true);
+    setOperationsError(null);
+    try {
+      const older = await readOperationPage(operationsPage.nextFromIndex, snapshot.blockHash);
+      if (latestBlockHash.current !== snapshot.blockHash) {
+        throw new Error("The treasury changed while activity was loading. Refresh and try again.");
+      }
+      setOperationsPage((current) => current && current.blockHash === older.blockHash ? {
+        operations: [...older.operations, ...current.operations],
+        nextFromIndex: older.nextFromIndex,
+        blockHash: older.blockHash,
+      } : current);
+    } catch (error) {
+      setOperationsError(error instanceof Error ? error.message : "Older activity could not be loaded.");
+    } finally {
+      setLoadingOlderOperations(false);
+    }
+  };
+
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -112,32 +248,49 @@ export default function App() {
         <nav className="main-nav" aria-label="Main navigation">
           <a href="#treasury">Your money</a>
           <a href="#commitments">Commitments</a>
+          <a href="#governance">DAO approval</a>
+          <a href="#activity">Activity</a>
         </nav>
-        <div className="wallet-area">
-          <span className="network-pill"><span className="network-dot" />NEAR TESTNET</span>
-          {account ? (
-            <button className="wallet-button connected" onClick={() => void disconnect()} title="Disconnect wallet">
-              <span className="wallet-dot" />{account.accountId}<span className="disconnect-word">Disconnect</span>
-            </button>
-          ) : (
-            <button className="wallet-button" onClick={connect} disabled={!ready}>
-              {ready ? "Connect wallet" : "Loading wallet…"}
-            </button>
-          )}
+        <div className="topbar-controls">
+          <button
+            type="button"
+            className={`theme-dot-toggle ${effectiveTheme === "dark" ? "is-dark" : "is-light"}`}
+            onClick={toggleTheme}
+            aria-label={`Current mode: ${effectiveTheme}. Click to switch to ${effectiveTheme === "dark" ? "light" : "dark"} mode`}
+            title={`Current mode: ${effectiveTheme} (${themeMode === "auto" ? "auto daylight" : "manual"}). Click to switch`}
+          >
+            <span className="theme-dot" aria-hidden="true" />
+            <span className="visually-hidden">{effectiveTheme === "dark" ? "Dark mode active. Switch to light" : "Light mode active. Switch to dark"}</span>
+          </button>
+          <div className="wallet-area">
+            <span className="network-pill">NEAR testnet</span>
+            {account ? (
+              <button className="wallet-button connected" onClick={() => void disconnect()} title="Disconnect wallet">
+                <span className="wallet-dot" />{account.accountId}<span className="disconnect-word">Disconnect</span>
+              </button>
+            ) : (
+              <button
+                className="wallet-button"
+                onClick={connect}
+                disabled={!ready || Boolean(walletError)}
+                title={walletError ? "Wallet connection unavailable" : ready ? "Connect wallet" : "Loading wallet…"}
+              >
+                {walletError ? "Wallet unavailable" : ready ? "Connect wallet" : "Loading wallet…"}
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
       <main id="top">
         <section className="intro" aria-labelledby="page-title">
           <div className="intro-copy">
-            <p className="eyebrow">Shared money, clearly accounted for</p>
             <h1 id="page-title">Every commitment accounted for.</h1>
             <p className="intro-text">See what the treasury holds, what is set aside for work, and what can still be used.</p>
           </div>
           <a className="contract-link" href={explorerAccountUrl(FIREWALL_CONTRACT_ID)} target="_blank" rel="noreferrer">
             <span className="contract-label">Live contract</span>
             <span>{FIREWALL_CONTRACT_ID}</span>
-            <span aria-hidden="true">↗</span>
           </a>
         </section>
 
@@ -152,7 +305,7 @@ export default function App() {
         <section className="treasury-section" id="treasury" aria-labelledby="treasury-title">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">Treasury overview</p>
+              <p className="section-kicker">Treasury overview</p>
               <h2 id="treasury-title">Your money</h2>
             </div>
             <div className="freshness">
@@ -208,7 +361,7 @@ export default function App() {
         <section className="commitments-section" id="commitments" aria-labelledby="commitments-title">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">Onchain records</p>
+              <p className="section-kicker">Onchain records</p>
               <h2 id="commitments-title">Commitments</h2>
             </div>
           {commitmentSummary && <span className="count-label">{commitmentSummary} commitments</span>}
@@ -218,7 +371,7 @@ export default function App() {
             <div className="loading-panel compact" role="status">Loading commitments…</div>
           ) : snapshot?.reservations.length ? (
             <div className="commitment-list">
-              {snapshot.reservations.map((row) => <CommitmentCard key={row.id} row={row} />)}
+                {snapshot.reservations.map((row) => <CommitmentCard key={row.id} row={row} onRefresh={refresh} />)}
             </div>
           ) : snapshot ? (
             <div className="empty-panel">
@@ -234,6 +387,18 @@ export default function App() {
           )}
         </section>
 
+        <GovernancePanel dao={dao} treasury={snapshot} loading={daoLoading} error={daoError} onRefresh={refresh} />
+
+        <ActivityPanel
+          page={operationsPage}
+          loading={operationsLoading}
+          error={operationsError}
+          loadingOlder={loadingOlderOperations}
+          currentBlockHash={snapshot?.blockHash ?? null}
+          currentBlockHeight={snapshot?.blockHeight ?? null}
+          onLoadOlder={() => void loadOlderOperations()}
+        />
+
         <section className="trust-note" aria-label="About this page">
           <span className="trust-icon" aria-hidden="true">✓</span>
           <div><strong>Read from NEAR testnet</strong><p>This page reads the contract directly. You do not need a wallet to view it. Connecting a wallet is only needed for actions that require a signature.</p></div>
@@ -241,9 +406,9 @@ export default function App() {
       </main>
 
       <footer className="footer">
-        <span>Veyntro · Every commitment accounted for.</span>
+        <span>Veyntro. Every commitment accounted for.</span>
         <a href={explorerAccountUrl(state?.dao_account_id ?? "veyntro.sputnikv2.testnet")} target="_blank" rel="noreferrer">
-          DAO account{state ? ` · ${state.dao_account_id}` : ""} ↗
+          DAO account{state ? `: ${state.dao_account_id}` : ""}
         </a>
       </footer>
     </div>

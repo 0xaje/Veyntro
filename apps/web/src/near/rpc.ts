@@ -1,5 +1,5 @@
 export const NETWORK_ID = "testnet";
-export const RPC_URL = import.meta.env.VITE_NEAR_RPC_URL ?? "https://rpc.testnet.near.org";
+export const RPC_URL = import.meta.env.VITE_NEAR_RPC_URL ?? "https://test.rpc.fastnear.com";
 export const FIREWALL_CONTRACT_ID =
   import.meta.env.VITE_FIREWALL_CONTRACT_ID ?? "firewall-aje-veyntro.testnet";
 export const EXPLORER_URL = "https://explorer.testnet.near.org";
@@ -19,6 +19,7 @@ export interface TreasuryState {
   physical_backing_check: boolean;
   next_reservation_id: string;
   next_operation_id: string;
+  last_withdrawal_nonce: string;
 }
 
 export interface Reservation {
@@ -162,4 +163,53 @@ export function formatDeadline(timestampNs: string): string {
 
 export function explorerAccountUrl(accountId: string): string {
   return `${EXPLORER_URL}/accounts/${encodeURIComponent(accountId)}`;
+}
+
+export interface TreasuryOperation {
+  id: string;
+  kind: "Payout" | "Withdrawal";
+  reservation_id: string | null;
+  amount: string;
+  recipient: string;
+  status: "Pending" | "Succeeded" | "Failed";
+  created_at_ns: string;
+  completed_at_ns: string;
+}
+
+export interface OperationsPage {
+  operations: TreasuryOperation[];
+  nextFromIndex: string;
+  blockHash: string;
+}
+
+export async function readOperationPage(fromIndex: string, blockHash: string): Promise<OperationsPage> {
+  const count = 20;
+  const currentMax = BigInt(fromIndex);
+  if (currentMax === 0n) {
+    return { operations: [], nextFromIndex: "0", blockHash };
+  }
+
+  const idsToFetch: string[] = [];
+  const start = currentMax > BigInt(count) ? currentMax - BigInt(count) : 0n;
+  for (let i = start; i < currentMax; i++) {
+    idsToFetch.push(i.toString());
+  }
+
+  const ops: TreasuryOperation[] = [];
+  for (const id of idsToFetch) {
+    try {
+      const res = await callView<TreasuryOperation | null>("get_operation", { id }, blockHash);
+      if (res.value) {
+        ops.push(res.value);
+      }
+    } catch {
+      // Continue reading other operations
+    }
+  }
+
+  return {
+    operations: ops,
+    nextFromIndex: start.toString(),
+    blockHash,
+  };
 }
