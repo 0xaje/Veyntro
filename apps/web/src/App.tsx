@@ -290,7 +290,12 @@ export default function App() {
           </a>
         </section>
 
-        {walletError && (\n          <div className="inline-alert error-alert" role="alert">\n            <span>{walletError}</span>\n            <button type="button" onClick={retryWallet} disabled={walletInitializing}>Try again</button>\n          </div>\n        )}
+        {walletError && (
+          <div className="inline-alert error-alert" role="alert">
+            <span>{walletError}</span>
+            <button type="button" onClick={retryWallet} disabled={walletInitializing}>Try again</button>
+          </div>
+        )}
         {loadError && (
           <div className="inline-alert error-alert" role="alert">
             <span>{snapshot ? `Could not refresh live data. Showing the last final view from block ${snapshot.blockHeight}. ${loadError}` : loadError}</span>
