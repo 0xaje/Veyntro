@@ -33,35 +33,50 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let cancelled = false;
     let unsubscribe: (() => void) | undefined;
+
     setInitializing(true);
     setError(null);
 
     void (async () => {
       try {
-        const [core, meteor, modalUi] = await Promise.all([
+        const [core, meteor, hot, intear, nightly, sender, okx, here, modalUi] = await Promise.all([
           import("@near-wallet-selector/core"),
           import("@near-wallet-selector/meteor-wallet"),
+          import("@near-wallet-selector/hot-wallet"),
+          import("@near-wallet-selector/intear-wallet"),
+          import("@near-wallet-selector/nightly"),
+          import("@near-wallet-selector/sender"),
+          import("@near-wallet-selector/okx-wallet"),
+          import("@near-wallet-selector/here-wallet"),
           import("@near-wallet-selector/modal-ui"),
         ]);
         const instance = await core.setupWalletSelector({
           network: NETWORK_ID,
-          modules: [meteor.setupMeteorWallet()],
+          modules: [
+            meteor.setupMeteorWallet(),
+            hot.setupHotWallet(),
+            intear.setupIntearWallet(),
+            nightly.setupNightly(),
+            sender.setupSender(),
+            okx.setupOKXWallet(),
+            here.setupHereWallet(),
+          ],
         });
-        if (cancelled) return;
-        const walletModal = modalUi.setupModal(instance, {
-          contractId: FIREWALL_CONTRACT_ID,
-          theme: "light",
-          description: "Connect your NEAR testnet wallet to Veyntro.",
-        });
-        setSelector(instance);
-        setModal(walletModal);
-        const update = () => {
-          const active = instance.store.getState().accounts.find((item) => item.active) ?? null;
-          setAccount(active);
-        };
-        update();
-        const subscription = instance.store.observable.subscribe(update);
-        unsubscribe = () => subscription.unsubscribe();
+      if (cancelled) return;
+      const walletModal = modalUi.setupModal(instance, {
+        contractId: FIREWALL_CONTRACT_ID,
+        theme: "light",
+        description: "Connect your NEAR testnet wallet to Veyntro.",
+      });
+      setSelector(instance);
+      setModal(walletModal);
+      const update = () => {
+        const active = instance.store.getState().accounts.find((item) => item.active) ?? null;
+        setAccount(active);
+      };
+      update();
+      const subscription = instance.store.observable.subscribe(update);
+      unsubscribe = () => subscription.unsubscribe();
       } catch (cause) {
         console.error("[Veyntro] NEAR wallet setup failed", cause);
         if (!cancelled) setError("We could not start the wallet. Try again or reload the page.");
