@@ -1,0 +1,52 @@
+name: Submit checked work evidence
+
+on:
+  workflow_dispatch:
+    inputs:
+      reservation_id:
+        description: 'Approved commitment number'
+        required: true
+        type: string
+      run_id:
+        description: 'GitHub web-check run ID'
+        required: true
+        type: string
+      policy_file:
+        description: 'Committed policy path, for example evidence/WEB_APP_WORK_POLICY.json'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: veyntro-verifier
+  cancel-in-progress: false
+
+jobs:
+  attest:
+    if: github.ref == 'refs/heads/main' && github.repository == '0xaje/Veyntro'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    environment: verifier-testnet
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.22.1'
+          cache: npm
+          cache-dependency-path: services/verifier/package-lock.json
+      - run: npm --prefix services/verifier ci --ignore-scripts --no-audit --no-fund
+      - name: Check the verifier before using its key
+        run: npm --prefix services/verifier run check && npm --prefix services/verifier test
+      - name: Check GitHub and NEAR, then submit one restricted attestation
+        env:
+          RESERVATION_ID: ${{ inputs.reservation_id }}
+          WORKFLOW_RUN_ID: ${{ inputs.run_id }}
+          POLICY_FILE: ${{ inputs.policy_file }}
+          GITHUB_TOKEN: ${{ github.token }}
+          VERIFIER_FUNCTION_CALL_KEY: ${{ secrets.VERIFIER_FUNCTION_CALL_KEY }}
+        run: node services/verifier/src/submit.ts
