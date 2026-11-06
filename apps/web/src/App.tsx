@@ -474,6 +474,9 @@ export default function App() {
           currentBlockHash={snapshot?.blockHash ?? null}
           currentBlockHeight={snapshot?.blockHeight ?? null}
           onLoadOlder={() => void loadOlderOperations()}
+          dao={dao}
+          daoError={daoError}
+          daoLoading={daoLoading}
         />
         </div>
 
