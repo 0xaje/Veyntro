@@ -9,7 +9,8 @@
   "scripts": {
     "check": "tsc --noEmit",
     "test": "node --test test/*.test.ts",
-    "prepare": "node src/cli.ts"
+    "prepare": "node src/cli.ts",
+    "create:restricted-key": "node src/create-restricted-key.ts"
   },
   "devDependencies": {
     "@types/node": "24.19.2",
