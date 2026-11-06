@@ -1,4 +1,5 @@
 import { RPC_URL } from "./rpc";
+export { amountToYocto } from "./amount";
 
 export interface DaoRole {
   name: string;
@@ -135,15 +136,6 @@ export function proposalKindName(proposal: DaoProposal): string {
 
 export function validateAccountId(accountId: string): boolean {
   return /^(([a-z\d]+[-_])*[a-z\d]+\.)*([a-z\d]+[-_])*[a-z\d]+$/.test(accountId) && accountId.length >= 2 && accountId.length <= 64;
-}
-
-export function amountToYocto(amountStr: string): string {
-  const trimmed = amountStr.trim();
-  if (!/^\d+(\.\d+)?$/.test(trimmed)) throw new Error("Invalid NEAR amount format.");
-  const [whole, fraction = ""] = trimmed.split(".");
-  const paddedFraction = fraction.padEnd(24, "0").slice(0, 24);
-  const yocto = BigInt(whole) * (10n ** 24n) + BigInt(paddedFraction);
-  return yocto.toString();
 }
 
 export function encodeBase64Json(obj: unknown): string {
