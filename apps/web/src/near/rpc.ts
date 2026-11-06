@@ -1,7 +1,7 @@
 export const NETWORK_ID = "testnet";
 export const RPC_URL = import.meta.env.VITE_NEAR_RPC_URL ?? "https://test.rpc.fastnear.com";
-export const FIREWALL_CONTRACT_ID =
-  import.meta.env.VITE_FIREWALL_CONTRACT_ID ?? "firewall-aje-veyntro.testnet";
+import { selectedFirewall } from "./community";
+export const FIREWALL_CONTRACT_ID = selectedFirewall();
 export const EXPLORER_URL = "https://explorer.testnet.near.org";
 
 export interface TreasuryState {
