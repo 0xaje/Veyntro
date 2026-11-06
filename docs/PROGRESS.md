@@ -739,3 +739,8 @@ This is code review and local verification only. No new restricted key or protec
 ## Verifier bridge merged to main — 2026-11-06
 
 PR #3 merged at `d358117ba6c88544364ca58e67d7b97fb8819fe2`. GitHub Actions `Verifier checks` completed successfully for this exact main commit in run `42138088460`. The local 31-test check and zero-advisory production dependency audit described above were completed before merge. The manually started `Submit checked work evidence` workflow is now present on main, but no protected environment secret or new method-scoped signing key is installed, and the workflow has not submitted live evidence. The owner must follow `docs/VERIFIER_ACTION.md` privately; then a fresh approved commitment and real GitHub run can exercise the hosted evidence and payout path. Do not mark the evidence service or hosted signed transaction complete yet.
+
+## Verifier GitHub environment and restricted secret configured — 2026-11-06
+
+The owner added the restricted public key to `verifier-aje-veyntro.testnet` in transaction `6gncc8M3q1gBraLXWHQ8wudzreTTvMo3jL2PVCNgHcHT`. The GitHub deployment environment `verifier-testnet` was created on repository `0xaje/Veyntro` and restricted strictly to the `main` branch via custom deployment branch policy. The matching restricted private key was read locally from `~/.near-credentials/veyntro-github-verifier/restricted-key.txt` and securely installed as environment secret `VERIFIER_FUNCTION_CALL_KEY` using standard input pipe without exposing the key value in command arguments, logs, or repository files. The presence of secret `VERIFIER_FUNCTION_CALL_KEY` within environment `verifier-testnet` was verified via GitHub CLI. No live attestation workflow run has been triggered yet.
+
