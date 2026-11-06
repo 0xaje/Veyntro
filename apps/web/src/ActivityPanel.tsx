@@ -7,6 +7,7 @@ import {
   type TreasuryOperation,
 } from "./near/rpc";
 import type { DaoSnapshot } from "./near/dao";
+import { verifiedPaymentTransaction } from "./near/verified-audit";
 
 interface ActivityPanelProps {
   page: OperationsPage | null;
@@ -41,7 +42,7 @@ export default function ActivityPanel({ page, loading, error, loadingOlder, curr
         </div>
         <a className="dao-link" href={`${EXPLORER_URL}/accounts/${encodeURIComponent(FIREWALL_CONTRACT_ID)}`} target="_blank" rel="noreferrer">View Veyntro on NEAR Explorer</a>
       </div>
-      <p className="activity-note">This list shows recorded payments and withdrawals. It does not include funding or commitment changes. The saved records do not include transaction links, so the explorer link opens Veyntro’s account.</p>
+      <p className="activity-note">These payment results come from the contract. A transaction link appears when we have checked its final transfer and matched it to the payment record. Other records can be explored from Veyntro’s account.</p>
       {page && <p className="activity-note">{page.blockHash === currentBlockHash ? `Read from final block ${currentBlockHeight?.toLocaleString("en-US") ?? ""}.` : "Updating activity to the latest final block…"}</p>}
       {error && <div className="inline-alert error-alert" role="alert">Could not load money activity: {error}</div>}
       {loading && !page ? <div className="loading-panel compact" role="status">Loading payments and withdrawals…</div> : null}
@@ -61,6 +62,9 @@ export default function ActivityPanel({ page, loading, error, loadingOlder, curr
                 <p className="activity-meta">
                   <a href={`/commitments/${encodeURIComponent(operation.reservation_id)}`}>View commitment {operation.reservation_id} and its work check</a>
                 </p>
+              )}
+              {verifiedPaymentTransaction(operation) && (
+                <p className="activity-meta"><a href={`${EXPLORER_URL}/transactions/${verifiedPaymentTransaction(operation)}`} target="_blank" rel="noreferrer">View checked payment transaction ↗</a></p>
               )}
               {operation.completed_at_ns !== "0" && <p className="activity-meta">Finished {formatDeadline(operation.completed_at_ns)}</p>}
             </article>
