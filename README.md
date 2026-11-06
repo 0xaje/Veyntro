@@ -6,15 +6,15 @@ Veyntro helps DAOs and communities set money aside for approved work without pro
 
 **The problem:** a treasury can show 10 NEAR while 8 NEAR is already promised to ongoing work. Another 4 NEAR promise would overbook the same money. Veyntro shows only 2 NEAR available and rejects the extra promise in the contract. A DAO approves the work, a fixed amount is set aside, a chosen work check is recorded, and the beneficiary can request a payment within that limit. Unused money becomes available again after expiry.
 
-**Try it:** [Open the live testnet app](https://veyntro-web.onrender.com/), read the public treasury without connecting, review the [DAO requests](https://veyntro-web.onrender.com/governance), then inspect [a completed commitment](https://veyntro-web.onrender.com/commitments/3). The recorded testnet actions are linked below. The public evidence submission step is not available yet; see Trust and limits.
+**Try it:** [Open the live testnet app](https://veyntro-web.onrender.com/), read the public treasury without connecting, review the [DAO requests](https://veyntro-web.onrender.com/governance), then inspect [a completed commitment](https://veyntro-web.onrender.com/commitments/4) and its payment in Activity. The [independent walkthrough](docs/INDEPENDENT_WALKTHROUGH.md) gives a no-wallet review path.
 
-## Current status — 3 November 2026
+## Current status — 6 November 2026
 
-Veyntro's NEAR testnet contract has been used for real DAO funding, commitments, an overcommitment rejection, GitHub evidence checks, payments, failed-transfer recovery and expiry release. The verifier is a local command-line tool that prepares an unsigned attestation; it is not a public signing service.
+Veyntro's NEAR testnet contract has been used for real DAO funding, commitments, an overcommitment rejection, GitHub evidence checks, payments, failed-transfer recovery and expiry release. A manually dispatched GitHub Actions job uses a restricted key to check a GitHub run and submit an attestation. It successfully checked commitment 4 before its 0.05 testnet NEAR payment; it is not a general public evidence service.
 
-The React, Vite and TypeScript app reads live testnet state. Browser wallet connection, DAO proposal and vote, commitment creation, and beneficiary payout were exercised locally with real NEAR testnet actions. The web app is hosted at [veyntro-web.onrender.com](https://veyntro-web.onrender.com/) on a free Render Static Site. Public guest reads of live treasury data, DAO proposals, and a direct commitment page were verified on the hosted URL; see [deployment and checks](docs/DEPLOY_WEB.md) and [progress](docs/PROGRESS.md). Hosted wallet connection and signed actions, mobile checks, and public evidence submission still need verification or implementation. Evidence submission still requires a verifier key on Ubuntu.
+The React, Vite and TypeScript app reads live testnet state. The web app is hosted at [veyntro-web.onrender.com](https://veyntro-web.onrender.com/) on a free Render Static Site. Public guest reads, a hosted wallet session reported by the owner, a DAO request and vote, and a hosted beneficiary payment were exercised with real testnet actions. Payment 6 settled successfully to `aje.testnet`; see [its audit record](docs/PAYMENT_6_AUDIT.md). The restricted verifier key is held by GitHub Actions for the manually dispatched evidence job; Ubuntu is no longer required for that tested path. Independent mobile, wallet, and security reviews remain open.
 
-The contract's first-pass static review is not a security audit. Independent testing and release hardening remain open.
+The contract's first-pass static review is not a security audit. [Wallet dependency findings](docs/WALLET_DEPENDENCY_REVIEW.md), independent testing, and release hardening remain open.
 
 ## Check the working flow
 
@@ -25,7 +25,7 @@ This walkthrough uses recorded **NEAR testnet** activity. It does not require a 
 3. Open [commitment 3](https://veyntro-web.onrender.com/commitments/3). It was paid and is now Completed: 0.05 NEAR approved, zero still set aside, the checked commit recorded, and a link to its payment records. The [final state check](docs/PROGRESS.md#browser-beneficiary-payout-for-commitment-3-verified--2026-11-03) found operation 5 Succeeded and both confirmed funds and liabilities reduced by 0.05 NEAR.
 4. Compare the [rejected overcommitment receipt](https://explorer.testnet.near.org/transactions/HnMJXawR3zD6onxcQe6n27wrYVQ1X591U7r4miPrnEtt) with the [successful GitHub-checked payment receipt](https://explorer.testnet.near.org/transactions/673VxeaAwfGbJ8pres4mJHxifLwYQbjJ1VdpCoRcf5bn). One proves the contract refused an unfunded promise; the other records a permitted payout. The [expiry-release receipt](https://explorer.testnet.near.org/transactions/3bWgBZGtCJEHxdgo4Kcm995fXPXzskbfXbpKSG5enMv1) shows unused funds becoming available again.
 
-The already completed commitment cannot be paid again. A fresh signed test needs a new DAO-approved commitment, a matching current GitHub run and verifier attestation, and a beneficiary wallet. Local browser proposal, vote, and payout were exercised; **hosted wallet signing has not yet been verified**. The verifier signing path still requires the owner's restricted-key setup and a fresh live check; [draft PR #3](https://github.com/0xaje/Veyntro/pull/3) does not make it operational.
+The already completed commitment cannot be paid again. A fresh signed test needs a new DAO-approved commitment, a matching current GitHub run and verifier attestation, and a beneficiary wallet. That flow was exercised on the hosted testnet app for commitment 4; see [the payment 6 audit record](docs/PAYMENT_6_AUDIT.md). It does not establish that every wallet or future evidence run will work.
 
 ## Testnet accounts
 
@@ -79,7 +79,7 @@ See [the Firewall accounting rules](docs/FIREWALL_ACCOUNTING.md), [contract meth
 
 - SputnikDAO authorizes treasury funding and changes to commitments.
 - The contract enforces its money limits and payment rules.
-- The GitHub verifier checks a specific workflow run, then signs an onchain attestation using its own account. The DAO controls which verifier account is trusted. This verifier is not trustless; protect and rotate its key if needed.
+- The manually dispatched GitHub Actions verifier checks a specific workflow run, then signs an onchain attestation with a restricted function-call key. The DAO controls which verifier account is trusted. This verifier is not trustless; protect and rotate its key if needed.
 - The operator cannot spend treasury funds. Expired money can be released by any caller, but a caller still has to send the transaction.
 - The Activity page shows recorded payments and withdrawals plus the newest DAO approval requests from finalized testnet reads. DAO approval alone is not proof that money moved. The app does not yet index every funding and commitment event or link each stored operation to its exact transaction.
 
