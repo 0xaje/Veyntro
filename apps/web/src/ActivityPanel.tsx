@@ -6,6 +6,7 @@ import {
   type OperationsPage,
   type TreasuryOperation,
 } from "./near/rpc";
+import type { DaoSnapshot } from "./near/dao";
 
 interface ActivityPanelProps {
   page: OperationsPage | null;
@@ -15,6 +16,9 @@ interface ActivityPanelProps {
   currentBlockHash: string | null;
   currentBlockHeight: number | null;
   onLoadOlder: () => void;
+  dao: DaoSnapshot | null;
+  daoError: string | null;
+  daoLoading: boolean;
 }
 
 function actionName(operation: TreasuryOperation): string {
@@ -27,7 +31,7 @@ function statusName(status: TreasuryOperation["status"]): string {
   return "Failed";
 }
 
-export default function ActivityPanel({ page, loading, error, loadingOlder, currentBlockHash, currentBlockHeight, onLoadOlder }: ActivityPanelProps) {
+export default function ActivityPanel({ page, loading, error, loadingOlder, currentBlockHash, currentBlockHeight, onLoadOlder, dao, daoError, daoLoading }: ActivityPanelProps) {
   return (
     <section className="activity-section" id="activity" aria-labelledby="activity-title">
       <div className="section-heading">
@@ -72,6 +76,35 @@ export default function ActivityPanel({ page, loading, error, loadingOlder, curr
           </button>
         </div>
       )}
+      <div className="section-heading activity-dao-heading">
+        <div>
+          <p className="section-kicker">DAO records</p>
+          <h2>Approval requests</h2>
+        </div>
+        <a className="dao-link" href="/governance">Review full requests</a>
+      </div>
+      <p className="activity-note">These are the newest requests read from the DAO. An approved vote is not a payment receipt. Check the treasury and payment records to see what happened to the money.</p>
+      {dao && <p className="activity-note">Read from final DAO block {dao.blockHeight.toLocaleString("en-US")}. Showing up to 10 of the newest 50 requests.</p>}
+      {daoError && <div className="inline-alert error-alert" role="alert">Could not load DAO requests: {daoError}</div>}
+      {daoLoading && !dao && <div className="loading-panel compact" role="status">Loading DAO requests…</div>}
+      {dao?.proposals.length ? (
+        <div className="activity-list">
+          {dao.proposals.slice(0, 10).map((proposal) => (
+            <article className="activity-row" key={proposal.id}>
+              <div className="activity-main">
+                <div>
+                  <p className="record-label">Request {proposal.id}</p>
+                  <strong>{proposal.description}</strong>
+                </div>
+                <span className={`status status-${proposal.status.toLowerCase()}`}>
+                  {proposal.status === "InProgress" ? "Waiting for votes" : proposal.status === "Failed" ? "Failed during execution" : proposal.status}
+                </span>
+              </div>
+              <p className="activity-meta">Asked by {proposal.proposer} on {formatDeadline(proposal.submission_time)}</p>
+            </article>
+          ))}
+        </div>
+      ) : dao && !daoError ? <div className="empty-panel">No DAO requests were found in the newest 50.</div> : null}
     </section>
   );
 }
