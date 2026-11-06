@@ -5,6 +5,7 @@ import { readContext } from './near.ts';
 import { checkGitHub } from './github.ts';
 import { prepareAttestation } from './prepare.ts';
 import { requireAttestationKey } from './restricted-key.ts';
+import { requireRecordedEvidence } from './recorded-evidence.ts';
 
 // Run only from the protected, manually dispatched workflow on main.
 // Never print the secret or the SDK error object, which may carry request details.
@@ -45,11 +46,8 @@ try {
   const status = record(outcome.status);
   requireValue(typeof status.SuccessValue === 'string', 'Attestation transaction did not finish successfully');
   const final = await readContext(policy.contract_account_id, id);
+  requireRecordedEvidence(final.reservation, prepared.transaction.args, decimal(fresh.treasury.verifier_epoch));
   const evidence = record(final.reservation.evidence);
-  requireValue(evidence.evidence_digest === prepared.transaction.args.evidence_digest &&
-    evidence.commit_sha === prepared.transaction.args.commit_sha &&
-    evidence.nonce === prepared.transaction.args.nonce,
-    'Final onchain evidence did not match the checked run');
   console.log(JSON.stringify({ status: 'verified_onchain', reservation_id: id, run_id: runId,
     transaction_hash: outcome.transaction.hash, evidence_digest: evidence.evidence_digest,
     evidence_usable: evidence.usable }));
