@@ -12,6 +12,7 @@ test("only the exact settled payment gets the checked transaction link", () => {
   assert.equal(verifiedPaymentTransaction({ ...payment, status: "Pending" }), null);
   assert.equal(verifiedPaymentTransaction({ ...payment, amount: "100000000000000000000000" }), null);
   assert.equal(verifiedPaymentTransaction({ ...payment, recipient: "someone.testnet" }), null);
+  assert.equal(verifiedPaymentTransaction(payment, "another-firewall.testnet"), null);
 });
 
 test("work-check links require the approved policy and matching checked commit", () => {
@@ -23,4 +24,5 @@ test("work-check links require the approved policy and matching checked commit",
   assert.equal(verifiedWorkCheck(row)?.run, "https://github.com/0xaje/Veyntro/actions/runs/42136893325");
   assert.equal(verifiedWorkCheck({ ...row, evidence_policy_hash: "wrong" }), null);
   assert.equal(verifiedWorkCheck({ ...row, evidence: null }), null);
+  assert.equal(verifiedWorkCheck(row, "another-firewall.testnet"), null);
 });
