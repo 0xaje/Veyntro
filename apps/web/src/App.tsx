@@ -5,6 +5,7 @@ import GovernancePanel from "./GovernancePanel";
 import ActivityPanel from "./ActivityPanel";
 import DocsPanel from "./DocsPanel";
 import { readDao, type DaoSnapshot } from "./near/dao";
+import { verifiedWorkCheck } from "./near/verified-audit";
 import {
   explorerAccountUrl,
   FIREWALL_CONTRACT_ID,
@@ -61,6 +62,7 @@ const VIEW_COPY: Record<AppView, { title: string; description: string }> = {
 };
 
 function CommitmentCard({ row, onRefresh, detail = false }: { row: Reservation; onRefresh: () => Promise<void>; detail?: boolean }) {
+  const workCheck = verifiedWorkCheck(row);
   const status = row.is_expired && row.status === "Active" ? "Expired" : row.status;
   const statusLabel = status === "Active" ? "In progress" : status;
   const evidenceLabel = row.evidence
@@ -87,6 +89,10 @@ function CommitmentCard({ row, onRefresh, detail = false }: { row: Reservation; 
           <p><strong>Work-check rule hash:</strong> <code>{row.evidence_policy_hash}</code></p>
           {row.evidence && <p><strong>Checked commit:</strong> <code>{row.evidence.commit_sha}</code></p>}
           {row.evidence && <p><strong>Work check valid until:</strong> {formatDeadline(row.evidence.valid_until_ns)}</p>}
+          {workCheck && (
+            <p><strong>Check this work:</strong> <a href={workCheck.run} target="_blank" rel="noreferrer">GitHub result ↗</a> · <a href={workCheck.submission} target="_blank" rel="noreferrer">NEAR work-check transaction ↗</a></p>
+          )}
+          {row.evidence && <p className="activity-note">The GitHub result confirms the agreed checks passed. It does not prove every part of the work is correct.</p>}
           <p><a href="/activity">See available payment records</a></p>
         </div>
       ) : <a className="commitment-detail-link" href={`/commitments/${encodeURIComponent(row.id)}`}>View commitment details</a>}
