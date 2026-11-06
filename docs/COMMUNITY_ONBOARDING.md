@@ -10,6 +10,8 @@
 
 The current manually dispatched evidence workflow is configured for the original deployment. A second DAO needs its **own restricted verifier setup and evidence policy** before claiming evidence-gated payments. Do not route another community's evidence through the original private key by default. Mainnet and real treasury funds need independent security review; this gate is testnet-only.
 
+The public app's first selection slice accepts a Firewall account in **Choose community**. For a non-default account, it checks the deployed Firewall and DAO code hashes against the currently tested testnet contracts at one finalized block, confirms the Firewall points to that DAO and a separate verifier, then loads its balances, requests and wallet targets. Links preserve the selected account. Exact receipt links checked for the original DAO are never shown for another account. This is not a contract audit or a deployment wizard. The second DAO's own verifier and end-to-end payment still need proof.
+
 The first read-only check is available to developers now:
 
 ```bash
