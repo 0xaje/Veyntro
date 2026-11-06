@@ -55,7 +55,9 @@ function CommunityGate() {
         <button type="submit">Check community</button>
       </form>
       <p><a href="/">View Veyntro's testnet community</a></p>
-      <p>New DAO setup still needs its own deployed Firewall and work checker. Do not send funds until your community has verified both.</p>
+      <h2>Adding your community</h2>
+      <p>Your group needs its own NEAR testnet DAO, a separate Veyntro Firewall linked to that DAO, and its own work checker. A council member must approve money actions with their wallet. This page can open an existing setup; it cannot create one yet.</p>
+      <p>For setup details, read <a href="https://github.com/0xaje/Veyntro/blob/main/docs/COMMUNITY_ONBOARDING.md" target="_blank" rel="noreferrer">Community setup steps</a>. Do not send funds until your group has checked its accounts and rules.</p>
     </main>
   );
   if (status === "checking") return <main className="community-gate" role="status">Checking this community on NEAR testnet…</main>;

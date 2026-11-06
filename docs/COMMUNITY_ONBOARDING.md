@@ -1,6 +1,6 @@
 # Another community using Veyntro
 
-**Current status:** Veyntro's hosted site still points to the original testnet Firewall. This is the implementation and acceptance plan for a second community, not a claim that onboarding is live.
+**Current status:** The public site opens the original testnet Firewall by default and now lets a visitor select a separately deployed, compatible community Firewall. It does not deploy a new DAO, Firewall or verifier for that community. The second-community payment flow is not verified yet.
 
 1. A community brings a NEAR testnet SputnikDAO it controls. Its council policy must permit the intended members to submit and vote on FunctionCall proposals. Members use their own wallets and cover the DAO's proposal bond and testnet gas.
 2. Deploy a separate Commitment Firewall account with the reviewed WASM. Its initial call names that community's DAO, a distinct verifier account and an operating reserve. Never reuse `firewall-aje-veyntro.testnet`, its verifier key, or its DAO funds.
@@ -18,4 +18,6 @@ The first read-only check is available to developers now:
 python3 scripts/check-community.py --dao veyntro.sputnikv2.testnet --firewall firewall-aje-veyntro.testnet
 ```
 
-Use another DAO and Firewall account pair when they exist. It reads finalized onchain state and rejects a mismatched pair. It does not deploy a contract, authenticate its code hash against an approved build, prove a council wallet is controlled by the community, or enable another DAO in the hosted app yet.
+Use another DAO and Firewall account pair when they exist. The script reads finalized onchain state and rejects a mismatched pair. It does not deploy a contract, authenticate its code hash against an approved build, or prove a council wallet is controlled by the community. The hosted app performs an additional exact deployed-code comparison before loading a non-default community.
+
+**Hosted smoke check (6 Nov 2026):** `https://veyntro-web.onrender.com/?choose=1` showed the chooser. Submitting an unknown testnet account stayed on the chooser with an error and no wallet actions. Submitting the real but incompatible `receiver.aje-veyntro.testnet` account produced “This Firewall does not match the Veyntro contract on testnet.” Returning to the original community showed its public overview. This tests rejection and the existing deployment; no second compatible Firewall exists in this check.
