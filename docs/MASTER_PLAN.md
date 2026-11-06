@@ -34,6 +34,8 @@ Veyntro enables a DAO or cooperative to fund an allocation contract, reserve bac
 
 ### P0 — Must work
 
+**Community-use gate (added 6 Nov 2026):** The deployed Veyntro DAO is the first real example, not the only permitted user. An independent community with its own SputnikDAO, council wallet, Firewall, verifier and testnet funds must be able to use its own records and signed actions. No community may see another DAO's balances as its own or authorize against another DAO's contract. The public app must offer a verified way to select a community, and explain the setup steps and limits in simple English. Public viewing remains wallet-free. Do not call this gate complete until a second independent DAO completes a real approved commitment, evidence check and payment, with receipts and isolated records. Setup can require a documented initial deployment during this milestone; describe it honestly and do not call it self-serve until a new DAO can finish setup from the site.
+
 1. DAO governance integration via real SputnikDAO proposal/vote/execution on a selected and verified testnet DAO.
 2. NEAR Rust allocation contract with authenticated DAO funding, reserve, cancel, expiry release, beneficiary drawdown, safe promise callbacks, and withdrawals.
 3. Financial accounting: confirmed spendable balance, storage/operating reserve, active reservation liabilities including pending payouts, pending uncommitted withdrawals, available capacity.
@@ -188,10 +190,13 @@ Multi-DAO tenancy, fungible token portfolios, multiple external evidence sources
 **Exit:** one genuine GitHub run produces a valid attestation and actual authorized testnet payout; invalid evidence blocks payout.
 
 ### Phase 4 — User-facing app (Nov 7–10)
+- Extend the fixed-instance app into community selection: validate a supplied Firewall account by final onchain `get_treasury_state`, verify its named DAO exposes a compatible policy, bind wallet signing to the selected contract, and keep selected-DAO links and records isolated. Never accept a user-entered DAO name alone as proof of a valid contract or let the UI bypass onchain permissions.
+- Provide a safe setup path for another DAO's distinct contract and verifier. Keep deploy/init authority and verifier keys with that community; do not create a shared privileged treasury key. Disclose any manual deployment step until an independently usable onboarding flow exists.
 - Build React/Vite/TypeScript frontend; install and configure a verified NEAR testnet Wallet Selector module, implement connect/disconnect/account/network state, and integrate real wallet-signed contract and SputnikDAO proposal/vote transactions.
 - Implement all P0 pages, DAO governance path, verifiable status transitions, mobile navigation.
 - Deploy free-tier hosting with working HTTPS; verify no secrets in browser bundle.
 **Exit:** guest reads without login; DAO member connects a real NEAR testnet wallet and signs a valid governance proposal/vote; beneficiary connects and signs an eligible payout; public caller releases an expired allocation; each action displays final onchain status on hosted mobile and desktop app.
+**Additional community-use exit:** a second, separately controlled testnet DAO can select its own instance on the public site, carry out the real governance/evidence/payout flow, and share a wallet-free URL to its isolated history. The original DAO continues to work. Document deployment cost (testnet gas only) and all remaining manual setup.
 
 ### Phase 5 — Operator and reliability (Nov 10–11)
 - Add deterministic expired-commitment watcher and permissionless cleanup calls if P0 stable.
