@@ -6,9 +6,33 @@ The job reads a policy file committed on `main`, a commitment number, and a GitH
 
 ## One-time key setup (account owner)
 
-1. Generate a **new** NEAR testnet key pair privately. Add its public key to `verifier-aje-veyntro.testnet` as a **FunctionCall** key restricted to receiver `firewall-aje-veyntro.testnet` and exactly the method `submit_attestation`. Allow enough testnet NEAR for its gas. Keep the existing account recovery/full-access key private and separate. Do not paste either key into a chat, web app, repository file, or action input.
-2. In the GitHub repository's **Settings → Environments**, create `verifier-testnet` and restrict deployment branches to `main`. Where available, require a trusted reviewer. In that environment's **Secrets**, set `VERIFIER_FUNCTION_CALL_KEY` to the new restricted key. Do not use a repository-wide secret or the existing full-access key. Only trusted maintainers should be able to change workflows on `main`.
-3. Review the workflow and source on `main` before adding the secret. If the account/key is compromised, revoke this exact access key onchain and remove the environment secret. The DAO can rotate the trusted verifier account through governance if necessary.
+1. Review this draft workflow and its source. After the reviewed change is merged to `main`, create the new key **locally on your Ubuntu machine**:
+
+   ```bash
+   cd ~/Veyntro-build
+   git switch main
+   git pull --ff-only origin main
+   npm --prefix services/verifier ci --ignore-scripts --no-audit --no-fund
+   npm --prefix services/verifier run create:restricted-key
+   ```
+
+   The command prints **only the public key** and stores the private key outside the repository in `~/.near-credentials/veyntro-github-verifier/restricted-key.txt` with owner-only permissions. It refuses to replace an existing key. Do not paste the private key or recovery key into chat or a terminal screenshot. This key has no onchain rights until you add its public half to the verifier account.
+
+2. With your existing locally authorized verifier account, grant the new **public key** exactly one function-call permission:
+
+   ```bash
+   npx near-cli-rs account add-key verifier-aje-veyntro.testnet \
+     grant-function-call-access \
+       --allowance '0.1 NEAR' \
+       --contract-account-id firewall-aje-veyntro.testnet \
+       --function-names 'submit_attestation' \
+     use-manually-provided-public-key "$(cat ~/.near-credentials/veyntro-github-verifier/public-key.txt)" \
+     network-config testnet sign-with-legacy-keychain send
+   ```
+
+   Review the unsigned transaction before signing. It adds a key to the **verifier account**, not to your `aje.testnet` wallet or the treasury. If your installed CLI uses a different signer option, run `npx near-cli-rs account add-key --help` and select the locally saved verifier account; never provide a private key as a command argument. Confirm the new public key has `FunctionCall` permission for only `firewall-aje-veyntro.testnet` / `submit_attestation` before installing its private half in GitHub.
+3. In the GitHub repository's **Settings → Environments**, create `verifier-testnet` and restrict deployment branches to `main`. Where available, require a trusted reviewer. In that environment's **Secrets**, set `VERIFIER_FUNCTION_CALL_KEY` to the exact single-line private key from the local file. Enter it directly in GitHub's secret form; do not put it in a repository file, chat, issue, workflow input, or command line. Use an environment secret, not a repository-wide secret. Only trusted maintainers should be able to change workflows on `main`.
+4. If the new key is compromised, revoke its public key onchain and remove the environment secret. The DAO can rotate the trusted verifier account through governance if necessary. Keep the existing recovery/full-access key private and separate.
 
 ## Each work check
 
