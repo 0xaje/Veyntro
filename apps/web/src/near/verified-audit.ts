@@ -1,8 +1,10 @@
 import type { Reservation, TreasuryOperation } from "./rpc";
+const AUDITED_FIREWALL = "firewall-aje-veyntro.testnet";
 
 // Independently checked testnet receipts. Match the onchain record before
 // showing a curated link; future operations need their own verified entry.
-export function verifiedPaymentTransaction(operation: TreasuryOperation): string | null {
+export function verifiedPaymentTransaction(operation: TreasuryOperation, firewall = AUDITED_FIREWALL): string | null {
+  if (firewall !== AUDITED_FIREWALL) return null;
   if (operation.id === "6" && operation.kind === "Payout" &&
       operation.reservation_id === "4" && operation.amount === "50000000000000000000000" &&
       operation.recipient === "aje.testnet" && operation.status === "Succeeded") {
@@ -11,7 +13,8 @@ export function verifiedPaymentTransaction(operation: TreasuryOperation): string
   return null;
 }
 
-export function verifiedWorkCheck(row: Reservation): { run: string; submission: string } | null {
+export function verifiedWorkCheck(row: Reservation, firewall = AUDITED_FIREWALL): { run: string; submission: string } | null {
+  if (firewall !== AUDITED_FIREWALL) return null;
   if (row.id === "4" && row.beneficiary === "aje.testnet" &&
       row.payout_recipient === "aje.testnet" &&
       row.evidence_policy_hash === "1fdae61d1021131076f964a6083bf99f4fc033ba02a4436812c48e9f9f78b959" &&
