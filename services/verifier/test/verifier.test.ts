@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { parsePolicy, digest, canonical } from '../src/policy.ts';
 import { validateRun } from '../src/github.ts';
 import { prepareAttestation } from '../src/prepare.ts';
+import { normalizeRestrictedSecret } from '../src/restricted-key.ts';
 import type { Context } from '../src/near.ts';
 
 // These are saved public API/RPC responses, not substitutes for the live integration check.
@@ -93,4 +94,12 @@ test('accepts a same-repository pull request run only for a policy that names it
   assert.throws(() => validateRun(policy, 41525421351, prRun, now));
   prRun.head_repository.fork = true;
   assert.throws(() => validateRun(prPolicy, 41525421351, prRun, now));
+});
+
+test('restricted key accepts a file line break but rejects malformed content', () => {
+  const key = 'ed25519:11111111111111111111111111111111';
+  assert.equal(normalizeRestrictedSecret(key + '\n'), key);
+  assert.equal(normalizeRestrictedSecret(key + '\r\n'), key);
+  assert.throws(() => normalizeRestrictedSecret(key + ' invalid'));
+  assert.throws(() => normalizeRestrictedSecret(undefined));
 });
