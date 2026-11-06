@@ -81,7 +81,7 @@ See [the Firewall accounting rules](docs/FIREWALL_ACCOUNTING.md), [contract meth
 - The contract enforces its money limits and payment rules.
 - The GitHub verifier checks a specific workflow run, then signs an onchain attestation using its own account. The DAO controls which verifier account is trusted. This verifier is not trustless; protect and rotate its key if needed.
 - The operator cannot spend treasury funds. Expired money can be released by any caller, but a caller still has to send the transaction.
-- The public app's Activity page currently shows recorded payments and withdrawals only. It does not yet index every funding and commitment change or link each stored operation to its exact transaction.
+- The Activity page shows recorded payments and withdrawals plus the newest DAO approval requests from finalized testnet reads. DAO approval alone is not proof that money moved. The app does not yet index every funding and commitment event or link each stored operation to its exact transaction.
 
 ## Project documents
 
