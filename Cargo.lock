@@ -2491,6 +2491,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "veyntro-community-factory"
+version = "0.1.0"
+dependencies = [
+ "near-sdk",
+]
+
+[[package]]
 name = "veyntro-dao-receiver"
 version = "0.1.0"
 dependencies = [

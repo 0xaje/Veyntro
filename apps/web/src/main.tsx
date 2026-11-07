@@ -13,6 +13,7 @@ if (typeof window !== "undefined") {
 import "@near-wallet-selector/modal-ui/styles.css";
 import "./styles.css";
 import App from "./App";
+import CommunitySetup from "./CommunitySetup";
 import { WalletProvider } from "./wallet/WalletProvider";
 import { DEFAULT_FIREWALL, selectedFirewall, verifyCommunity } from "./near/community";
 
@@ -23,6 +24,7 @@ function CommunityGate() {
   );
   const [error, setError] = useState("");
   const choosing = new URLSearchParams(window.location.search).has("choose");
+
 
   useEffect(() => {
     if (choosing || selectedFirewall() === DEFAULT_FIREWALL) return;
@@ -37,6 +39,8 @@ function CommunityGate() {
     });
     return () => { active = false; };
   }, [choosing]);
+
+  if (window.location.pathname === "/setup") return <WalletProvider><CommunitySetup /></WalletProvider>;
 
   if (choosing || status === "error") return (
     <main className="community-gate">
@@ -56,7 +60,8 @@ function CommunityGate() {
       </form>
       <p><a href="/">View Veyntro's testnet community</a></p>
       <h2>Adding your community</h2>
-      <p>Your group needs its own NEAR testnet DAO, a separate Veyntro Firewall linked to that DAO, and its own work checker. A council member must approve money actions with their wallet. This page can open an existing setup; it cannot create one yet.</p>
+      <p>Your group needs its own NEAR testnet DAO, a separate Veyntro Firewall linked to that DAO, and its own work checker. A council member must approve money actions with their wallet.</p>
+      <p><a href="/setup">See the setup steps</a>. Wallet-signed setup is being built. DAO creation remains closed until the Firewall and work-checker steps can be completed safely.</p>
       <p>For setup details, read <a href="https://github.com/0xaje/Veyntro/blob/main/docs/COMMUNITY_ONBOARDING.md" target="_blank" rel="noreferrer">Community setup steps</a>. Do not send funds until your group has checked its accounts and rules.</p>
     </main>
   );

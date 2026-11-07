@@ -32,6 +32,31 @@ fn ctx(caller: &str, now: u64) {
     set_context(caller, now, 0, 1000 * N, vec![]);
 }
 
+#[test]
+fn factory_init_requires_factory_child() {
+    ctx("setup.aje-veyntro.testnet", 1);
+    let failed = std::panic::catch_unwind(|| CommitmentFirewall::new_from_factory(
+        DAO.parse().unwrap(), VERIFIER.parse().unwrap(), U128(N),
+    ));
+    assert!(failed.is_err());
+
+    let mut b = VMContextBuilder::new();
+    b.current_account_id("group.setup.aje-veyntro.testnet".parse().unwrap())
+        .predecessor_account_id("setup.aje-veyntro.testnet".parse().unwrap())
+        .account_balance(NearToken::from_yoctonear(1000 * N));
+    testing_env!(b.build());
+    let state = CommitmentFirewall::new_from_factory(
+        DAO.parse().unwrap(), VERIFIER.parse().unwrap(), U128(N),
+    );
+    assert_eq!(state.dao_account_id.as_str(), DAO);
+
+    b.predecessor_account_id("stranger.testnet".parse().unwrap());
+    testing_env!(b.build());
+    assert!(std::panic::catch_unwind(|| CommitmentFirewall::new_from_factory(
+        DAO.parse().unwrap(), VERIFIER.parse().unwrap(), U128(N),
+    )).is_err());
+}
+
 fn funded() -> CommitmentFirewall {
     ctx(CURRENT, 1);
     let mut c = CommitmentFirewall::new(DAO.parse().unwrap(), VERIFIER.parse().unwrap(), U128(N));
