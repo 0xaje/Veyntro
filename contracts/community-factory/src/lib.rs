@@ -1,5 +1,5 @@
 use near_sdk::json_types::U128;
-use near_sdk::{AccountId, Gas, NearToken, PanicOnDefault, Promise, collections::UnorderedMap, env, near, require};
+use near_sdk::{AccountId, Gas, NearToken, PanicOnDefault, Promise, PromiseOrValue, collections::UnorderedMap, env, near, require};
 
 const SUFFIX: &str = ".sputnikv2.testnet";
 const FACTORY: &str = "setup.aje-veyntro.testnet";
@@ -15,8 +15,9 @@ const FIREWALL_CODE: &[u8] = b"host-test-placeholder";
 #[near(contract_state)]
 #[derive(PanicOnDefault)]
 pub struct CommunityFactory {
-    // 1 = pending; 2 = ready; 3 = failed. Never silently reuse a failed name.
+    // 1 = pending; 2 = ready; 3 = refund claimable; 4 = refunded; 5 = refund in flight.
     status: UnorderedMap<AccountId, u8>,
+    deposits: UnorderedMap<AccountId, u128>,
 }
 
 #[near]
@@ -25,7 +26,7 @@ impl CommunityFactory {
     pub fn new() -> Self {
         require!(env::predecessor_account_id() == env::current_account_id(), "Only this account can initialize");
         require!(env::current_account_id().as_str() == FACTORY, "Wrong factory account");
-        Self { status: UnorderedMap::new(b"s") }
+        Self { status: UnorderedMap::new(b"s"), deposits: UnorderedMap::new(b"d") }
     }
 
     pub fn get_status(&self, dao: AccountId) -> Option<u8> {
@@ -46,6 +47,7 @@ impl CommunityFactory {
         require!(operating_reserve.0 >= MIN_RESERVE, "Reserve must be at least 0.05 NEAR");
         require!(env::attached_deposit().as_yoctonear() >= operating_reserve.0, "Setup deposit must cover reserve");
         self.status.insert(&dao, &1);
+        self.deposits.insert(&dao, &env::attached_deposit().as_yoctonear());
         let args = near_sdk::serde_json::to_vec(&near_sdk::serde_json::json!({
             "dao_account_id": dao,
             "verifier_account_id": verifier,
@@ -63,12 +65,48 @@ impl CommunityFactory {
     }
 
     #[private]
-    pub fn on_deployed(&mut self, dao: AccountId) -> bool {
+    pub fn on_deployed(&mut self, dao: AccountId) -> PromiseOrValue<bool> {
         require!(self.status.get(&dao) == Some(1), "No pending setup");
         require!(env::promise_results_count() == 1, "Expected one deployment receipt");
         let succeeded = env::promise_result_checked(0, 64).is_ok();
-        self.status.insert(&dao, &(if succeeded { 2 } else { 3 }));
+        if succeeded {
+            self.status.insert(&dao, &2);
+            self.deposits.remove(&dao);
+            PromiseOrValue::Value(true)
+        } else {
+            self.status.insert(&dao, &3);
+            PromiseOrValue::Promise(self.start_refund(dao))
+        }
+    }
+
+    /// A DAO can retry a failed refund, never a successful deployment.
+    pub fn claim_refund(&mut self) -> Promise {
+        let dao = env::predecessor_account_id();
+        require!(self.status.get(&dao) == Some(3), "No refund is available");
+        self.start_refund(dao)
+    }
+
+    #[private]
+    pub fn on_refunded(&mut self, dao: AccountId) -> bool {
+        require!(self.status.get(&dao) == Some(5), "No refund in flight");
+        require!(env::promise_results_count() == 1, "Expected one refund receipt");
+        let succeeded = env::promise_result_checked(0, 64).is_ok();
+        self.status.insert(&dao, &(if succeeded { 4 } else { 3 }));
+        if succeeded { self.deposits.remove(&dao); }
         succeeded
+    }
+}
+
+impl CommunityFactory {
+    fn start_refund(&mut self, dao: AccountId) -> Promise {
+        let amount = self.deposits.get(&dao).expect("No recorded deposit");
+        self.status.insert(&dao, &5);
+        let args = near_sdk::serde_json::to_vec(&near_sdk::serde_json::json!({"dao": dao})).expect("Serialize refund callback");
+        Promise::new(dao).transfer(NearToken::from_yoctonear(amount)).then(
+            Promise::new(env::current_account_id()).function_call(
+                "on_refunded".to_string(), args, NearToken::from_yoctonear(0), CALLBACK_GAS,
+            )
+        )
     }
 }
 
@@ -82,7 +120,8 @@ fn child_for(dao: &AccountId) -> AccountId {
 mod tests {
     use super::*;
     use near_sdk::test_utils::VMContextBuilder;
-    use near_sdk::testing_env;
+    use near_sdk::{PromiseResult, RuntimeFeesConfig, test_vm_config, testing_env};
+    use std::collections::HashMap;
 
     fn context(caller: &str, deposit: u128) {
         let mut c = VMContextBuilder::new();
@@ -132,5 +171,28 @@ mod tests {
         let mut f = CommunityFactory::new();
         context("group.sputnikv2.testnet", 0);
         let _ = f.deploy("verifier.testnet".parse().unwrap(), U128(MIN_RESERVE));
+    }
+
+    #[test]
+    fn failed_batch_starts_refund_and_successful_refund_closes_it() {
+        context(FACTORY, 0);
+        let mut f = CommunityFactory::new();
+        let dao: AccountId = "group.sputnikv2.testnet".parse().unwrap();
+        context(dao.as_str(), MIN_RESERVE);
+        let _ = f.deploy("verifier.testnet".parse().unwrap(), U128(MIN_RESERVE));
+        assert_eq!(f.get_status(dao.clone()), Some(1));
+
+        let mut b = VMContextBuilder::new();
+        b.current_account_id(FACTORY.parse().unwrap())
+            .predecessor_account_id(FACTORY.parse().unwrap())
+            .account_balance(NearToken::from_yoctonear(10 * MIN_RESERVE));
+        testing_env!(b.build(), test_vm_config(), RuntimeFeesConfig::test(), HashMap::default(), vec![PromiseResult::Failed]);
+        let _ = f.on_deployed(dao.clone());
+        assert_eq!(f.get_status(dao.clone()), Some(5));
+
+        testing_env!(b.build(), test_vm_config(), RuntimeFeesConfig::test(), HashMap::default(), vec![PromiseResult::Successful(vec![])]);
+        assert!(f.on_refunded(dao.clone()));
+        assert_eq!(f.get_status(dao.clone()), Some(4));
+        assert!(f.deposits.get(&dao).is_none());
     }
 }
