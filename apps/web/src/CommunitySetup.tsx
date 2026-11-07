@@ -4,6 +4,7 @@ import { Buffer } from "buffer";
 import { useWallet } from "./wallet/WalletProvider";
 import { readDao } from "./near/dao";
 import { RPC_URL } from "./near/rpc";
+import { verifyCommunity } from "./near/community";
 
 const FACTORY = "sputnikv2.testnet";
 const DAO_FUNDING = 7n * 10n ** 24n;
@@ -40,6 +41,8 @@ export default function CommunitySetup() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [created, setCreated] = useState("");
+  const [firewall, setFirewall] = useState("");
+  const [verifiedFirewall, setVerifiedFirewall] = useState("");
   const daoId = name ? `${name}.sputnikv2.testnet` : "";
 
   async function create(event: React.FormEvent<HTMLFormElement>) {
@@ -97,6 +100,21 @@ export default function CommunitySetup() {
     finally { setBusy(false); }
   }
 
+  async function checkFirewall(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setMessage("");
+    setVerifiedFirewall("");
+    if (!created) { setMessage("Check your DAO first."); return; }
+    setBusy(true);
+    try {
+      const checked = await verifyCommunity(firewall.trim());
+      if (checked.dao !== created) throw new Error("This Firewall belongs to a different DAO.");
+      setVerifiedFirewall(firewall.trim());
+      setMessage("The Firewall code and DAO link were checked on a final testnet block. Check your group’s work checker before using evidence-based payments.");
+    } catch (cause) { setMessage(cause instanceof Error ? cause.message : "This Firewall could not be checked."); }
+    finally { setBusy(false); }
+  }
+
   return <main className="community-gate">
     <p><a href="/?choose=1">← Choose a community</a></p>
     <h1>Set up your group</h1>
@@ -114,6 +132,14 @@ export default function CommunitySetup() {
       <button disabled={!account || !name || busy} type="button" onClick={() => void checkExisting()}>Check an existing DAO</button>
     </form>
     {message && <p role="status">{message}</p>}
-    {created && <p>Created DAO: <strong>{created}</strong>. The next setup steps are not ready here yet; do not send money for commitments.</p>}
+    {created && <p>Checked DAO: <strong>{created}</strong>. The remaining setup steps are not ready here yet; do not send money for commitments.</p>}
+    {created && <form onSubmit={e => void checkFirewall(e)}>
+      <h2>Check your Firewall</h2>
+      <p>If your group already has a Veyntro Firewall, enter it here. This check does not deploy one.</p>
+      <label htmlFor="setup-firewall">Firewall testnet account</label>
+      <input id="setup-firewall" value={firewall} onChange={e => setFirewall(e.target.value.trim().toLowerCase())} required maxLength={64} placeholder="your-firewall.testnet" />
+      <button disabled={busy} type="submit">Check DAO and Firewall</button>
+    </form>}
+    {verifiedFirewall && <p><a href={`/?firewall=${encodeURIComponent(verifiedFirewall)}`}>Open your group’s public page</a></p>}
   </main>;
 }
