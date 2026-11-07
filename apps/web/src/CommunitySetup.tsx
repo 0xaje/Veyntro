@@ -100,7 +100,7 @@ export default function CommunitySetup() {
   return <main className="community-gate">
     <p><a href="/?choose=1">← Choose a community</a></p>
     <h1>Set up your group</h1>
-    <p>Your group controls its own DAO and money. Start by creating a testnet DAO with your wallet. This first step does not set up the Veyntro Firewall or work checker yet.</p>
+    <p>Your group controls its own DAO and money. Setup is being completed. Creating a DAO alone does not let your group manage commitments here.</p>
     {account ? <p>Connected wallet: <strong>{account.accountId}</strong></p> : <button type="button" disabled={initializing} onClick={() => void connect()}>Connect wallet</button>}
     {walletError && <p role="alert">{walletError}</p>}
     <form onSubmit={e => void create(e)}>
@@ -110,7 +110,7 @@ export default function CommunitySetup() {
       <label htmlFor="dao-purpose">What is your group for?</label>
       <input id="dao-purpose" value={purpose} maxLength={240} onChange={e => setPurpose(e.target.value)} required />
       <p>Your connected account starts as the only council member. Your group can change its DAO rules later. This creation deposits <strong>7 testnet NEAR</strong> in the new DAO, plus a small network fee. It is testnet money, not a payment to Veyntro. Check your wallet balance before signing.</p>
-      <button disabled={!account || busy} type="submit">{busy ? "Checking testnet…" : "Review in wallet"}</button>
+      <button disabled type="submit">DAO creation opens when the full setup path is ready</button>
       <button disabled={!account || !name || busy} type="button" onClick={() => void checkExisting()}>Check an existing DAO</button>
     </form>
     {message && <p role="status">{message}</p>}
