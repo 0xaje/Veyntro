@@ -1,0 +1,26 @@
+# Self-serve community setup: deployment design gate
+
+**Status (7 Nov 2026): design under review; no deployment factory exists.** The hosted site must not accept a new community's treasury funds until all steps below pass on testnet. PR #14 keeps DAO creation closed.
+
+## Why the current wallet flow stops
+
+The existing Firewall's `new` method accepts initialization only when the caller is its own account. This protects an empty deployed contract from a third party choosing its DAO or verifier. A transaction signed by a council wallet and addressed to the new Firewall has that wallet as predecessor, so it cannot call `new`. A DAO proposal has the DAO as predecessor and cannot call `new` either. A browser cannot assume a wallet can sign as a newly created child account just because its public key was used there; wallet modules differ in account discovery and signing permissions.
+
+## Required onchain setup path
+
+1. Deploy and verify **one** reviewed Veyntro setup factory on testnet. The platform may provision this shared factory once; it must not hold or sign for any community's treasury. The factory's deployed code, account, version and source build hash must be public.
+2. A new group creates or connects its own SputnikDAO with its own council policy. The hosted app reads the final DAO code and policy. Do not assume a wallet is a member from its name alone.
+3. The group approves a DAO proposal to call the setup factory with its chosen verifier account and the exact required setup deposit. The factory requires the **DAO itself** as predecessor. It derives a unique child Firewall account from the DAO identity rather than trusting an arbitrary requested destination. A council wallet alone cannot create an instance for somebody else's DAO.
+4. The factory creates the child account, transfers only the approved setup amount, deploys **pinned reviewed Firewall bytes**, and initializes with that DAO and verifier. This requires a narrowly scoped factory-compatible initializer in the new Firewall build; the existing self-only `new` behavior must remain safe for existing deployments. No user-supplied WASM or mutable contract URL may be deployed. No full-access key or unrestricted factory upgrade authority should be installed on the child.
+5. The app waits for all relevant receipts, then re-reads the child and DAO at finality: exact approved code hash, DAO/verifier pairing, initialized state, and balance/backing. If an asynchronous step fails, show the actual final state and provide a reviewed recovery or refund path. Never say "ready" merely because the proposal was Approved or the first transaction succeeded.
+6. The verifier must be a distinct community-controlled account with a scoped `submit_attestation` access key and an evidence policy tied to that specific Firewall. A reusable platform verifier key for all communities is not an acceptable shortcut. The group must be able to install or rotate its own restricted key without disclosing its private half to Veyntro.
+7. Only after the DAO, Firewall and evidence checker are verified should the app expose governance funding and commitments. The group receives a public, wallet-free URL and can invite more council members under its DAO policy.
+
+## Before enabling any signed setup action
+
+- Determine and show the real testnet deposit and storage cost; the original 7 NEAR factory deposit was chosen funding, **not a measured minimum**. Confirm sufficient spendable funds and explain the DAO proposal bond separately.
+- Decide and test account-name collision, duplicate submissions, wallet redirect recovery, promise failure after account creation, and recovery of funds from partial setup.
+- Test authorization attacks: another wallet using the same DAO name, forged DAO policy views, unapproved code, foreign verifier, factory reentry, and cross-community account selection.
+- Run Rust tests, a final-block testnet deployment and an end-to-end browser setup with a fresh community wallet. Capture transaction and receipt IDs. Regression-check the original community.
+
+`againa.testnet` should use this hosted flow as a normal group founder after it is complete. Its account existence and balance do not prove key control, DAO ownership or a usable Veyntro instance.
