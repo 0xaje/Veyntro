@@ -62,7 +62,11 @@ impl CommitmentFirewall {
         operating_reserve: U128,
     ) -> Self {
         let factory: AccountId = "setup.aje-veyntro.testnet".parse().unwrap();
-        require!(env::predecessor_account_id() == factory, "Only the setup factory can initialize");
+        require!(
+            env::predecessor_account_id() == factory
+                || env::predecessor_account_id() == env::current_account_id(),
+            "Only the setup factory or this account can initialize"
+        );
         require!(
             env::current_account_id().as_str().ends_with(".setup.aje-veyntro.testnet"),
             "Factory setup requires a factory child account"
