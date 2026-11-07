@@ -49,6 +49,12 @@ fn factory_init_requires_factory_child() {
         DAO.parse().unwrap(), VERIFIER.parse().unwrap(), U128(N),
     );
     assert_eq!(state.dao_account_id.as_str(), DAO);
+
+    b.predecessor_account_id("stranger.testnet".parse().unwrap());
+    testing_env!(b.build());
+    assert!(std::panic::catch_unwind(|| CommitmentFirewall::new_from_factory(
+        DAO.parse().unwrap(), VERIFIER.parse().unwrap(), U128(N),
+    )).is_err());
 }
 
 fn funded() -> CommitmentFirewall {
