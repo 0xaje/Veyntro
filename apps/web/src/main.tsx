@@ -61,7 +61,7 @@ function CommunityGate() {
       <p><a href="/">View Veyntro's testnet community</a></p>
       <h2>Adding your community</h2>
       <p>Your group needs its own NEAR testnet DAO, a separate Veyntro Firewall linked to that DAO, and its own work checker. A council member must approve money actions with their wallet.</p>
-      <p><a href="/setup">Start setting up your group</a>. DAO creation is available there. Firewall and work-checker setup are still being built, so a newly created DAO cannot use Veyntro for commitments yet.</p>
+      <p><a href="/setup">See the setup steps</a>. Wallet-signed setup is being built. DAO creation remains closed until the Firewall and work-checker steps can be completed safely.</p>
       <p>For setup details, read <a href="https://github.com/0xaje/Veyntro/blob/main/docs/COMMUNITY_ONBOARDING.md" target="_blank" rel="noreferrer">Community setup steps</a>. Do not send funds until your group has checked its accounts and rules.</p>
     </main>
   );
