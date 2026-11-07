@@ -50,6 +50,31 @@ impl CommitmentFirewall {
             env::predecessor_account_id() == env::current_account_id(),
             "Only this account can set up the contract"
         );
+        Self::initial_state(dao_account_id, verifier_account_id, operating_reserve)
+    }
+
+    /// The reviewed setup factory deploys a new child account and initializes it.
+    /// This entry point cannot initialize the existing Veyntro deployment.
+    #[init]
+    pub fn new_from_factory(
+        dao_account_id: AccountId,
+        verifier_account_id: AccountId,
+        operating_reserve: U128,
+    ) -> Self {
+        let factory: AccountId = "setup.aje-veyntro.testnet".parse().unwrap();
+        require!(env::predecessor_account_id() == factory, "Only the setup factory can initialize");
+        require!(
+            env::current_account_id().as_str().ends_with(".setup.aje-veyntro.testnet"),
+            "Factory setup requires a factory child account"
+        );
+        Self::initial_state(dao_account_id, verifier_account_id, operating_reserve)
+    }
+
+    fn initial_state(
+        dao_account_id: AccountId,
+        verifier_account_id: AccountId,
+        operating_reserve: U128,
+    ) -> Self {
         require!(
             dao_account_id != env::current_account_id(),
             "Use a separate DAO account"
