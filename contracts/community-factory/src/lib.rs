@@ -1,5 +1,5 @@
 use near_sdk::json_types::U128;
-use near_sdk::{AccountId, Gas, NearToken, PanicOnDefault, Promise, PromiseResult, collections::UnorderedMap, env, near, require};
+use near_sdk::{AccountId, Gas, NearToken, PanicOnDefault, Promise, collections::UnorderedMap, env, near, require};
 
 const SUFFIX: &str = ".sputnikv2.testnet";
 const FACTORY: &str = "setup.aje-veyntro.testnet";
@@ -66,7 +66,7 @@ impl CommunityFactory {
     pub fn on_deployed(&mut self, dao: AccountId) -> bool {
         require!(self.status.get(&dao) == Some(1), "No pending setup");
         require!(env::promise_results_count() == 1, "Expected one deployment receipt");
-        let succeeded = matches!(env::promise_result(0), PromiseResult::Successful(_));
+        let succeeded = env::promise_result_checked(0, 64).is_ok();
         self.status.insert(&dao, &(if succeeded { 2 } else { 3 }));
         succeeded
     }
@@ -113,6 +113,24 @@ mod tests {
         let mut f = CommunityFactory::new();
         context("group.sputnikv2.testnet", MIN_RESERVE);
         let _ = f.deploy("verifier.testnet".parse().unwrap(), U128(MIN_RESERVE));
+        let _ = f.deploy("verifier.testnet".parse().unwrap(), U128(MIN_RESERVE));
+    }
+
+    #[test]
+    #[should_panic(expected = "Choose a separate verifier")]
+    fn rejects_dao_as_verifier() {
+        context(FACTORY, 0);
+        let mut f = CommunityFactory::new();
+        context("group.sputnikv2.testnet", MIN_RESERVE);
+        let _ = f.deploy("group.sputnikv2.testnet".parse().unwrap(), U128(MIN_RESERVE));
+    }
+
+    #[test]
+    #[should_panic(expected = "Setup deposit must cover reserve")]
+    fn rejects_underfunded_setup() {
+        context(FACTORY, 0);
+        let mut f = CommunityFactory::new();
+        context("group.sputnikv2.testnet", 0);
         let _ = f.deploy("verifier.testnet".parse().unwrap(), U128(MIN_RESERVE));
     }
 }
