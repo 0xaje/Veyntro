@@ -72,7 +72,7 @@ export default function CommunitySetup() {
       if (!outcome) throw new Error("Your wallet returned without a final result. Check the DAO account before trying again.");
       if (typeof outcome.status === "object" && "Failure" in outcome.status) throw new Error("DAO creation failed on testnet. Check the wallet transaction.");
       const dao = await readDao(daoId);
-      if (!dao.policy.roles.some(role => typeof role.kind === "object" && role.kind.Group.includes(account.accountId))) {
+      if (!dao.policy.roles.some(role => typeof role.kind === "object" && Array.isArray(role.kind.Group) && role.kind.Group.includes(account.accountId))) {
         throw new Error("The DAO exists, but your council role could not be confirmed. Check its policy before continuing.");
       }
       setCreated(daoId);
@@ -88,7 +88,7 @@ export default function CommunitySetup() {
     setBusy(true);
     try {
       const dao = await readDao(daoId);
-      if (!dao.policy.roles.some(role => typeof role.kind === "object" && role.kind.Group.includes(account.accountId))) {
+      if (!dao.policy.roles.some(role => typeof role.kind === "object" && Array.isArray(role.kind.Group) && role.kind.Group.includes(account.accountId))) {
         throw new Error("This DAO exists, but your wallet is not in its council policy.");
       }
       setCreated(daoId);
