@@ -4,6 +4,10 @@ use near_sdk::{AccountId, Gas, NearToken, PanicOnDefault, Promise, PromiseOrValu
 const SUFFIX: &str = ".sputnikv2.testnet";
 const FACTORY: &str = "setup.aje-veyntro.testnet";
 const MIN_RESERVE: u128 = 50_000_000_000_000_000_000_000;
+// The embedded WASM needs storage backing on the child account. The extra
+// 32 KiB covers initial state and leaves room for storage as the DAO starts
+// using the Firewall. This is a funding floor, not a measured deployment fee.
+const STORAGE_HEADROOM_BYTES: u128 = 32_768;
 const INIT_GAS: Gas = Gas::from_tgas(30);
 const CALLBACK_GAS: Gas = Gas::from_tgas(15);
 
@@ -37,15 +41,30 @@ impl CommunityFactory {
         child_for(&dao)
     }
 
+    /// Quote the minimum amount the DAO must send to start a child Firewall.
+    /// The quote uses the deployed factory's pinned code and the network's
+    /// current storage price, so the web app must read it at finality.
+    pub fn required_deposit(&self, operating_reserve: U128) -> U128 {
+        require!(operating_reserve.0 >= MIN_RESERVE, "Reserve must be at least 0.05 NEAR");
+        let bytes = (FIREWALL_CODE.len() as u128)
+            .checked_add(STORAGE_HEADROOM_BYTES).expect("Storage size overflow");
+        let backing = bytes.checked_mul(env::storage_byte_cost().as_yoctonear())
+            .expect("Storage backing overflow");
+        U128(backing.checked_add(operating_reserve.0).expect("Setup deposit overflow"))
+    }
+
     /// Called by a DAO-approved FunctionCall proposal, never directly by a council wallet.
     #[payable]
     pub fn deploy(&mut self, verifier: AccountId, operating_reserve: U128) -> Promise {
         let dao = env::predecessor_account_id();
         let child = child_for(&dao);
-        require!(self.status.get(&dao).is_none(), "This DAO already started setup");
+        // A fully refunded failed attempt may be retried. Pending, ready and
+        // unclaimed-refund attempts must remain locked against duplicates.
+        require!(matches!(self.status.get(&dao), None | Some(4)), "This DAO already started setup");
         require!(verifier != dao && verifier != child && verifier != env::current_account_id(), "Choose a separate verifier");
         require!(operating_reserve.0 >= MIN_RESERVE, "Reserve must be at least 0.05 NEAR");
-        require!(env::attached_deposit().as_yoctonear() >= operating_reserve.0, "Setup deposit must cover reserve");
+        require!(env::attached_deposit().as_yoctonear() >= self.required_deposit(operating_reserve).0,
+            "Setup deposit must cover Firewall storage and reserve");
         self.status.insert(&dao, &1);
         self.deposits.insert(&dao, &env::attached_deposit().as_yoctonear());
         let args = near_sdk::serde_json::to_vec(&near_sdk::serde_json::json!({
@@ -150,7 +169,8 @@ mod tests {
     fn rejects_duplicate_setup() {
         context(FACTORY, 0);
         let mut f = CommunityFactory::new();
-        context("group.sputnikv2.testnet", MIN_RESERVE);
+        let deposit = f.required_deposit(U128(MIN_RESERVE)).0;
+        context("group.sputnikv2.testnet", deposit);
         let _ = f.deploy("verifier.testnet".parse().unwrap(), U128(MIN_RESERVE));
         let _ = f.deploy("verifier.testnet".parse().unwrap(), U128(MIN_RESERVE));
     }
@@ -165,12 +185,28 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "Setup deposit must cover reserve")]
+    #[should_panic(expected = "Setup deposit must cover Firewall storage and reserve")]
     fn rejects_underfunded_setup() {
         context(FACTORY, 0);
         let mut f = CommunityFactory::new();
-        context("group.sputnikv2.testnet", 0);
+        // Even a deposit covering the configured reserve is too small to
+        // back the embedded Firewall WASM and initial state.
+        context("group.sputnikv2.testnet", MIN_RESERVE);
         let _ = f.deploy("verifier.testnet".parse().unwrap(), U128(MIN_RESERVE));
+    }
+
+    #[test]
+    fn quote_covers_pinned_code_storage_headroom_and_reserve() {
+        context(FACTORY, 0);
+        let f = CommunityFactory::new();
+        let quoted = f.required_deposit(U128(MIN_RESERVE)).0;
+        assert_eq!(quoted, (FIREWALL_CODE.len() as u128 + STORAGE_HEADROOM_BYTES)
+            * env::storage_byte_cost().as_yoctonear() + MIN_RESERVE);
+        assert!(quoted > MIN_RESERVE);
+        context("group.sputnikv2.testnet", quoted);
+        let mut f = f;
+        let _ = f.deploy("verifier.testnet".parse().unwrap(), U128(MIN_RESERVE));
+        assert_eq!(f.get_status("group.sputnikv2.testnet".parse().unwrap()), Some(1));
     }
 
     #[test]
@@ -178,14 +214,15 @@ mod tests {
         context(FACTORY, 0);
         let mut f = CommunityFactory::new();
         let dao: AccountId = "group.sputnikv2.testnet".parse().unwrap();
-        context(dao.as_str(), MIN_RESERVE);
+        let deposit = f.required_deposit(U128(MIN_RESERVE)).0;
+        context(dao.as_str(), deposit);
         let _ = f.deploy("verifier.testnet".parse().unwrap(), U128(MIN_RESERVE));
         assert_eq!(f.get_status(dao.clone()), Some(1));
 
         let mut b = VMContextBuilder::new();
         b.current_account_id(FACTORY.parse().unwrap())
             .predecessor_account_id(FACTORY.parse().unwrap())
-            .account_balance(NearToken::from_yoctonear(10 * MIN_RESERVE));
+            .account_balance(NearToken::from_yoctonear(10 * deposit));
         testing_env!(b.build(), test_vm_config(), RuntimeFeesConfig::test(), HashMap::default(), vec![PromiseResult::Failed]);
         let _ = f.on_deployed(dao.clone());
         assert_eq!(f.get_status(dao.clone()), Some(5));
@@ -194,5 +231,9 @@ mod tests {
         assert!(f.on_refunded(dao.clone()));
         assert_eq!(f.get_status(dao.clone()), Some(4));
         assert!(f.deposits.get(&dao).is_none());
+
+        context(dao.as_str(), deposit);
+        let _ = f.deploy("verifier.testnet".parse().unwrap(), U128(MIN_RESERVE));
+        assert_eq!(f.get_status(dao), Some(1));
     }
 }
