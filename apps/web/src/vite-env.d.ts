@@ -3,6 +3,7 @@
 interface ImportMetaEnv {
   readonly VITE_NEAR_RPC_URL?: string;
   readonly VITE_FIREWALL_CONTRACT_ID?: string;
+  readonly VITE_ENABLE_COMMUNITY_SETUP?: string;
 }
 
 interface ImportMeta {

@@ -52,6 +52,18 @@ async function accountCode(account: string, blockHash: string): Promise<string> 
   return code;
 }
 
+export async function verifyDaoCode(dao: string): Promise<void> {
+  if (!validateAccountId(dao) || !dao.endsWith(".sputnikv2.testnet")) {
+    throw new Error("Enter a SputnikDAO testnet account.");
+  }
+  const block = await rpc("block", { finality: "final" });
+  const hash = (block as unknown as { header?: { hash?: string } }).header?.hash;
+  if (!hash) throw new Error("No final NEAR testnet block was returned.");
+  if (await accountCode(dao, hash) !== await accountCode(DEFAULT_DAO, hash)) {
+    throw new Error("This DAO does not match the tested SputnikDAO contract.");
+  }
+}
+
 async function view(account: string, method: string, blockHash: string, args: Record<string, unknown> = {}): Promise<unknown> {
   const result = await rpc("query", {
     request_type: "call_function", account_id: account, method_name: method,
@@ -118,6 +130,9 @@ export async function verifyCommunity(firewall: string): Promise<{ dao: string; 
   if (typeof dao !== "string" || !validateAccountId(dao) || !dao.endsWith(".testnet") ||
       typeof verifier !== "string" || !validateAccountId(verifier) || verifier === dao || verifier === firewall) {
     throw new Error("The Firewall has invalid DAO or work-check accounts.");
+  }
+  if (treasury.ledger_solvent !== true || treasury.physical_backing_check !== true) {
+    throw new Error("This Firewall did not pass its final treasury safety checks.");
   }
   if (factoryChild) {
     if (await accountCode(SETUP_FACTORY, blockHash) !== FACTORY_CODE_HASH ||

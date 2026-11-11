@@ -33,4 +33,5 @@ jobs:
       - name: Check types and build the web app
         run: |
           npm --prefix apps/web run check
+          node --test apps/web/test/setup-proposal.test.ts
           npm --prefix apps/web run build
