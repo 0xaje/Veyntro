@@ -29,6 +29,8 @@ test("changed receiver, deposit, verifier or extra action cannot be offered as t
     { FunctionCall: { ...original.FunctionCall, actions: [{ ...original.FunctionCall.actions[0], deposit: "5000000000000000000000000" }] } },
     { FunctionCall: { ...original.FunctionCall, actions: [{ ...original.FunctionCall.actions[0], args: btoa(JSON.stringify({ verifier: "stranger.testnet", operating_reserve: SETUP_RESERVE })) }] } },
     { FunctionCall: { ...original.FunctionCall, actions: [...original.FunctionCall.actions, original.FunctionCall.actions[0]] } },
+    { ...original, Transfer: { deposit: "1" } },
+    { FunctionCall: { ...original.FunctionCall, actions: [{ ...original.FunctionCall.actions[0], receiver_id: "stranger.testnet" }] } },
   ]) assert.equal(isExactSetupProposal(altered, terms), false);
 });
 

@@ -33,13 +33,17 @@ export function setupProposal(terms: SetupTerms) {
 // re-read at finality immediately before signing.
 export function isExactSetupProposal(kind: unknown, terms: SetupTerms): boolean {
   if (!kind || typeof kind !== "object" || Array.isArray(kind)) return false;
-  const call = (kind as Record<string, unknown>).FunctionCall;
+  const outer = kind as Record<string, unknown>;
+  if (Object.keys(outer).length !== 1 || !("FunctionCall" in outer)) return false;
+  const call = outer.FunctionCall;
   if (!call || typeof call !== "object" || Array.isArray(call)) return false;
   const data = call as Record<string, unknown>;
+  if (Object.keys(data).sort().join(",") !== "actions,receiver_id") return false;
   if (data.receiver_id !== terms.factory || !Array.isArray(data.actions) || data.actions.length !== 1) return false;
   const action: unknown = data.actions[0];
   if (!action || typeof action !== "object" || Array.isArray(action)) return false;
   const actual = action as Record<string, unknown>;
+  if (Object.keys(actual).sort().join(",") !== "args,deposit,gas,method_name") return false;
   const expected = setupProposal(terms).kind.FunctionCall.actions[0];
   return actual.method_name === expected.method_name && actual.args === expected.args &&
     actual.deposit === expected.deposit && actual.gas === expected.gas;
