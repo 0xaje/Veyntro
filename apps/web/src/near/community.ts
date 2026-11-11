@@ -5,6 +5,9 @@ export const DEFAULT_FIREWALL = import.meta.env.VITE_FIREWALL_CONTRACT_ID ?? "fi
 export const DEFAULT_DAO = "veyntro.sputnikv2.testnet";
 
 export function selectedFirewall(): string {
+  // Setup signs against the trusted DAO factory. A link to /setup must never
+  // let an unverified `firewall=` query set the wallet modal's contract.
+  if (window.location.pathname === "/setup") return DEFAULT_FIREWALL;
   const requested = new URLSearchParams(window.location.search).get("firewall");
   return requested ?? DEFAULT_FIREWALL;
 }

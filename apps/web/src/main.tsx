@@ -40,7 +40,7 @@ function CommunityGate() {
     return () => { active = false; };
   }, [choosing]);
 
-  if (window.location.pathname === "/setup") return <WalletProvider><CommunitySetup /></WalletProvider>;
+  if (window.location.pathname === "/setup") return <WalletProvider contractId="sputnikv2.testnet"><CommunitySetup /></WalletProvider>;
 
   if (choosing || status === "error") return (
     <main className="community-gate">

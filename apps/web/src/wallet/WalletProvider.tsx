@@ -22,7 +22,7 @@ export function useWallet(): WalletContextValue {
   return value;
 }
 
-export function WalletProvider({ children }: { children: ReactNode }) {
+export function WalletProvider({ children, contractId = FIREWALL_CONTRACT_ID }: { children: ReactNode; contractId?: string }) {
   const [selector, setSelector] = useState<WalletSelector | null>(null);
   const [modal, setModal] = useState<WalletSelectorModal | null>(null);
   const [account, setAccount] = useState<AccountState | null>(null);
@@ -64,7 +64,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         });
       if (cancelled) return;
       const walletModal = modalUi.setupModal(instance, {
-        contractId: FIREWALL_CONTRACT_ID,
+        contractId,
         theme: "light",
         description: "Connect your NEAR testnet wallet to Veyntro.",
       });
@@ -89,7 +89,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       cancelled = true;
       unsubscribe?.();
     };
-  }, [retryCount]);
+  }, [retryCount, contractId]);
 
   const value = useMemo<WalletContextValue>(() => ({
     account,

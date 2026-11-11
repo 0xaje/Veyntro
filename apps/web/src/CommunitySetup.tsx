@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Action, FunctionCall } from "@near-js/transactions";
 import { Buffer } from "buffer";
 import { useWallet } from "./wallet/WalletProvider";
-import { readDao } from "./near/dao";
+import { accountCanUsePermission, readDao } from "./near/dao";
 import { RPC_URL } from "./near/rpc";
 import { verifyCommunity } from "./near/community";
 
@@ -75,8 +75,8 @@ export default function CommunitySetup() {
       if (!outcome) throw new Error("Your wallet returned without a final result. Check the DAO account before trying again.");
       if (typeof outcome.status === "object" && "Failure" in outcome.status) throw new Error("DAO creation failed on testnet. Check the wallet transaction.");
       const dao = await readDao(daoId);
-      if (!dao.policy.roles.some(role => typeof role.kind === "object" && Array.isArray(role.kind.Group) && role.kind.Group.includes(account.accountId))) {
-        throw new Error("The DAO exists, but your council role could not be confirmed. Check its policy before continuing.");
+      if (!accountCanUsePermission(dao.policy, account.accountId, "FunctionCall", "AddProposal")) {
+        throw new Error("The DAO exists, but your wallet cannot ask it to set up a Firewall under its current rules.");
       }
       setCreated(daoId);
       setMessage(`DAO created and checked at final block ${dao.blockHeight}. The Firewall and work checker still need setup before this group can use Veyntro.`);
@@ -91,8 +91,8 @@ export default function CommunitySetup() {
     setBusy(true);
     try {
       const dao = await readDao(daoId);
-      if (!dao.policy.roles.some(role => typeof role.kind === "object" && Array.isArray(role.kind.Group) && role.kind.Group.includes(account.accountId))) {
-        throw new Error("This DAO exists, but your wallet is not in its council policy.");
+      if (!accountCanUsePermission(dao.policy, account.accountId, "FunctionCall", "AddProposal")) {
+        throw new Error("This DAO exists, but your wallet cannot ask it to set up a Firewall under its current rules.");
       }
       setCreated(daoId);
       setMessage(`Your DAO was found at final block ${dao.blockHeight}. The Firewall and work checker still need setup.`);
