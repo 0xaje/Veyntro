@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Action, FunctionCall } from "@near-js/transactions";
 import { Buffer } from "buffer";
 import { useWallet } from "./wallet/WalletProvider";
 import { accountCanUsePermission, readDao } from "./near/dao";
-import { RPC_URL } from "./near/rpc";
-import { verifyCommunity } from "./near/community";
+import { RPC_URL, formatNear } from "./near/rpc";
+import { readFactoryQuote, verifyCommunity, type FactoryQuote } from "./near/community";
 
 const FACTORY = "sputnikv2.testnet";
 const DAO_FUNDING = 7n * 10n ** 24n;
+const SETUP_RESERVE = "50000000000000000000000";
 
 async function accountExists(accountId: string): Promise<boolean> {
   const response = await fetch(RPC_URL, {
@@ -43,7 +44,28 @@ export default function CommunitySetup() {
   const [created, setCreated] = useState("");
   const [firewall, setFirewall] = useState("");
   const [verifiedFirewall, setVerifiedFirewall] = useState("");
+  const [quote, setQuote] = useState<FactoryQuote | null>(null);
   const daoId = name ? `${name}.sputnikv2.testnet` : "";
+
+  useEffect(() => {
+    setCreated("");
+    setVerifiedFirewall("");
+  }, [account?.accountId]);
+
+  async function checkSetupCost() {
+    setMessage("");
+    setQuote(null);
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name) || name.length > 28) {
+      setMessage("Use up to 28 lowercase letters, numbers and single dashes for the DAO name."); return;
+    }
+    setBusy(true);
+    try {
+      setQuote(await readFactoryQuote(daoId, SETUP_RESERVE));
+      setMessage("This is the setup service’s current testnet deposit quote. No money has moved.");
+    } catch {
+      setMessage("The reviewed setup service is not available yet. No setup payment can be sent from this page.");
+    } finally { setBusy(false); }
+  }
 
   async function create(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -123,15 +145,24 @@ export default function CommunitySetup() {
     {walletError && <p role="alert">{walletError}</p>}
     <form onSubmit={e => void create(e)}>
       <label htmlFor="dao-name">DAO name</label>
-      <input id="dao-name" value={name} maxLength={28} onChange={e => setName(e.target.value.toLowerCase())} placeholder="our-community" required />
+      <input id="dao-name" value={name} maxLength={28} onChange={e => {
+        setName(e.target.value.toLowerCase()); setCreated(""); setVerifiedFirewall(""); setQuote(null);
+      }} placeholder="our-community" required />
       <p>{daoId || "your-name.sputnikv2.testnet"}</p>
       <label htmlFor="dao-purpose">What is your group for?</label>
       <input id="dao-purpose" value={purpose} maxLength={240} onChange={e => setPurpose(e.target.value)} required />
       <p>Your connected account starts as the only council member. Your group can change its DAO rules later. This creation deposits <strong>7 testnet NEAR</strong> in the new DAO, plus a small network fee. It is testnet money, not a payment to Veyntro. Check your wallet balance before signing.</p>
       <button disabled type="submit">DAO creation opens when the full setup path is ready</button>
       <button disabled={!account || !name || busy} type="button" onClick={() => void checkExisting()}>Check an existing DAO</button>
+      <button disabled={!name || busy} type="button" onClick={() => void checkSetupCost()}>Check setup cost</button>
     </form>
     {message && <p role="status">{message}</p>}
+    {quote && <section aria-label="Setup cost">
+      <h2>Starting your Firewall</h2>
+      <p>Planned account: <strong>{quote.firewall}</strong></p>
+      <p>Minimum starting deposit from your DAO: <strong>{formatNear(quote.depositYocto)} testnet NEAR</strong>. This stays in your group’s Firewall for storage and safe operation. A DAO request deposit and network fees are separate.</p>
+      <p>{quote.status === null ? "No setup request has started." : quote.status === 1 ? "A setup request is running. Check its final result before acting again." : quote.status === 2 ? "The factory reports setup finished. Check the Firewall and your work checker before sending funds." : quote.status === 3 ? "A refund is available to your DAO. Settle it before trying again." : quote.status === 4 ? "The previous attempt was refunded. Your DAO may try again when setup opens." : "A refund is being sent. Wait for its final result."}</p>
+    </section>}
     {created && <p>Checked DAO: <strong>{created}</strong>. The remaining setup steps are not ready here yet; do not send money for commitments.</p>}
     {created && <form onSubmit={e => void checkFirewall(e)}>
       <h2>Check your Firewall</h2>

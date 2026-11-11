@@ -5,7 +5,7 @@ export const DEFAULT_FIREWALL = import.meta.env.VITE_FIREWALL_CONTRACT_ID ?? "fi
 export const DEFAULT_DAO = "veyntro.sputnikv2.testnet";
 // Pinned from the reviewed Contract checks build at commit 215fbd5. Keep
 // these hashes in sync with the exact factory and child WASM deployed onchain.
-const SETUP_FACTORY = "setup.aje-veyntro.testnet";
+export const SETUP_FACTORY = "setup.aje-veyntro.testnet";
 const FACTORY_CODE_HASH = "GsfwHxUS54grQJtZpkdutNSp2g5jijcTGCGtqknP2qyy";
 const FACTORY_FIREWALL_CODE_HASH = "L9h18N5bxszmvdNUoFxqyyYygYFxf11XaV5Lr5Tuwyb";
 
@@ -44,6 +44,7 @@ async function rpc(method: string, params: Record<string, unknown>): Promise<{ r
 
 async function accountCode(account: string, blockHash: string): Promise<string> {
   const result = await rpc("query", { request_type: "view_account", account_id: account, block_id: blockHash });
+  if (result.block_hash !== blockHash) throw new Error("The account check returned an inconsistent block.");
   const code = (result as unknown as { code_hash?: unknown }).code_hash;
   if (typeof code !== "string" || code === "11111111111111111111111111111111") {
     throw new Error(`${account} has no compatible contract.`);
@@ -58,6 +59,39 @@ async function view(account: string, method: string, blockHash: string, args: Re
   });
   if (result.block_hash !== blockHash || !Array.isArray(result.result)) throw new Error("The contract returned an inconsistent block.");
   return JSON.parse(new TextDecoder().decode(new Uint8Array(result.result))) as unknown;
+}
+
+export interface FactoryQuote {
+  firewall: string;
+  depositYocto: string;
+  status: number | null;
+}
+
+// Read-only setup preview. No wallet action may use this quote until the
+// factory's deployed code is checked against the reviewed CI build.
+export async function readFactoryQuote(dao: string, operatingReserveYocto: string): Promise<FactoryQuote> {
+  const slug = dao.endsWith(".sputnikv2.testnet") ? dao.slice(0, -".sputnikv2.testnet".length) : "";
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 28 ||
+      !/^\d+$/.test(operatingReserveYocto)) {
+    throw new Error("Enter a valid DAO name and reserve before checking setup.");
+  }
+  const block = await rpc("block", { finality: "final" });
+  const blockHash = (block as unknown as { header?: { hash?: string } }).header?.hash;
+  if (!blockHash) throw new Error("No final NEAR testnet block was returned.");
+  if (await accountCode(SETUP_FACTORY, blockHash) !== FACTORY_CODE_HASH) {
+    throw new Error("The setup service does not match the reviewed contract.");
+  }
+  const [firewall, deposit, status] = await Promise.all([
+    view(SETUP_FACTORY, "firewall_for", blockHash, { dao }),
+    view(SETUP_FACTORY, "required_deposit", blockHash, { operating_reserve: operatingReserveYocto }),
+    view(SETUP_FACTORY, "get_status", blockHash, { dao }),
+  ]);
+  if (typeof firewall !== "string" || firewall !== `${slug}.${SETUP_FACTORY}` || typeof deposit !== "string" ||
+      !/^\d+$/.test(deposit) || BigInt(deposit) < BigInt(operatingReserveYocto) ||
+      (status !== null && (typeof status !== "number" || ![1, 2, 3, 4, 5].includes(status)))) {
+    throw new Error("The setup service returned invalid information.");
+  }
+  return { firewall, depositYocto: deposit, status };
 }
 
 // Exact deployed WASM matches protect wallet writes from an untrusted account
