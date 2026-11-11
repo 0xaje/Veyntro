@@ -2,19 +2,21 @@
 
 **Every commitment accounted for.**
 
-Veyntro helps DAOs and communities set money aside for approved work without promising the same funds twice. The Commitment Firewall checks each new commitment against the treasury's existing obligations and pending payments.
+Veyntro helps DAOs and communities set money aside for approved work without promising the same funds twice. The Commitment Firewall checks each new commitment against the treasury's existing obligations and pending payments. **[See the one-minute judge walkthrough](JUDGES.md)**: a DAO vote that tried to overpromise failed onchain, while a funded commitment later paid after its agreed work check.
 
 **The problem:** a treasury can show 10 NEAR while 8 NEAR is already promised to ongoing work. Another 4 NEAR promise would overbook the same money. Veyntro shows only 2 NEAR available and rejects the extra promise in the contract. A DAO approves the work, a fixed amount is set aside, a chosen work check is recorded, and the beneficiary can request a payment within that limit. Unused money becomes available again after expiry.
 
-**Try it:** [Open the live testnet app](https://veyntro-web.onrender.com/), read the public treasury without connecting, review the [DAO requests](https://veyntro-web.onrender.com/governance), then inspect [a completed commitment](https://veyntro-web.onrender.com/commitments/4) and its payment in Activity. The [independent walkthrough](docs/INDEPENDENT_WALKTHROUGH.md) gives a no-wallet review path.
+**Try it:** [Open the live testnet app](https://veyntro-web.onrender.com/), read the public treasury without connecting, review the [DAO requests](https://veyntro-web.onrender.com/governance), then inspect [a completed commitment](https://veyntro-web.onrender.com/commitments/4) and its payment in Activity. The [judge walkthrough](JUDGES.md) links each step to public evidence; the [demo recording guide](docs/DEMO_SCRIPT.md) gives the short video path. The [independent walkthrough](docs/INDEPENDENT_WALKTHROUGH.md) is a test plan, not a completed outside review.
 
-## Current status — 6 November 2026
+## Current status — 11 November 2026
 
 Veyntro's NEAR testnet contract has been used for real DAO funding, commitments, an overcommitment rejection, GitHub evidence checks, payments, failed-transfer recovery and expiry release. A manually dispatched GitHub Actions job uses a restricted key to check a GitHub run and submit an attestation. It successfully checked commitment 4 before its 0.05 testnet NEAR payment; it is not a general public evidence service.
 
 The React, Vite and TypeScript app reads live testnet state. The web app is hosted at [veyntro-web.onrender.com](https://veyntro-web.onrender.com/) on a free Render Static Site. Public guest reads, a hosted wallet session reported by the owner, a DAO request and vote, and a hosted beneficiary payment were exercised with real testnet actions. Payment 6 settled successfully to `aje.testnet`; see [its audit record](docs/PAYMENT_6_AUDIT.md). The restricted verifier key is held by GitHub Actions for the manually dispatched evidence job; Ubuntu is no longer required for that tested path. Independent mobile, wallet, and security reviews remain open.
 
 The contract's first-pass static review is not a security audit. [Wallet dependency findings](docs/WALLET_DEPENDENCY_REVIEW.md), independent testing, and release hardening remain open.
+
+The hosted app accepts a compatible community contract for public selection, but the second independent DAO and full signed flow in the [master plan](docs/MASTER_PLAN.md) have not been verified. Setup still needs manual deployment and its own verifier. Do not treat the community chooser as a finished self-service onboarding flow.
 
 ## Check the working flow
 
@@ -48,7 +50,7 @@ The saved records are under [evidence/](evidence/). Read [docs/PROGRESS.md](docs
 
 ## Run the web app
 
-Use Node.js 24.12 or newer within major version 24.
+Use Node.js 24.12 or newer within major version 24; `.nvmrc` selects the version used by web CI (24.22.1).
 
 ```bash
 npm --prefix apps/web ci
