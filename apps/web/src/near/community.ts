@@ -3,6 +3,11 @@ import { validateAccountId } from "./dao";
 
 export const DEFAULT_FIREWALL = import.meta.env.VITE_FIREWALL_CONTRACT_ID ?? "firewall-aje-veyntro.testnet";
 export const DEFAULT_DAO = "veyntro.sputnikv2.testnet";
+// Pinned from the reviewed Contract checks build at commit 215fbd5. Keep
+// these hashes in sync with the exact factory and child WASM deployed onchain.
+const SETUP_FACTORY = "setup.aje-veyntro.testnet";
+const FACTORY_CODE_HASH = "GsfwHxUS54grQJtZpkdutNSp2g5jijcTGCGtqknP2qyy";
+const FACTORY_FIREWALL_CODE_HASH = "L9h18N5bxszmvdNUoFxqyyYygYFxf11XaV5Lr5Tuwyb";
 
 export function selectedFirewall(): string {
   // Setup signs against the trusted DAO factory. A link to /setup must never
@@ -46,16 +51,13 @@ async function accountCode(account: string, blockHash: string): Promise<string> 
   return code;
 }
 
-async function view(account: string, method: string, blockHash: string): Promise<Record<string, unknown>> {
-  const args = btoa("{}");
+async function view(account: string, method: string, blockHash: string, args: Record<string, unknown> = {}): Promise<unknown> {
   const result = await rpc("query", {
     request_type: "call_function", account_id: account, method_name: method,
-    args_base64: args, block_id: blockHash,
+    args_base64: btoa(JSON.stringify(args)), block_id: blockHash,
   });
   if (result.block_hash !== blockHash || !Array.isArray(result.result)) throw new Error("The contract returned an inconsistent block.");
-  const value: unknown = JSON.parse(new TextDecoder().decode(new Uint8Array(result.result)));
-  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("The contract returned invalid information.");
-  return value as Record<string, unknown>;
+  return JSON.parse(new TextDecoder().decode(new Uint8Array(result.result))) as unknown;
 }
 
 // Exact deployed WASM matches protect wallet writes from an untrusted account
@@ -67,20 +69,37 @@ export async function verifyCommunity(firewall: string): Promise<{ dao: string; 
   const blockHash = (block as unknown as { header?: { hash?: string } }).header?.hash;
   if (!blockHash) throw new Error("No final NEAR testnet block was returned.");
   const trustedFirewallCode = await accountCode(DEFAULT_FIREWALL, blockHash);
-  if (await accountCode(firewall, blockHash) !== trustedFirewallCode) {
+  const code = await accountCode(firewall, blockHash);
+  const factoryChild = code === FACTORY_FIREWALL_CODE_HASH && firewall.endsWith(`.${SETUP_FACTORY}`);
+  if (code !== trustedFirewallCode && !factoryChild) {
     throw new Error("This Firewall does not match the Veyntro contract on testnet.");
   }
   const state = await view(firewall, "get_treasury_state", blockHash);
-  const dao = state.dao_account_id;
-  const verifier = state.verifier_account_id;
+  if (!state || typeof state !== "object" || Array.isArray(state)) {
+    throw new Error("The Firewall returned invalid information.");
+  }
+  const treasury = state as Record<string, unknown>;
+  const dao = treasury.dao_account_id;
+  const verifier = treasury.verifier_account_id;
   if (typeof dao !== "string" || !validateAccountId(dao) || !dao.endsWith(".testnet") ||
       typeof verifier !== "string" || !validateAccountId(verifier) || verifier === dao || verifier === firewall) {
     throw new Error("The Firewall has invalid DAO or work-check accounts.");
   }
+  if (factoryChild) {
+    if (await accountCode(SETUP_FACTORY, blockHash) !== FACTORY_CODE_HASH ||
+        await view(SETUP_FACTORY, "firewall_for", blockHash, { dao }) !== firewall ||
+        await view(SETUP_FACTORY, "get_status", blockHash, { dao }) !== 2) {
+      throw new Error("This group’s Firewall setup has not been confirmed by the reviewed factory.");
+    }
+  }
   const trustedDaoCode = await accountCode(DEFAULT_DAO, blockHash);
   if (await accountCode(dao, blockHash) !== trustedDaoCode) throw new Error("This DAO does not match the tested SputnikDAO contract.");
   const policy = await view(dao, "get_policy", blockHash);
-  if (!Array.isArray(policy.roles) || typeof policy.proposal_bond !== "string") {
+  if (!policy || typeof policy !== "object" || Array.isArray(policy)) {
+    throw new Error("The DAO policy could not be read.");
+  }
+  const daoPolicy = policy as Record<string, unknown>;
+  if (!Array.isArray(daoPolicy.roles) || typeof daoPolicy.proposal_bond !== "string") {
     throw new Error("The DAO policy could not be read.");
   }
   return { dao, verifier };
