@@ -6,7 +6,6 @@ import ActivityPanel from "./ActivityPanel";
 import DocsPanel from "./DocsPanel";
 import { readDao, type DaoSnapshot } from "./near/dao";
 import { verifiedWorkCheck } from "./near/verified-audit";
-import { communityHref, DEFAULT_FIREWALL } from "./near/community";
 import {
   explorerAccountUrl,
   FIREWALL_CONTRACT_ID,
@@ -63,7 +62,7 @@ const VIEW_COPY: Record<AppView, { title: string; description: string }> = {
 };
 
 function CommitmentCard({ row, onRefresh, detail = false }: { row: Reservation; onRefresh: () => Promise<void>; detail?: boolean }) {
-  const workCheck = verifiedWorkCheck(row, FIREWALL_CONTRACT_ID);
+  const workCheck = verifiedWorkCheck(row);
   const status = row.is_expired && row.status === "Active" ? "Expired" : row.status;
   const statusLabel = status === "Active" ? "In progress" : status;
   const evidenceLabel = row.evidence
@@ -94,9 +93,9 @@ function CommitmentCard({ row, onRefresh, detail = false }: { row: Reservation; 
             <p><strong>Check this work:</strong> <a href={workCheck.run} target="_blank" rel="noreferrer">GitHub result ↗</a> · <a href={workCheck.submission} target="_blank" rel="noreferrer">NEAR work-check transaction ↗</a></p>
           )}
           {row.evidence && <p className="activity-note">The GitHub result confirms the agreed checks passed. It does not prove every part of the work is correct.</p>}
-          <p><a href={communityHref("/activity")}>See available payment records</a></p>
+          <p><a href="/activity">See available payment records</a></p>
         </div>
-      ) : <a className="commitment-detail-link" href={communityHref(`/commitments/${encodeURIComponent(row.id)}`)}>View commitment details</a>}
+      ) : <a className="commitment-detail-link" href={`/commitments/${encodeURIComponent(row.id)}`}>View commitment details</a>}
       {row.pending_amount !== "0" && (
         <p className="pending-note">A payment is being processed: <Amount value={row.pending_amount} />.</p>
       )}
@@ -287,19 +286,18 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <a className="brand" href={communityHref("/#overview")} aria-label="Veyntro overview">
+        <a className="brand" href="/#overview" aria-label="Veyntro overview">
           <span className="brand-mark" aria-hidden="true">V</span>
           <span>Veyntro</span>
         </a>
         <nav className="main-nav" aria-label="Main navigation">
-          <a href={communityHref("/#overview")} aria-current={activeView === "overview" ? "page" : undefined}>Overview</a>
-          <a href={communityHref("/commitments")} aria-current={activeView === "commitments" ? "page" : undefined}>Commitments</a>
-          <a href={communityHref("/governance")} aria-current={activeView === "governance" ? "page" : undefined}>DAO approval</a>
-          <a href={communityHref("/activity")} aria-current={activeView === "activity" ? "page" : undefined}>Activity</a>
-          <a href={communityHref("/docs")} aria-current={activeView === "docs" ? "page" : undefined}>How it works</a>
+          <a href="/#overview" aria-current={activeView === "overview" ? "page" : undefined}>Overview</a>
+          <a href="/commitments" aria-current={activeView === "commitments" ? "page" : undefined}>Commitments</a>
+          <a href="/governance" aria-current={activeView === "governance" ? "page" : undefined}>DAO approval</a>
+          <a href="/activity" aria-current={activeView === "activity" ? "page" : undefined}>Activity</a>
+          <a href="/docs" aria-current={activeView === "docs" ? "page" : undefined}>How it works</a>
         </nav>
         <div className="topbar-controls">
-          <a className="community-switch" href="/?choose=1">Choose community</a>
           <button
             type="button"
             className="theme-dot-toggle"
@@ -340,12 +338,6 @@ export default function App() {
             <span>{FIREWALL_CONTRACT_ID}</span>
           </a>
         </section>
-
-        {FIREWALL_CONTRACT_ID !== DEFAULT_FIREWALL && (
-          <div className="inline-alert" role="note">
-            This community has its own DAO and treasury. Its GitHub work checker must be set up separately before anyone can receive a work-checked payment.
-          </div>
-        )}
 
         {walletError && <p className="visually-hidden" role="alert">{walletError}</p>}
         {loadError && (
@@ -429,9 +421,9 @@ export default function App() {
         </section>}
 
         {activeView === "overview" && <nav className="overview-shortcuts" aria-label="More treasury pages">
-          <a href={communityHref("/commitments")}><strong>Commitments</strong><span>See money set aside for work</span></a>
-          <a href={communityHref("/governance")}><strong>DAO approval</strong><span>Review and request treasury actions</span></a>
-          <a href={communityHref("/activity")}><strong>Activity</strong><span>See recorded payments and withdrawals</span></a>
+          <a href="/commitments"><strong>Commitments</strong><span>See money set aside for work</span></a>
+          <a href="/governance"><strong>DAO approval</strong><span>Review and request treasury actions</span></a>
+          <a href="/activity"><strong>Activity</strong><span>See recorded payments and withdrawals</span></a>
         </nav>}
 
         <div className="view-preserved" hidden={activeView !== "commitments"}>
@@ -444,7 +436,7 @@ export default function App() {
           {!detailId && commitmentSummary && <span className="count-label">{commitmentSummary} commitments</span>}
           </div>
 
-          {detailId && <a className="commitment-detail-link" href={communityHref("/commitments")}>← All commitments</a>}
+          {detailId && <a className="commitment-detail-link" href="/commitments">← All commitments</a>}
 
           {detailId ? detailLoading || (loading && !snapshot) ? (
             <div className="loading-panel compact" role="status">Loading commitment {detailId}…</div>

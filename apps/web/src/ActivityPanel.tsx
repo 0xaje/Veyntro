@@ -8,7 +8,6 @@ import {
 } from "./near/rpc";
 import type { DaoSnapshot } from "./near/dao";
 import { verifiedPaymentTransaction } from "./near/verified-audit";
-import { communityHref } from "./near/community";
 
 interface ActivityPanelProps {
   page: OperationsPage | null;
@@ -61,11 +60,11 @@ export default function ActivityPanel({ page, loading, error, loadingOlder, curr
               <p className="activity-meta">{operation.status === "Succeeded" ? "Sent" : operation.status === "Failed" ? "Attempted" : "Sending"} to {operation.recipient} on {formatDeadline(operation.created_at_ns)}</p>
               {operation.reservation_id !== null && (
                 <p className="activity-meta">
-                  <a href={communityHref(`/commitments/${encodeURIComponent(operation.reservation_id)}`)}>View commitment {operation.reservation_id} and its work check</a>
+                  <a href={`/commitments/${encodeURIComponent(operation.reservation_id)}`}>View commitment {operation.reservation_id} and its work check</a>
                 </p>
               )}
-              {verifiedPaymentTransaction(operation, FIREWALL_CONTRACT_ID) && (
-                <p className="activity-meta"><a href={`${EXPLORER_URL}/transactions/${verifiedPaymentTransaction(operation, FIREWALL_CONTRACT_ID)}`} target="_blank" rel="noreferrer">View checked payment transaction ↗</a></p>
+              {verifiedPaymentTransaction(operation) && (
+                <p className="activity-meta"><a href={`${EXPLORER_URL}/transactions/${verifiedPaymentTransaction(operation)}`} target="_blank" rel="noreferrer">View checked payment transaction ↗</a></p>
               )}
               {operation.completed_at_ns !== "0" && <p className="activity-meta">Finished {formatDeadline(operation.completed_at_ns)}</p>}
             </article>
@@ -86,7 +85,7 @@ export default function ActivityPanel({ page, loading, error, loadingOlder, curr
           <p className="section-kicker">DAO records</p>
           <h2>Approval requests</h2>
         </div>
-        <a className="dao-link" href={communityHref("/governance")}>Review full requests</a>
+        <a className="dao-link" href="/governance">Review full requests</a>
       </div>
       <p className="activity-note">These are the newest requests read from the DAO. An approved vote is not a payment receipt. Check the treasury and payment records to see what happened to the money.</p>
       {dao && <p className="activity-note">Read from final DAO block {dao.blockHeight.toLocaleString("en-US")}. Showing up to 10 of the newest 50 requests.</p>}
