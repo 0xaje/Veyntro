@@ -35,6 +35,10 @@ jobs:
         run: rustup show
       - name: Test and build contracts
         run: bash scripts/build-firewall.sh
+      - name: Match reviewed deployment bytes
+        run: |
+          echo '04e7dc5ffaa8cfe9d58879641724ad0ec2a2608fdd426a22922a92201143b66a  target/wasm32-unknown-unknown/release/veyntro_commitment_firewall.wasm' | sha256sum -c -
+          echo 'ebda5e982baa31026a0acc545e8c383c64dbd5030773586b63162e163cc94c10  target/wasm32-unknown-unknown/release/veyntro_community_factory.wasm' | sha256sum -c -
       - name: Save checked testnet contract files
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
