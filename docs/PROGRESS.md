@@ -802,3 +802,7 @@ The separate final-audit report is kept outside the Git repository. This release
 ## Mobile navigation repair — 2026-11-12
 
 The owner's phone screenshot showed “How it works” wrapping to a third header row and leaving an empty gap. At phone widths, the main navigation now stays on one horizontal scroll row with 44px link targets; the brand and wallet controls remain above it. Web type check, four focused tests, and production build pass locally. A headless browser screenshot could not run in this workspace, so verify the hosted result on the owner's phone after deployment; do not count this as a completed mobile walkthrough yet.
+
+## Mobile header menu — 2026-11-12
+
+The horizontal swipe row was hard to discover and use on the owner's phone. The phone header now shows the brand, theme and wallet controls, followed by a labeled Menu button with the current page. Opening it shows all five navigation links as large targets and the testnet label; no sideways scrolling is required. Connected account text is constrained on narrow phones. Local web type check, four focused tests and production build passed. A hosted phone screenshot and actual wallet flow still need owner verification after deployment.
