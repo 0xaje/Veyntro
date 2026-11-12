@@ -88,7 +88,7 @@ function CommitmentCard({ row, onRefresh, detail = false }: { row: Reservation; 
           <p><strong>Payment account:</strong> {row.payout_recipient}</p>
           <p><strong>Work-check rule hash:</strong> <code>{row.evidence_policy_hash}</code></p>
           {row.evidence && <p><strong>Checked commit:</strong> <code>{row.evidence.commit_sha}</code></p>}
-          {row.evidence && <p><strong>Work check valid until:</strong> {formatDeadline(row.evidence.valid_until_ns)}</p>}
+          {row.evidence && <p><strong>Work check valid until:</strong> {formatDeadline(row.evidence.valid_until_ns)}. This was the time limit for requesting payment with this check. The commitment deadline is separate; completed payments stay completed.</p>}
           {workCheck && (
             <p><strong>Check this work:</strong> <a href={workCheck.run} target="_blank" rel="noreferrer">GitHub result ↗</a> · <a href={workCheck.submission} target="_blank" rel="noreferrer">NEAR work-check transaction ↗</a></p>
           )}
@@ -377,7 +377,7 @@ export default function App() {
             </div>
             <div className="freshness">
               <span className={loadError ? "freshness-dot stale" : "freshness-dot"} />
-              <span>{loading ? "Reading NEAR testnet…" : `Final block ${snapshot?.blockHeight.toLocaleString("en-US")}`}</span>
+              <span>{snapshot ? `Final block ${snapshot.blockHeight.toLocaleString("en-US")}${refreshing ? " · Updating…" : ""}` : "Reading NEAR testnet…"}</span>
               <button className="refresh-button" onClick={() => void refresh()} disabled={loading || refreshing} aria-label="Refresh treasury data">
                 {refreshing ? "Updating…" : "Refresh"}
               </button>
