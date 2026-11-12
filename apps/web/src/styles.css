@@ -1,5 +1,5 @@
 /* Hallmark · shape: app screen · genre: modern-minimal · theme: Veyntro green & dark mode
- * nav: mobile horizontal scroll · signature: treasury balance cards · states: live, loading, empty, error · palette: forest/sage & dark forest · v2.1.0 */
+ * nav: compact mobile menu · signature: treasury balance cards · states: live, loading, empty, error · palette: forest/sage & dark forest · v2.1.0 */
 @import "tailwindcss";
 @import "./hallmark/tokens.css";
 @import "./hallmark/base.css";
@@ -75,6 +75,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 .main-nav a { min-height: 44px; display: inline-flex; align-items: center; flex: none; white-space: nowrap; color: var(--color-ink-2); font-size: var(--text-sm); text-decoration: none; }
 .main-nav a:hover, .main-nav a[aria-current="page"], .dao-link:hover, .activity-commitment-link:hover { color: var(--color-accent-hi); }
 .main-nav a[aria-current="page"] { font-weight: 650; }
+.mobile-menu-button, .mobile-network-label { display: none; }
 
 .topbar-controls { display: flex; align-items: center; gap: var(--space-sm); }
 .wallet-area { display: flex; align-items: center; gap: var(--space-sm); }
@@ -255,8 +256,15 @@ a:active { color: var(--color-accent-hi); }
 
 @media (max-width: 720px) {
   .topbar { position: static; }
-  .main-nav { flex-wrap: nowrap; gap: var(--space-md); overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; scroll-padding-inline: var(--space-sm); }
-  .main-nav a { font-size: var(--text-xs); }
+  .mobile-menu-button { grid-column: 1 / -1; grid-row: 2; display: flex; min-height: 44px; align-items: center; gap: var(--space-xs); padding: 0 var(--space-sm); border: 1px solid var(--color-rule); border-radius: 9px; background: var(--color-panel); color: var(--color-ink); font-size: var(--text-sm); font-weight: 600; text-align: left; }
+  .mobile-menu-button[aria-expanded="true"] { border-color: var(--color-accent); }
+  .mobile-menu-button:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  .mobile-current-page { color: var(--color-ink-2); font-weight: 400; }
+  .main-nav { grid-row: 3; display: none; width: 100%; margin: 0; overflow: visible; }
+  .main-nav[data-open="true"] { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xs); padding: var(--space-xs) 0; }
+  .main-nav a { min-height: 44px; padding: 0 var(--space-sm); border-radius: 9px; font-size: var(--text-sm); white-space: normal; }
+  .main-nav a[aria-current="page"] { background: var(--color-accent-soft); }
+  .mobile-network-label { grid-column: 1 / -1; display: block; padding: var(--space-xs) var(--space-sm) 0; color: var(--color-ink-2); font-size: var(--text-xs); }
   .network-pill { display: none; }
   main { width: min(calc(100% - 2 * var(--gutter)), 560px); }
   .intro { grid-template-columns: minmax(0, 1fr); padding: 32px 0 22px; gap: var(--space-md); }
@@ -272,6 +280,8 @@ a:active { color: var(--color-accent-hi); }
 
 @media (max-width: 480px) {
   .topbar-controls { gap: 6px; }
+  .wallet-button.connected { max-width: 145px; }
+  .disconnect-word { display: none; }
   .overview-shortcuts { grid-template-columns: minmax(0, 1fr); }
 }
 

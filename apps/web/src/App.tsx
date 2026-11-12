@@ -130,6 +130,7 @@ export default function App() {
 
   const toggleTheme = () => setEffectiveTheme((current) => current === "dark" ? "light" : "dark");
   const [activeView, setActiveView] = useState<AppView>(() => viewFromLocation(window.location.hash, window.location.pathname));
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const syncView = () => {
@@ -290,12 +291,16 @@ export default function App() {
           <span className="brand-mark" aria-hidden="true">V</span>
           <span>Veyntro</span>
         </a>
-        <nav className="main-nav" aria-label="Main navigation">
+        <button className="mobile-menu-button" type="button" aria-expanded={menuOpen} aria-controls="main-navigation" onClick={() => setMenuOpen((open) => !open)}>
+          <span aria-hidden="true">☰</span> Menu <span className="mobile-current-page">· {activeView === "docs" ? "How it works" : activeView === "governance" ? "DAO approval" : activeView[0].toUpperCase() + activeView.slice(1)}</span>
+        </button>
+        <nav id="main-navigation" className="main-nav" data-open={menuOpen} aria-label="Main navigation" onClick={(event) => { if ((event.target as HTMLElement).closest("a")) setMenuOpen(false); }}>
           <a href="/#overview" aria-current={activeView === "overview" ? "page" : undefined}>Overview</a>
           <a href="/commitments" aria-current={activeView === "commitments" ? "page" : undefined}>Commitments</a>
           <a href="/governance" aria-current={activeView === "governance" ? "page" : undefined}>DAO approval</a>
           <a href="/activity" aria-current={activeView === "activity" ? "page" : undefined}>Activity</a>
           <a href="/docs" aria-current={activeView === "docs" ? "page" : undefined}>How it works</a>
+          <span className="mobile-network-label">NEAR testnet</span>
         </nav>
         <div className="topbar-controls">
           <button
