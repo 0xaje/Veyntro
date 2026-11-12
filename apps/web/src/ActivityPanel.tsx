@@ -64,7 +64,7 @@ export default function ActivityPanel({ page, loading, error, loadingOlder, curr
                 </p>
               )}
               {verifiedPaymentTransaction(operation) && (
-                <p className="activity-meta"><a href={`${EXPLORER_URL}/transactions/${verifiedPaymentTransaction(operation)}`} target="_blank" rel="noreferrer">View checked payment transaction ↗</a></p>
+                <p className="activity-meta">Payment receipt: <a href={`https://testnet.nearblocks.io/txns/${verifiedPaymentTransaction(operation)}`} target="_blank" rel="noreferrer">Open on Nearblocks ↗</a> · <a href={`${EXPLORER_URL}/transactions/${verifiedPaymentTransaction(operation)}`} target="_blank" rel="noreferrer">Other explorers ↗</a><br />If an explorer cannot load, search this testnet transaction ID: <code>{verifiedPaymentTransaction(operation)}</code></p>
               )}
               {operation.completed_at_ns !== "0" && <p className="activity-meta">Finished {formatDeadline(operation.completed_at_ns)}</p>}
             </article>
