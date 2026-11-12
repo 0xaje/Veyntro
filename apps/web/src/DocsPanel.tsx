@@ -1,6 +1,6 @@
 import { explorerAccountUrl, FIREWALL_CONTRACT_ID, type TreasuryState } from "./near/rpc";
 
-const SOURCE = "https://github.com/0xaje/Veyntro/blob/codex/phase4-ui-corrections";
+const SOURCE = "https://github.com/0xaje/Veyntro/blob/main";
 
 export default function DocsPanel({ state }: { state: TreasuryState | null }) {
   return (

@@ -349,12 +349,26 @@ export default function GovernancePanel({ dao, treasury, loading, error, onRefre
 
       <div className="governance-grid">
         <div className="proposal-list-panel">
+          {(dao?.featuredRejection ?? dao?.proposals.find((proposal) => proposal.id === 4 && proposal.status === "Failed")) && (
+            <div className="featured-rejection">
+              <h3>See why a request failed</h3>
+              <p className="proposal-meta">Past request 4 asked to set aside 1 NEAR when only 0.27188 NEAR was available. The DAO voted, but the Firewall refused the extra commitment. No new money was set aside.</p>
+              <ProposalRow
+                proposal={(dao.featuredRejection ?? dao.proposals.find((proposal) => proposal.id === 4))!}
+                daoPolicy={dao.policy}
+                accountId={account?.accountId ?? null}
+                busy={loading}
+                onVote={(id, action) => void vote(id, action)}
+              />
+              <p className="proposal-meta">The contract said: “Not enough money available for this commitment.” <a href="https://testnet.nearblocks.io/txns/HnMJXawR3zD6onxcQe6n27wrYVQ1X591U7r4miPrnEtt" target="_blank" rel="noreferrer">See testnet transaction ↗</a> · <a href="https://github.com/0xaje/Veyntro/blob/main/evidence/OVERCOMMITMENT_REJECTION.json" target="_blank" rel="noreferrer">See recorded before-and-after check ↗</a></p>
+            </div>
+          )}
           <h3>Recent proposals</h3>
           {loading && !dao ? <div className="loading-panel compact" role="status">Loading DAO proposals…</div> : null}
           {!loading && !dao && !error ? <div className="empty-panel">DAO proposals are not available yet.</div> : null}
           {dao?.proposals.length ? (
             <div className="proposal-list">
-              {dao.proposals.map((proposal) => (
+              {dao.proposals.filter((proposal) => proposal.id !== 4 || proposal.status !== "Failed").map((proposal) => (
                 <ProposalRow
                   key={proposal.id}
                   proposal={proposal}
