@@ -1,6 +1,6 @@
 # Commitment Firewall — deployed contract API
 
-The contract is deployed on NEAR testnet as `firewall-aje-veyntro.testnet`; its deployment and verified transaction behavior are recorded in `docs/PROGRESS.md` and `evidence/`. This file documents the contract interface, not a hosted user application. A browser UI and hosted service are not yet available. Amounts are decimal-string yoctoNEAR (`U128`); IDs, nonces and nanosecond deadlines are decimal-string `U64`. Account IDs use NEAR's validated AccountId type. All writes require a signed NEAR transaction. SDK nonpayable wrappers reject attached deposits except on fund_treasury.
+The contract is deployed on NEAR testnet as `firewall-aje-veyntro.testnet`; its deployment and verified transaction behavior are recorded in `docs/PROGRESS.md` and `evidence/`. This file documents the contract interface. The [hosted app](https://veyntro-web.onrender.com/) reads this deployed instance and supports signed actions. Amounts are decimal-string yoctoNEAR (`U128`); IDs, nonces and nanosecond deadlines are decimal-string `U64`. Account IDs use NEAR's validated AccountId type. All writes require a signed NEAR transaction. SDK nonpayable wrappers reject attached deposits except on fund_treasury.
 
 | Method | Immediate caller | Arguments / behavior |
 | --- | --- | --- |
@@ -20,16 +20,16 @@ The contract is deployed on NEAR testnet as `firewall-aje-veyntro.testnet`; its 
 | list_reservations | Public view | optional from_index and limit; default 20, maximum 50 |
 | get_operation | Public view | id; kind, fixed recipient/amount, pending/succeeded/failed, timestamps |
 
-Evidence fields are authenticated assertions from the trusted verifier, not GitHub data fetched by the contract. The real GitHub verification service is still Phase 3. Policy hash must commit to the full approved offchain evidence policy, including repo, immutable commit, workflow/ref and allowed event. Contextual attestation digests and real workflow URLs must be recorded by the verifier. Do not attest fabricated outcomes to exercise the live contract.
+Evidence fields are authenticated assertions from the trusted verifier, not GitHub data fetched by the contract. The restricted GitHub Actions verifier has checked and submitted evidence for commitment 4; see `docs/PAYMENT_6_AUDIT.md`. Policy hash commits to the approved offchain evidence policy, including repo, immutable commit, workflow/ref and allowed event. The verifier is trusted and manually dispatched for this repository; it is not a general public service.
 
 ## Events
 
 `EVENT_JSON:` records use standard `veyntro`, version `1.0.0` and an array in data. Names: funded, commitment_created, commitment_cancelled, commitment_expired, verifier_changed, evidence_checked, payment_pending, withdrawal_pending, operation_settled. Events describe the stage actually reached; pending is never a payment success. Rejected receipts are errors, not successful state transitions. Audit pages must use real receipts and current chain views.
 
-## Deployment and live verification gate
+## Deployment and live verification history
 
-Use a NEW contract account; never redeploy over receiver.aje-veyntro.testnet. Build locally with scripts/build-firewall.sh, record its actual hash, create the account with a free testnet faucet, and establish separate actual verifier and beneficiary accounts before initialization. Signing keys stay on the user's machine until a separately reviewed backend deployment flow exists.
+The deployed Firewall uses a separate account from `receiver.aje-veyntro.testnet`. Build source with `scripts/build-firewall.sh`; do not redeploy over the earlier receiver. The manually dispatched evidence workflow uses a restricted verifier key in GitHub Actions. Never add any signing key to this repository.
 
 The initial artifact is about 219 KB, so storage requires over 2 test NEAR. The DAO must also deposit enough accountable funds to cover the effective reserve and commitment budgets; pre-funded deployment balances are deliberately excluded from accountable funds. Query actual state and balances before choosing proposal amounts. No fixed example balance is live evidence.
 
-Phase 2 is not complete until real DAO funding, backed commitments, rejected overcommitment, actual authorized payout and failed/retried payment, pending-safe reconciliation, expiry release and final explorer evidence have been captured. Current SDK harness tests validate Rust behavior but do not certify generated ABI guards, transaction rollback, actual gas sufficiency or real cross-receipt execution. These need sandbox/live integration checks. Deployment full-access keys and callback liveness remain explicit trust/reliability review items.
+Real DAO funding, backed commitments, rejected overcommitment, authorized payout, failed/retried payment, expiry release and explorer evidence are linked in the [README](../README.md) and [judge walkthrough](../JUDGES.md). The unit tests validate Rust behavior; the testnet receipts demonstrate selected cross-receipt paths. Neither constitutes an independent security audit. Deployment full-access keys and callback liveness remain trust and reliability review items.
