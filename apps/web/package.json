@@ -9,9 +9,11 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
-    "check": "tsc -b --pretty false"
+    "check": "tsc -b --pretty false",
+    "test": "node --test test/*.test.ts"
   },
   "dependencies": {
+    "@near-js/transactions": "2.5.1",
     "@near-wallet-selector/core": "10.1.4",
     "@near-wallet-selector/here-wallet": "10.1.4",
     "@near-wallet-selector/intear-wallet": "10.1.4",

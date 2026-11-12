@@ -30,7 +30,8 @@ jobs:
           cache-dependency-path: apps/web/package-lock.json
       - name: Install locked web dependencies without lifecycle scripts
         run: npm --prefix apps/web ci --ignore-scripts --no-audit --no-fund
-      - name: Check types and build the web app
+      - name: Check types, web behavior and production build
         run: |
           npm --prefix apps/web run check
+          npm --prefix apps/web test
           npm --prefix apps/web run build

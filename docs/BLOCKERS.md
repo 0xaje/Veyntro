@@ -1,5 +1,16 @@
 # Veyntro — blockers
 
+## Current release gates — 12 November 2026
+
+- The public X demo post and official submission form are not recorded as complete. The video or screenshots, repository link and demo-post link must be checked before the deadline.
+- An independent mobile and fresh-wallet walkthrough and an external security review have not been completed. These limits must remain visible; they are not reasons to invent test results.
+- The GitHub evidence checker needs a manually started protected workflow. It is not a general public evidence service.
+- Independent organization setup was removed from this submission. The site currently serves the tested Veyntro DAO only.
+
+The entries below are historical blockers and updates. Many were resolved by the linked evidence in `docs/PROGRESS.md`; do not treat their old “next action” text as the current release plan.
+
+## Historical development blockers
+
 ## B-001 — Existing repository unavailable
 
 Evidence: workspace initially contained only two uploaded Markdown files. `git rev-parse --show-toplevel` exited 128. No source manifests, contracts, frontend, tests or deployment records were present.
