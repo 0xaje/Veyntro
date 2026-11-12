@@ -3,6 +3,7 @@ import { useWallet } from "./wallet/WalletProvider";
 import CommitmentActions from "./CommitmentActions";
 import GovernancePanel from "./GovernancePanel";
 import ActivityPanel from "./ActivityPanel";
+import WorkCheckPanel from "./WorkCheckPanel";
 import DocsPanel from "./DocsPanel";
 import { readDao, type DaoSnapshot } from "./near/dao";
 import { verifiedWorkCheck } from "./near/verified-audit";
@@ -25,7 +26,8 @@ function Amount({ value }: { value: string }) {
   return <>{formatNear(value)} <span className="amount-unit">NEAR</span></>;
 }
 
-type AppView = "overview" | "commitments" | "governance" | "activity" | "docs";
+const COMMUNITY_SETUP_ENABLED = import.meta.env.VITE_ENABLE_COMMUNITY_SETUP === "true";
+type AppView = "overview" | "commitments" | "governance" | "activity" | "docs" | "verify";
 
 function viewFromLocation(hash: string, path: string): AppView {
   if (hash === "#commitments" || hash.startsWith("#commitment-")) return "commitments";
@@ -36,6 +38,7 @@ function viewFromLocation(hash: string, path: string): AppView {
   if (path === "/governance") return "governance";
   if (path === "/activity") return "activity";
   if (path === "/docs") return "docs";
+  if (path === "/verify") return "verify";
   return "overview";
 }
 
@@ -59,6 +62,10 @@ const VIEW_COPY: Record<AppView, { title: string; description: string }> = {
   docs: {
     title: "How Veyntro works",
     description: "See who approves money, how work is checked, and what the app can show today.",
+  },
+  verify: {
+    title: "Check completed work",
+    description: "Compare a GitHub run with the work your DAO approved, then record the result with the chosen wallet.",
   },
 };
 
@@ -95,6 +102,7 @@ function CommitmentCard({ row, onRefresh, detail = false }: { row: Reservation; 
           )}
           {row.evidence && <p className="activity-note">The GitHub result confirms the agreed checks passed. It does not prove every part of the work is correct.</p>}
           <p><a href={communityHref("/activity")}>See available payment records</a></p>
+          {COMMUNITY_SETUP_ENABLED && row.status === "Active" && !row.evidence && <p><a href={communityHref("/verify")}>Check this work with your group’s wallet</a></p>}
         </div>
       ) : <a className="commitment-detail-link" href={communityHref(`/commitments/${encodeURIComponent(row.id)}`)}>View commitment details</a>}
       {row.pending_amount !== "0" && (
@@ -296,6 +304,7 @@ export default function App() {
           <a href={communityHref("/commitments")} aria-current={activeView === "commitments" ? "page" : undefined}>Commitments</a>
           <a href={communityHref("/governance")} aria-current={activeView === "governance" ? "page" : undefined}>DAO approval</a>
           <a href={communityHref("/activity")} aria-current={activeView === "activity" ? "page" : undefined}>Activity</a>
+          {COMMUNITY_SETUP_ENABLED && <a href={communityHref("/verify")} aria-current={activeView === "verify" ? "page" : undefined}>Check work</a>}
           <a href={communityHref("/docs")} aria-current={activeView === "docs" ? "page" : undefined}>How it works</a>
         </nav>
         <div className="topbar-controls">
@@ -495,6 +504,9 @@ export default function App() {
         </div>
 
         {activeView === "docs" && <DocsPanel state={state ?? null} />}
+        {activeView === "verify" && (COMMUNITY_SETUP_ENABLED
+          ? <WorkCheckPanel onRefresh={refresh} />
+          : <div className="empty-panel">Group-owned work checks are not open on this site yet.</div>)}
 
         <section className="trust-note" aria-label="About this page">
           <span className="trust-icon" aria-hidden="true">✓</span>

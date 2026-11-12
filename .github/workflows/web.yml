@@ -34,4 +34,5 @@ jobs:
         run: |
           npm --prefix apps/web run check
           node --test apps/web/test/setup-proposal.test.ts
+          node --test apps/web/test/browser-evidence.test.ts
           npm --prefix apps/web run build

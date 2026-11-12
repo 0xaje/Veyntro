@@ -358,7 +358,7 @@ export default function CommunitySetup() {
       </div>}
       {!setupRequest && <button type="button" disabled={!SETUP_ACTIONS_ENABLED || busy || quote.status !== null && quote.status !== 4} onClick={() => void requestSetup()}>Ask your DAO to set up the Firewall</button>}
       {setupTransaction && <p><a href={`https://explorer.testnet.near.org/transactions/${encodeURIComponent(setupTransaction)}`} target="_blank" rel="noopener noreferrer">View latest setup transaction</a></p>}
-      {confirmedChild && <p>Checked Firewall: <strong>{confirmedChild}</strong>. <a href={`/?firewall=${encodeURIComponent(confirmedChild)}`}>View its public page</a></p>}
+      {confirmedChild && <p>Checked Firewall: <strong>{confirmedChild}</strong>. <a href={`/?firewall=${encodeURIComponent(confirmedChild)}`}>View its public page</a>. The work checker can <a href={`/verify?firewall=${encodeURIComponent(confirmedChild)}`}>choose a GitHub work rule and check a run</a> after the DAO approves a commitment using that rule.</p>}
     </section>}
     {created && <form onSubmit={e => void checkFirewall(e)}>
       <h2>Check your Firewall</h2>
