@@ -814,3 +814,7 @@ An AI first-time user reviewed the hosted desktop site without a wallet. They un
 ## Impact review navigation repair — 2026-11-12
 
 An external first-time impact review scored demonstrated impact 7/20 and identified that request 4 was missing from the hosted recent DAO list, the explorer link opened a selector, and How it works linked to old branch documentation. The app now asks the same final DAO block for past request 4 when it is absent from the recent page, and shows it separately with the historically recorded rejection reason, direct testnet transaction and public before-and-after evidence. The How it works links point to main; the judge and demo paths name the past request and offer a repository evidence fallback if an explorer is inaccessible. This improves judge navigation, not independent adoption or real-world impact. Local web TypeScript check, four tests, and production build passed; PR CI and hosted visibility remain to be verified.
+
+## Outside feedback described with limits — 2026-11-12
+
+The owner reports that people outside the build tried the public hosted site and said it worked. Their exact tasks, devices, and observations were not recorded, so this is informal feedback rather than a structured independent usability pass or independent DAO adoption. README and judge guide now distinguish that feedback from the documented AI first-time walkthrough and limited outside source review. No new transaction or product feature is claimed.
