@@ -111,6 +111,9 @@ function ProposalRow({ proposal, daoPolicy, accountId, busy, onVote }: {
         <span className={`status status-${proposal.status.toLowerCase()}`}>{statusLabel(proposal.status)}</span>
       </div>
       <p className="proposal-meta">Asked by {proposal.proposer}. {kind === "FunctionCall" ? actionLabel(firstAction) : "DAO policy change"}</p>
+      {functionCall?.receiver_id === FIREWALL_CONTRACT_ID && firstAction === "create_reservation" && (
+        <p className="proposal-meta">This vote sets money aside. It does not send the payment. Check Activity for completed payments.</p>
+      )}
       {functionCall && (
         <div className="proposal-review">
           <p><strong>Contract:</strong> {functionCall.receiver_id ?? "Not shown"}</p>
