@@ -74,7 +74,8 @@ export default function WorkCheckPanel({ onRefresh }: { onRefresh: () => Promise
       ]);
       if (JSON.stringify(freshRun) !== JSON.stringify(review.run) ||
           fresh.treasury.verifier_epoch !== review.context.treasury.verifier_epoch ||
-          fresh.commitment.evidence !== null || fresh.commitment.status !== "Active" ||
+          JSON.stringify(fresh.commitment.evidence) !== JSON.stringify(review.context.commitment.evidence) ||
+          fresh.commitment.status !== "Active" ||
           fresh.commitment.pending_amount !== "0" ||
           fresh.commitment.evidence_policy_hash !== review.prepared.args.policy_hash ||
           fresh.commitment.beneficiary !== review.context.commitment.beneficiary ||

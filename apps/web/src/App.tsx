@@ -102,7 +102,7 @@ function CommitmentCard({ row, onRefresh, detail = false }: { row: Reservation; 
           )}
           {row.evidence && <p className="activity-note">The GitHub result confirms the agreed checks passed. It does not prove every part of the work is correct.</p>}
           <p><a href={communityHref("/activity")}>See available payment records</a></p>
-          {COMMUNITY_SETUP_ENABLED && row.status === "Active" && !row.evidence && <p><a href={communityHref("/verify")}>Check this work with your group’s wallet</a></p>}
+          {COMMUNITY_SETUP_ENABLED && row.status === "Active" && !row.is_expired && !row.evidence?.usable && <p><a href={communityHref("/verify")}>Check this work with your group’s wallet</a></p>}
         </div>
       ) : <a className="commitment-detail-link" href={communityHref(`/commitments/${encodeURIComponent(row.id)}`)}>View commitment details</a>}
       {row.pending_amount !== "0" && (

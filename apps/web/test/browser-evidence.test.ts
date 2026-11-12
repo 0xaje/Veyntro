@@ -38,4 +38,8 @@ test("only the chosen checker can prepare evidence for the approved commitment",
   await assert.rejects(prepareWorkCheck(policy, run, context, "other.testnet", now));
   await assert.rejects(prepareWorkCheck(policy, run, { ...context, commitment: { ...context.commitment, evidence_policy_hash: "0".repeat(64) } },
     "verifier-aje-veyntro.testnet", now));
+  const expired = { ...context, commitment: { ...context.commitment, evidence: { nonce: "1", usable: false } } };
+  assert.equal((await prepareWorkCheck(policy, run, expired, "verifier-aje-veyntro.testnet", preparedAt)).args.nonce, "2");
+  await assert.rejects(prepareWorkCheck(policy, run, { ...context, commitment: { ...context.commitment, evidence: { nonce: "1", usable: true } } },
+    "verifier-aje-veyntro.testnet", preparedAt));
 });
