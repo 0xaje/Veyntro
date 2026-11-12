@@ -30,6 +30,7 @@ export interface DaoSnapshot {
   accountId: string;
   policy: DaoPolicy;
   proposals: DaoProposal[];
+  featuredRejection?: DaoProposal;
   blockHash: string;
   blockHeight: number;
 }
@@ -89,10 +90,22 @@ export async function readDao(accountId: string): Promise<DaoSnapshot> {
   }, policyRes.blockHash);
   if (proposalsRes.blockHash && proposalsRes.blockHash !== policyRes.blockHash) throw new Error("DAO reads returned different blocks. Refresh and try again.");
   if (!Array.isArray(proposalsRes.value)) throw new Error("The DAO returned an invalid proposal list.");
+  // The deployed DAO returns only its newest page even when asked for 50.
+  // Keep the verified overcommitment example visible without changing the live list.
+  let featuredRejection: DaoProposal | undefined;
+  if (accountId === "veyntro.sputnikv2.testnet" && !proposalsRes.value.some((proposal) => proposal.id === 4)) {
+    try {
+      const past = await callDaoView<DaoProposal>(accountId, "get_proposal", { id: 4 }, policyRes.blockHash);
+      if (past.blockHash === policyRes.blockHash && past.value.id === 4 && past.value.status === "Failed") featuredRejection = past.value;
+    } catch {
+      // An unavailable past request must not prevent current governance reads.
+    }
+  }
   return {
     accountId,
     policy: policyRes.value,
     proposals: proposalsRes.value.reverse(),
+    featuredRejection,
     blockHash: policyRes.blockHash,
     blockHeight: policyRes.blockHeight,
   };
