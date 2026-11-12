@@ -2,7 +2,7 @@
 
 **Version:** 1.2 — simple-English UX, Codex skills and agent workflow added  
 **Planning date:** 2026-10-30  
-**Status:** Approved for implementation planning; environment and live integrations not yet verified  
+**Status:** Tested single-DAO product on NEAR testnet; final submission review in progress. Independent DAO setup is outside this release.
 **Network:** NEAR testnet for hackathon validation  
 **Primary track:** Social Money (confirm official submission rules before submission)  
 **Tagline:** Every commitment accounted for.  

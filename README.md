@@ -8,7 +8,7 @@ Veyntro helps DAOs and communities set money aside for approved work without pro
 
 **Try it:** [Open the live testnet app](https://veyntro-web.onrender.com/), read the public treasury without connecting, review the [DAO requests](https://veyntro-web.onrender.com/governance), then inspect [a completed commitment](https://veyntro-web.onrender.com/commitments/4) and its payment in Activity. The [judge walkthrough](JUDGES.md) links each step to public evidence; the [demo recording guide](docs/DEMO_SCRIPT.md) gives the short video path. The [independent walkthrough](docs/INDEPENDENT_WALKTHROUGH.md) is a test plan, not a completed outside review.
 
-## Current status — 11 November 2026
+## Current status — 12 November 2026
 
 Veyntro's NEAR testnet contract has been used for real DAO funding, commitments, an overcommitment rejection, GitHub evidence checks, payments, failed-transfer recovery and expiry release. A manually dispatched GitHub Actions job uses a restricted key to check a GitHub run and submit an attestation. It successfully checked commitment 4 before its 0.05 testnet NEAR payment; it is not a general public evidence service.
 
