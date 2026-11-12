@@ -16,7 +16,7 @@ The React, Vite and TypeScript app reads live testnet state. The web app is host
 
 The contract's first-pass static review is not a security audit. [Wallet dependency findings](docs/WALLET_DEPENDENCY_REVIEW.md), independent testing, and release hardening remain open.
 
-The hosted app accepts a compatible community contract for public selection, but the second independent DAO and full signed flow in the [master plan](docs/MASTER_PLAN.md) have not been verified. Setup still needs manual deployment and its own verifier. Do not treat the community chooser as a finished self-service onboarding flow.
+This hosted app shows the tested Veyntro DAO and Firewall. It does not create or configure a DAO for another organization. A separate community would need its own deployment and verifier; that flow has not been completed or offered here.
 
 ## Check the working flow
 

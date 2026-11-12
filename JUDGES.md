@@ -17,7 +17,7 @@ Other real testnet cases: [DAO funding](https://explorer.testnet.near.org/transa
 
 ## Scope and trust
 
-This live example uses one testnet DAO with `aje.testnet` as its sole council voter and payment recipient. The hosted app can check and select a compatible community contract, but a second independently controlled DAO has **not** completed the governance, evidence, and payout flow. Community setup still requires manual deployment and a separate verifier; it is not yet a self-service service. The GitHub verifier trusts a restricted signing key and needs an operator to start its workflow. There is no completed independent security audit or external usability test. Testnet tokens have no mainnet value.
+This live example uses one testnet DAO with `aje.testnet` as its sole council voter and payment recipient. Another community cannot set up its own DAO from this site. A second independently controlled DAO has **not** completed the governance, evidence, and payout flow. The GitHub verifier trusts a restricted signing key and needs an operator to start its workflow. There is no completed independent security audit or external usability test. Testnet tokens have no mainnet value.
 
 The current public site uses free static hosting and the checked evidence run uses GitHub Actions. A community would need to fund its own DAO and contract storage/gas on NEAR and operate and protect its own restricted verifier key. There is no fee or revenue model in the app. Moving to mainnet would require a separate security audit, deployment and key review, reliable verifier operations, and a verified second-community flow; none of those are claimed today.
 
