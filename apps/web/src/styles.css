@@ -1,5 +1,5 @@
 /* Hallmark · shape: app screen · genre: modern-minimal · theme: Veyntro green & dark mode
- * nav: kept, tablet wrap · signature: treasury balance cards · states: live, loading, empty, error · palette: forest/sage & dark forest · v2.1.0 */
+ * nav: mobile horizontal scroll · signature: treasury balance cards · states: live, loading, empty, error · palette: forest/sage & dark forest · v2.1.0 */
 @import "tailwindcss";
 @import "./hallmark/tokens.css";
 @import "./hallmark/base.css";
@@ -255,7 +255,7 @@ a:active { color: var(--color-accent-hi); }
 
 @media (max-width: 720px) {
   .topbar { position: static; }
-  .main-nav { flex-wrap: wrap; gap: 0 var(--space-md); overflow: visible; }
+  .main-nav { flex-wrap: nowrap; gap: var(--space-md); overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; scroll-padding-inline: var(--space-sm); }
   .main-nav a { font-size: var(--text-xs); }
   .network-pill { display: none; }
   main { width: min(calc(100% - 2 * var(--gutter)), 560px); }
@@ -281,7 +281,6 @@ a:active { color: var(--color-accent-hi); }
 
 @media (max-width: 380px) {
   :root { --gutter: 16px; }
-  .main-nav { flex-wrap: wrap; justify-content: flex-start; column-gap: var(--space-md); }
   .wallet-button { padding-inline: var(--space-sm); }
   .wallet-button.connected { max-width: 170px; }
 }

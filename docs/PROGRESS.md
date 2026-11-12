@@ -798,3 +798,7 @@ The owner chose to remove unfinished independent-DAO and self-serve organization
 ## Final code and repository audit — 2026-11-12
 
 The separate final-audit report is kept outside the Git repository. This release cleanup removes the completed one-time council migration scripts and their now-invalid instructions, keeps source/evidence required to reproduce the deployed Firewall and earlier receiver, pins the web app's directly imported NEAR transaction package, and adds the existing focused web tests to CI. The README and plan now state the actual single-DAO scope. The root blockers file marks old development blockers as historical. Local web type check/build and four focused tests, and verifier type check and 32 tests passed before this cleanup; run clean-install checks and exact-head CI after the changes. No new chain transaction or external security audit is claimed. Remaining gates: hosted mobile/fresh-wallet review, public X demo post, official form submission.
+
+## Mobile navigation repair — 2026-11-12
+
+The owner's phone screenshot showed “How it works” wrapping to a third header row and leaving an empty gap. At phone widths, the main navigation now stays on one horizontal scroll row with 44px link targets; the brand and wallet controls remain above it. Web type check, four focused tests, and production build pass locally. A headless browser screenshot could not run in this workspace, so verify the hosted result on the owner's phone after deployment; do not count this as a completed mobile walkthrough yet.
