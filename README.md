@@ -2,89 +2,65 @@
 
 **Every commitment accounted for.**
 
-Veyntro helps DAOs and communities set money aside for approved work without promising the same funds twice. The Commitment Firewall checks each new commitment against the treasury's existing obligations and pending payments. **[See the one-minute judge walkthrough](JUDGES.md)**: a DAO vote that tried to overpromise failed onchain, while a funded commitment later paid after its agreed work check.
+Veyntro helps a DAO set money aside for work without promising the same funds twice. A SputnikDAO vote authorizes an action; the NEAR Commitment Firewall checks whether the treasury can actually cover it. [Open the live testnet app](https://veyntro-web.onrender.com/) · [Follow the one-minute judge path](JUDGES.md).
 
-**The problem:** a treasury can show 10 NEAR while 8 NEAR is already promised to ongoing work. Another 4 NEAR promise would overbook the same money. Veyntro shows only 2 NEAR available and rejects the extra promise in the contract. A DAO approves the work, a fixed amount is set aside, a chosen work check is recorded, and the beneficiary can request a payment within that limit. Unused money becomes available again after expiry.
+**NEAR Hackathon 2026 · Social Money.** This release shows one configured DAO on NEAR testnet. Public pages work without a wallet. Authorized council and beneficiary actions use real wallet signatures.
 
-**Try it:** [Open the live testnet app](https://veyntro-web.onrender.com/), read the public treasury without connecting, review the [DAO requests](https://veyntro-web.onrender.com/governance), then inspect [a completed commitment](https://veyntro-web.onrender.com/commitments/4) and its payment in Activity. The [judge walkthrough](JUDGES.md) links each step to public evidence; the [demo recording guide](docs/DEMO_SCRIPT.md) gives the short video path. The [independent walkthrough](docs/INDEPENDENT_WALKTHROUGH.md) is a detailed test plan. Outside people have informally tried the public site and told the owner it worked; their exact steps and devices were not recorded.
+**Demo post:** Not published yet. The hackathon submission requires a public X post with a video or screenshots as well as this public repository. Add the actual post link here after publication.
 
-## Current status — 12 November 2026
+## The problem and the difference
 
-Veyntro's NEAR testnet contract has been used for real DAO funding, commitments, an overcommitment rejection, GitHub evidence checks, payments, failed-transfer recovery and expiry release. A manually dispatched GitHub Actions job uses a restricted key to check a GitHub run and submit an attestation. It successfully checked commitment 4 before its 0.05 testnet NEAR payment; it is not a general public evidence service.
+A DAO can hold 10 NEAR but already owe 8 NEAR for approved work. It cannot safely promise another 4 NEAR. A vote alone does not protect the money left for existing work.
 
-The React, Vite and TypeScript app reads live testnet state. The web app is hosted at [veyntro-web.onrender.com](https://veyntro-web.onrender.com/) on a free Render Static Site. Public guest reads, a hosted wallet session reported by the owner, a DAO request and vote, and a hosted beneficiary payment were exercised with real testnet actions. Payment 6 settled successfully to `aje.testnet`; see [its audit record](docs/PAYMENT_6_AUDIT.md). The restricted verifier key is held by GitHub Actions for the manually dispatched evidence job; Ubuntu is no longer required for that tested path. The owner has tested mobile wallet connection, disconnection and reconnection. Outside visitors have informally reported that the public site worked, but we do not have a recorded independent device-by-device test.
+Veyntro keeps a contract-level account of confirmed funds, money set aside, pending transfers and an operating reserve. It refuses a new commitment that cannot be backed. When work meets the DAO's chosen GitHub check, the beneficiary can request a bounded payment; the final callback records whether the transfer succeeded. Unused money can be released after expiry.
 
-A limited outside source review found no confirmed unauthorized treasury-control or duplicate-settlement path in the reviewed modules; it did not rerun Rust tests or constitute a full security audit. [Wallet dependency findings](docs/WALLET_DEPENDENCY_REVIEW.md), independent testing, and release hardening remain open.
+The real testnet example is [request 4 on the DAO page](https://veyntro-web.onrender.com/governance): the DAO voted to set aside **1 NEAR** when only **0.27188 NEAR** was available at that time. The Firewall [refused the call](https://testnet.nearblocks.io/txns/HnMJXawR3zD6onxcQe6n27wrYVQ1X591U7r4miPrnEtt); [the recorded before-and-after check](evidence/OVERCOMMITMENT_REJECTION.json) shows no new commitment. Those are historical amounts, not today's balance.
 
-This hosted app shows the tested Veyntro DAO and Firewall. It does not create or configure a DAO for another organization. A separate community would need its own deployment and verifier; that flow has not been completed or offered here.
+## Try the live flow — do this, see that
 
-## Check the working flow
+No wallet or testnet funds are needed to inspect these completed transactions.
 
-This walkthrough uses recorded **NEAR testnet** activity. It does not require a wallet or a payment.
+| Do this | See this |
+| --- | --- |
+| Open [DAO approval](https://veyntro-web.onrender.com/governance), then **See why a request failed**. Expand request 4's contract action. | **Failed during execution** and “Not enough money available for this commitment.” The vote happened; the proposed commitment did not. |
+| On the same page, inspect request **14**. | **Approved**: a `create_reservation` action set aside **0.05 testnet NEAR**. This is not a payment. |
+| Open [commitment 4](https://veyntro-web.onrender.com/commitments/4). | Completed work, the payment account, the checked commit and links to the [GitHub result](https://github.com/0xaje/Veyntro/actions/runs/42136893325) and [work-check transaction](https://explorer.testnet.near.org/transactions/23i8gXtwRgN7oqMF3HT1xHgn8PaewqrvDqWh2UuGG2Br). |
+| Follow **See available payment records** to [Activity](https://veyntro-web.onrender.com/activity). | Payment **6** is Completed: **0.05 testnet NEAR** sent to `aje.testnet`. Open its [transfer transaction](https://testnet.nearblocks.io/txns/4WDbT9xDxNgJVgGcgeSwcTex7GGrmT2U3tsLPH94jKex) or [payment audit](docs/PAYMENT_6_AUDIT.md). |
+| Open [Overview](https://veyntro-web.onrender.com/#overview). | Live finalized-block amounts for money available, money set aside and coverage. Values change; they are not fixed demo data. |
 
-1. Open the [public treasury](https://veyntro-web.onrender.com/). You should see amounts read from the Firewall contract and the latest finalized block. These are test tokens, not funds on NEAR mainnet.
-2. Open [DAO approval](https://veyntro-web.onrender.com/governance). Find request 13: a council approval set aside 0.05 NEAR for `aje.testnet`. The [progress record](docs/PROGRESS.md) includes the finalized DAO proposal and reservation checks.
-3. Open [commitment 3](https://veyntro-web.onrender.com/commitments/3). It was paid and is now Completed: 0.05 NEAR approved, zero still set aside, the checked commit recorded, and a link to its payment records. The [final state check](docs/PROGRESS.md#browser-beneficiary-payout-for-commitment-3-verified--2026-11-03) found operation 5 Succeeded and both confirmed funds and liabilities reduced by 0.05 NEAR.
-4. Compare the [rejected overcommitment receipt](https://explorer.testnet.near.org/transactions/HnMJXawR3zD6onxcQe6n27wrYVQ1X591U7r4miPrnEtt) with the [successful GitHub-checked payment receipt](https://explorer.testnet.near.org/transactions/673VxeaAwfGbJ8pres4mJHxifLwYQbjJ1VdpCoRcf5bn). One proves the contract refused an unfunded promise; the other records a permitted payout. The [expiry-release receipt](https://explorer.testnet.near.org/transactions/3bWgBZGtCJEHxdgo4Kcm995fXPXzskbfXbpKSG5enMv1) shows unused funds becoming available again.
+[JUDGES.md](JUDGES.md) has the short receipt trail; [the recording guide](docs/DEMO_SCRIPT.md) follows the same path. Other recorded cases include [DAO funding](https://explorer.testnet.near.org/transactions/BwjKrwuyGq1k5kYjZHQTBaof8DbGeT3UyczuWRAWPE5y), [failed payout and retry](evidence/FAILED_PAYOUT_CALLBACK.json), and [expiry release](https://explorer.testnet.near.org/transactions/3bWgBZGtCJEHxdgo4Kcm995fXPXzskbfXbpKSG5enMv1). These are testnet tokens, not mainnet value.
 
-The already completed commitment cannot be paid again. A fresh signed test needs a new DAO-approved commitment, a matching current GitHub run and verifier attestation, and a beneficiary wallet. That flow was exercised on the hosted testnet app for commitment 4; see [the payment 6 audit record](docs/PAYMENT_6_AUDIT.md). It does not establish that every wallet or future evidence run will work.
+## How it works
 
-## Testnet accounts
+1. The DAO approves funding and commitment actions through [SputnikDAO](https://explorer.testnet.near.org/accounts/veyntro.sputnikv2.testnet).
+2. The [Firewall contract](https://explorer.testnet.near.org/accounts/firewall-aje-veyntro.testnet) enforces the available-money check and records the approved beneficiary, payment account, amount, deadline and work-check rule.
+3. A manually started [GitHub Actions verifier run](https://github.com/0xaje/Veyntro/actions/runs/42275081154) checks the configured GitHub run and submits an attestation using a restricted function-call key. Passing CI means the agreed checks passed; it does not independently prove the work's quality or value.
+4. The beneficiary signs a payment request. The contract checks the authority, limit, evidence and expiry, then reconciles the actual transfer result in its callback. Public pages read finalized NEAR testnet state.
 
-- DAO: [veyntro.sputnikv2.testnet](https://explorer.testnet.near.org/accounts/veyntro.sputnikv2.testnet)
-- Commitment Firewall: [firewall-aje-veyntro.testnet](https://explorer.testnet.near.org/accounts/firewall-aje-veyntro.testnet)
-- Council: `aje.testnet` (sole current council voter; the former CLI voter was removed by DAO proposal 12)
-- Evidence verifier: `verifier-aje-veyntro.testnet`
+See [accounting rules](docs/FIREWALL_ACCOUNTING.md), [contract API](docs/FIREWALL_API.md) and [verifier action](docs/VERIFIER_ACTION.md) for technical details.
 
-## Verified evidence
+The stack is Rust with near-sdk for the contracts, React/Vite/TypeScript and NEAR Wallet Selector for the web app, and Node.js/TypeScript with the GitHub API for the verifier. Source lives in [contracts/](contracts/), [apps/web/](apps/web/) and [services/verifier/](services/verifier/); recorded testnet checks live in [evidence/](evidence/).
 
-- [DAO creation](https://explorer.testnet.near.org/transactions/6oV4Y8DX7hxXK2FB2hietaongMPtKzZzbaWazMAyP8JX)
-- [DAO funding of the Firewall](https://explorer.testnet.near.org/transactions/BwjKrwuyGq1k5kYjZHQTBaof8DbGeT3UyczuWRAWPE5y)
-- [Rejected overcommitment](https://explorer.testnet.near.org/transactions/HnMJXawR3zD6onxcQe6n27wrYVQ1X591U7r4miPrnEtt)
-- [GitHub-checked payment](https://explorer.testnet.near.org/transactions/673VxeaAwfGbJ8pres4mJHxifLwYQbjJ1VdpCoRcf5bn)
-- [Permissionless expiry release](https://explorer.testnet.near.org/transactions/3bWgBZGtCJEHxdgo4Kcm995fXPXzskbfXbpKSG5enMv1)
-- [Failed payout callback](https://explorer.testnet.near.org/transactions/5hXiJWVF6T5Yy5CCwLHe1YwzSZv5LgyhkDagrBMTq28t)
-- [Successful retry](https://explorer.testnet.near.org/transactions/4mugR4TmcxwQ62164DiGFZWinfvKzbvjuqxWK4Po1ukk)
+## Run it locally
 
-The saved records are under [evidence/](evidence/). Read [docs/PROGRESS.md](docs/PROGRESS.md) for the full development history and current blockers.
-
-## Run the web app
-
-Use Node.js 24.12 or newer within major version 24; `.nvmrc` selects the version used by web CI (24.22.1).
+Requires Node.js **24.12+ within major version 24**; `.nvmrc` selects **24.22.1**. The app uses the deployed testnet contract by default.
 
 ```bash
 npm --prefix apps/web ci
 npm --prefix apps/web run check
+npm --prefix apps/web run test
 npm --prefix apps/web run build
 npm --prefix apps/web run dev -- --host 127.0.0.1
 ```
 
-The app reads NEAR testnet by default. Optional settings:
+Open the local URL printed by Vite and repeat the guest path above. `VITE_NEAR_RPC_URL` and `VITE_FIREWALL_CONTRACT_ID` optionally override the testnet RPC and Firewall account. For contract checks and a release WASM build, use the pinned Rust toolchain and `bash scripts/build-firewall.sh`; `bash scripts/build-receiver.sh` builds the DAO receiver. These scripts build artifacts; they do not deploy or sign transactions. See [setup](docs/SETUP.md) and [deployment notes](docs/DEPLOY_WEB.md).
 
-- `VITE_NEAR_RPC_URL` — a NEAR testnet RPC endpoint.
-- `VITE_FIREWALL_CONTRACT_ID` — Firewall contract account; defaults to the testnet account above.
+## Scope, trust and operation
 
-Guest pages read public contract and DAO data. A wallet is needed for signed actions. **Never put a seed phrase or private key in the app, a repository, or a chat.** Testnet money has no mainnet value.
+- The hosted app is configured for **one testnet DAO**. `aje.testnet` is its sole current council voter and is also the recipient in the showcased payment. This is a working testnet flow, not evidence of independent customer adoption.
+- Another organization cannot set up its own DAO through this site today. A separate community needs its own deployment and verifier operation; self-service onboarding is future work.
+- The verifier is trusted and operator-run, not a public or trustless evidence service. Its restricted key can call `submit_attestation` on the Firewall; it cannot vote or withdraw treasury money with that key. The verifier account pays transaction gas. Its long-term funding and recovery procedure are not yet established.
+- Anyone can inspect public records without a wallet. Authorized actions need a connected testnet wallet and onchain permission. A completed commitment cannot simply be paid again. The frontend does not replace contract checks.
+- A limited outside source review is **not** a full security audit. There is no mainnet deployment or revenue model. Mainnet use needs an independent security review, operational key procedures and further testing.
 
-## Build the contracts
-
-With the pinned Rust toolchain and required WASM target:
-
-```bash
-bash scripts/build-firewall.sh
-bash scripts/build-receiver.sh
-```
-
-See [the Firewall accounting rules](docs/FIREWALL_ACCOUNTING.md), [contract methods](docs/FIREWALL_API.md), and [DAO receiver walkthrough](docs/DAO_RECEIVER.md).
-
-## Trust and limits
-
-- SputnikDAO authorizes treasury funding and changes to commitments.
-- The contract enforces its money limits and payment rules.
-- The manually dispatched GitHub Actions verifier checks a specific workflow run, then signs an onchain attestation with a restricted function-call key. The DAO controls which verifier account is trusted. This verifier is not trustless; protect and rotate its key if needed.
-- The operator cannot spend treasury funds. Expired money can be released by any caller, but a caller still has to send the transaction.
-- The Activity page shows recorded payments and withdrawals plus the newest DAO approval requests from finalized testnet reads. DAO approval alone is not proof that money moved. The app does not yet index every funding and commitment event or link each stored operation to its exact transaction.
-
-## Project documents
-
-Read [AGENTS.md](AGENTS.md), [docs/MASTER_PLAN.md](docs/MASTER_PLAN.md), and [docs/PROGRESS.md](docs/PROGRESS.md) before changing the product. Do not mark a feature complete without local checks and real integration evidence.
+The complete [master plan](docs/MASTER_PLAN.md) and [progress history](docs/PROGRESS.md) explain the build and unresolved gates. Never put seed phrases, private keys or GitHub secrets in this repository or the web app.
