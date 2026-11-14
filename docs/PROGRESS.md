@@ -822,3 +822,7 @@ The owner reports that people outside the build tried the public hosted site and
 ## Open-source license — 2026-11-14
 
 Added a root MIT license for the original Veyntro code and documentation and linked it from README. Third-party dependencies keep their own licenses. This repository housekeeping does not change the deployed app or contracts.
+
+## README visual overview — 2026-11-14
+
+Added an accessible SVG graphic in the README using Veyntro's dark, blue and green palette. It explains the DAO decision, contract check and checked payment without showing fixed balances or claiming new transactions. Older screenshots remain historical evidence and are not presented as the current interface. Validated the SVG XML and README link; this documentation change does not alter the web app or contracts.
