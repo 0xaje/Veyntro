@@ -64,3 +64,7 @@ Open the local URL printed by Vite and repeat the guest path above. `VITE_NEAR_R
 - A limited outside source review is **not** a full security audit. There is no mainnet deployment or revenue model. Mainnet use needs an independent security review, operational key procedures and further testing.
 
 The complete [master plan](docs/MASTER_PLAN.md) and [progress history](docs/PROGRESS.md) explain the build and unresolved gates. Never put seed phrases, private keys or GitHub secrets in this repository or the web app.
+
+## License
+
+Veyntro's original code and documentation are available under the [MIT License](LICENSE). Third-party packages retain their own licenses.
