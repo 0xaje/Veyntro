@@ -21,4 +21,4 @@ This live example uses one testnet DAO with `aje.testnet` as its sole council vo
 
 The current public site uses free static hosting and the checked evidence run uses GitHub Actions. A community would need to fund its own DAO and contract storage/gas on NEAR and operate and protect its own restricted verifier key. There is no fee or revenue model in the app. Moving to mainnet would require a separate security audit, deployment and key review, reliable verifier operations, and a verified second-community flow; none of those are claimed today.
 
-For a 2–3 minute recording of this exact evidence, see the [demo recording guide](docs/DEMO_SCRIPT.md). No video or public demo post is claimed until it has actually been recorded and posted.
+[Watch the Veyntro hackathon post on X](https://x.com/0xaje_/status/2121379002782720038) and use the [demo recording guide](docs/DEMO_SCRIPT.md) to follow the evidence shown there.
