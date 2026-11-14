@@ -1,5 +1,7 @@
 # Veyntro
 
+![Veyntro: Every commitment accounted for. DAO approval, contract checks, and checked payment on NEAR testnet.](docs/assets/veyntro-readme.svg)
+
 **Every commitment accounted for.**
 
 Veyntro helps a DAO set money aside for work without promising the same funds twice. A SputnikDAO vote authorizes an action; the NEAR Commitment Firewall checks whether the treasury can actually cover it. [Open the live testnet app](https://veyntro-web.onrender.com/) · [Follow the one-minute judge path](JUDGES.md).
