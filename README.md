@@ -6,7 +6,7 @@ Veyntro helps a DAO set money aside for work without promising the same funds tw
 
 **NEAR Hackathon 2026 · Social Money.** This release shows one configured DAO on NEAR testnet. Public pages work without a wallet. Authorized council and beneficiary actions use real wallet signatures.
 
-**Demo post:** Not published yet. The hackathon submission requires a public X post with a video or screenshots as well as this public repository. Add the actual post link here after publication.
+**Demo post:** [Watch the Veyntro hackathon post on X](https://x.com/0xaje_/status/2121379002782720038).
 
 ## The problem and the difference
 
