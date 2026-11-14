@@ -818,3 +818,7 @@ An external first-time impact review scored demonstrated impact 7/20 and identif
 ## Outside feedback described with limits — 2026-11-12
 
 The owner reports that people outside the build tried the public hosted site and said it worked. Their exact tasks, devices, and observations were not recorded, so this is informal feedback rather than a structured independent usability pass or independent DAO adoption. README and judge guide now distinguish that feedback from the documented AI first-time walkthrough and limited outside source review. No new transaction or product feature is claimed.
+
+## Open-source license — 2026-11-14
+
+Added a root MIT license for the original Veyntro code and documentation and linked it from README. Third-party dependencies keep their own licenses. This repository housekeeping does not change the deployed app or contracts.
